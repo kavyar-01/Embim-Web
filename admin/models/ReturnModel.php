@@ -177,12 +177,16 @@ class ReturnModel {
 
         $this->pdo->beginTransaction();
         try {
+            $finePerDay = 700000;
+            $fineAmount = $lateDays > 0 ? $lateDays * $finePerDay : 0;
+            $fineStatus = $lateDays > 0 ? 'unpaid' : 'none';
+
             // 1. Insert ke tabel returns
             $stmt = $this->pdo->prepare("
                 INSERT INTO `returns`
-                    (`booking_id`, `return_date`, `late_days`, `car_condition`, `notes`)
+                    (`booking_id`, `return_date`, `late_days`, `car_condition`, `notes`, `fine_per_day`, `fine_amount`, `fine_status`)
                 VALUES
-                    (:bid, :rd, :ld, :cc, :notes)
+                    (:bid, :rd, :ld, :cc, :notes, :fpd, :fa, :fs)
             ");
             $stmt->execute([
                 ':bid'   => $bookingId,
@@ -190,26 +194,11 @@ class ReturnModel {
                 ':ld'    => $lateDays,
                 ':cc'    => $carCondition,
                 ':notes' => $notes !== '' ? $notes : null,
+                ':fpd'   => $finePerDay,
+                ':fa'    => $fineAmount,
+                ':fs'    => $fineStatus,
             ]);
             $newId = (int) $this->pdo->lastInsertId();
-
-            // 2. Jika terlambat, otomatis buat data denda
-            if ($lateDays > 0) {
-                $finePerDay = 700000;
-                $fineAmount = $lateDays * $finePerDay;
-                $this->pdo->prepare("
-                    INSERT INTO `fines`
-                        (`return_id`, `booking_id`, `late_days`, `fine_per_day`, `fine_amount`, `status`)
-                    VALUES
-                        (:rid, :bid, :ld, :fpd, :fa, 'unpaid')
-                ")->execute([
-                    ':rid' => $newId,
-                    ':bid' => $bookingId,
-                    ':ld'  => $lateDays,
-                    ':fpd' => $finePerDay,
-                    ':fa'  => $fineAmount,
-                ]);
-            }
 
             // 3. Update status booking menjadi completed
             $this->pdo->prepare("
@@ -255,12 +244,27 @@ class ReturnModel {
 
         $this->pdo->beginTransaction();
         try {
+            $finePerDay = 700000;
+            $fineAmount = $lateDays > 0 ? $lateDays * $finePerDay : 0;
+            
+            // Pertahankan status 'paid' jika sudah dibayar, kalau belum set 'unpaid' / 'none'
+            // Kita harus ambil fine_status sebelumnya
+            $oldFineStatus = $existing['fine_status'] ?? 'none';
+            if ($oldFineStatus === 'paid' && $lateDays > 0) {
+                $fineStatus = 'paid';
+            } else {
+                $fineStatus = $lateDays > 0 ? 'unpaid' : 'none';
+            }
+
             $stmt = $this->pdo->prepare("
                 UPDATE `returns`
                 SET `return_date`   = :rd,
                     `late_days`     = :ld,
                     `car_condition` = :cc,
-                    `notes`         = :notes
+                    `notes`         = :notes,
+                    `fine_per_day`  = :fpd,
+                    `fine_amount`   = :fa,
+                    `fine_status`   = :fs
                 WHERE `id` = :id
             ");
             $stmt->execute([
@@ -268,29 +272,11 @@ class ReturnModel {
                 ':ld'    => $lateDays,
                 ':cc'    => $carCondition,
                 ':notes' => $notes !== '' ? $notes : null,
+                ':fpd'   => $finePerDay,
+                ':fa'    => $fineAmount,
+                ':fs'    => $fineStatus,
                 ':id'    => $id,
             ]);
-
-            // Recalculate fine: hapus denda lama, buat baru jika terlambat
-            $this->pdo->prepare("DELETE FROM `fines` WHERE `return_id` = :rid")
-                ->execute([':rid' => $id]);
-
-            if ($lateDays > 0) {
-                $finePerDay = 700000;
-                $fineAmount = $lateDays * $finePerDay;
-                $this->pdo->prepare("
-                    INSERT INTO `fines`
-                        (`return_id`, `booking_id`, `late_days`, `fine_per_day`, `fine_amount`, `status`)
-                    VALUES
-                        (:rid, :bid, :ld, :fpd, :fa, 'unpaid')
-                ")->execute([
-                    ':rid' => $id,
-                    ':bid' => $existing['booking_id'],
-                    ':ld'  => $lateDays,
-                    ':fpd' => $finePerDay,
-                    ':fa'  => $fineAmount,
-                ]);
-            }
 
             // Re-update status car berdasarkan kondisi terbaru
             $carStatus = ($carCondition === 'good') ? 'available' : 'maintenance';

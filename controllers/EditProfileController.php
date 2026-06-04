@@ -21,14 +21,25 @@ class EditProfileController {
 
             $fullName = trim($_POST['full_name'] ?? '');
             $email    = trim($_POST['email']     ?? '');
-            $phone    = trim($_POST['phone']     ?? '');
             $address  = trim($_POST['address']   ?? '');
             $password = $_POST['password']       ?? '';
             $passConf = $_POST['password_confirm'] ?? '';
 
-            if (empty($fullName)) $errors[] = 'Nama lengkap tidak boleh kosong.';
+            $phoneRaw = trim($_POST['phone'] ?? '');
+            $phoneRaw = preg_replace('/[^0-9]/', '', $phoneRaw); 
+            $phone    = !empty($phoneRaw) ? '+62' . $phoneRaw : '';
+
+            if (empty($fullName)) {
+                $errors[] = 'Nama lengkap tidak boleh kosong.';
+            } elseif (strlen($fullName) < 4) {
+                $errors[] = 'Nama lengkap minimal 4 karakter.';
+            }
             if (empty($email))    $errors[] = 'Email tidak boleh kosong.';
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Format email tidak valid.';
+
+            if (!empty($phoneRaw) && (strlen($phoneRaw) < 7 || strlen($phoneRaw) > 13)) {
+                $errors[] = 'Nomor telepon tidak valid (7–13 digit).';
+            }
 
             if (!empty($email)) {
                 $existing = $userModel->findByEmail($email);
@@ -40,6 +51,12 @@ class EditProfileController {
             if (!empty($password)) {
                 if (strlen($password) < 8) {
                     $errors[] = 'Password minimal 8 karakter.';
+                } elseif (!preg_match('/[a-z]/', $password)) {
+                    $errors[] = 'Password harus mengandung minimal satu huruf kecil.';
+                } elseif (!preg_match('/[A-Z]/', $password)) {
+                    $errors[] = 'Password harus mengandung minimal satu huruf besar.';
+                } elseif (!preg_match('/[0-9]/', $password)) {
+                    $errors[] = 'Password harus mengandung minimal satu angka.';
                 } elseif ($password !== $passConf) {
                     $errors[] = 'Konfirmasi password tidak cocok.';
                 }

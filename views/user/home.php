@@ -597,9 +597,27 @@ if (!defined('BASE_URL')) {
 <section class="py-24 bg-gradient-to-b from-blue-50/20 to-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="text-center mb-16 reveal">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
-            <p class="text-lg text-gray-600 font-medium">Dipercaya oleh ribuan penyewa.</p>
+        <div class="flex flex-col md:flex-row justify-between items-center mb-16 reveal" id="testimonials">
+            <div class="text-center md:text-left mb-6 md:mb-0">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
+                <p class="text-lg text-gray-600 font-medium">
+                </p>
+            </div>
+            <div>
+                <form method="GET" action="index.php" id="review-limit-form">
+                    <label for="review_limit" class="text-sm font-bold text-gray-700 mr-2">Tampilkan:</label>
+                    <select name="review_limit" id="review_limit" onchange="window.location.href='index.php?review_limit='+this.value+'#testimonials'" class="bg-white border border-gray-200 text-gray-700 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm cursor-pointer transition hover:border-blue-300">
+                        <option value="6" <?php echo $reviewLimit == 6 ? 'selected' : ''; ?>>6 Ulasan</option>
+                        <option value="10" <?php echo $reviewLimit == 10 ? 'selected' : ''; ?>>10 Ulasan</option>
+                        <option value="30" <?php echo $reviewLimit == 30 ? 'selected' : ''; ?>>30 Ulasan</option>
+                        <option value="50" <?php echo $reviewLimit == 50 ? 'selected' : ''; ?>>50 Ulasan</option>
+                        <option value="100" <?php echo $reviewLimit == 100 ? 'selected' : ''; ?>>100 Ulasan</option>
+                    </select>
+                    <?php if (!empty($_GET['search'])): ?>
+                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+                    <?php endif; ?>
+                </form>
+            </div>
         </div>
 
         <?php if (!empty($reviews)): ?>

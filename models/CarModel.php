@@ -50,7 +50,10 @@ class CarModel {
 
 
     public function getCarById($id) {
-        $sql  = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1";
+        $sql  = "SELECT c.*, v.drivetrain, v.body_style, v.engine, v.transmission AS hl_transmission 
+                 FROM {$this->table} c
+                 LEFT JOIN vehicle_highlights v ON c.id = v.car_id
+                 WHERE c.id = :id LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -88,6 +91,13 @@ class CarModel {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public function getTotalReviews() {
+        $sql = "SELECT COUNT(*) FROM reviews";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
     }
 
 

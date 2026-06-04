@@ -122,13 +122,22 @@
                 <!-- No. HP -->
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 mb-1.5">Nomor HP</label>
-                    <input
-                        type="tel"
-                        name="phone"
-                        value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>"
-                        class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
-                        placeholder="+62 812 xxxx xxxx"
-                    >
+                    <div class="flex">
+                        <span class="inline-flex items-center px-4 py-2.5 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-sm font-bold text-gray-600 select-none">
+                            +62
+                        </span>
+                        <input
+                            type="tel"
+                            name="phone"
+                            value="<?php echo htmlspecialchars(preg_replace('/^\+?62/', '', $user['phone'] ?? '')); ?>"
+                            class="w-full flex-1 px-3 py-2.5 rounded-r-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
+                            placeholder="8123456789"
+                            maxlength="13"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
+                        >
+                    </div>
                 </div>
 
                 <!-- Alamat -->
@@ -155,6 +164,7 @@
                     <input
                         type="password"
                         name="password"
+                        autocomplete="new-password"
                         class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                         placeholder="Min. 8 karakter"
                     >
@@ -164,6 +174,7 @@
                     <input
                         type="password"
                         name="password_confirm"
+                        autocomplete="new-password"
                         class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                         placeholder="Ulangi password baru"
                     >

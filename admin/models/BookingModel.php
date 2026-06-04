@@ -66,7 +66,7 @@ class BookingModel
 
     /**
      * Hapus booking. Jika ada return terkait, ON DELETE CASCADE akan
-     * menghapus returns + fines otomatis (sesuai FK di schema).
+     * menghapus returns otomatis (beserta data denda di dalamnya).
      * Kembalikan status car ke available jika belum ada booking aktif lain.
      */
     public function deleteBooking(int $id): bool

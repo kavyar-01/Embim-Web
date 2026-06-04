@@ -60,13 +60,10 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
             </svg>
         </div>
 
-        <h1 class="text-2xl font-extrabold text-gray-900 mb-2">Bukti Pembayaran Terkirim!</h1>
+        <h1 class="text-2xl font-extrabold text-gray-900 mb-2">Pembayaran berhasil!</h1>
+        <p class="text-black-400 text-sm mb-1" > Kendaraan siap diambil!</p>
         <p class="text-gray-400 text-sm mb-1">
             Nomor Booking: <span class="font-bold text-gray-700">#<?php echo str_pad($booking['id'], 4, '0', STR_PAD_LEFT); ?></span>
-        </p>
-        <p class="text-sm mb-8">
-                Status Pembayaran: <span class="font-bold text-emerald-600">Paid</span>
-                <span class="text-gray-400">— Menunggu konfirmasi dari tim EMBIM.</span>
         </p>
 
         <!-- Ringkasan Booking -->
@@ -94,7 +91,6 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
                 ['Tanggal Kembali', date('d F Y', strtotime($booking['end_date']))],
                 ['Durasi',          $booking['total_days'] . ' hari'],
                 ['Metode Bayar',    $methodLabel],
-                ['Status Bayar',    'Paid — Menunggu Konfirmasi'],
             ];
             foreach ($rows as [$label, $value]): ?>
             <div class="flex justify-between text-sm">
@@ -111,24 +107,12 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
             </div>
         </div>
 
-        <!-- Info Langkah Selanjutnya -->
-        <div class="rounded-xl p-4 text-left mb-8 bg-emerald-50 border border-emerald-100">
-            <p class="text-xs font-bold mb-2 flex items-center gap-1.5 text-emerald-700">
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                Langkah Selanjutnya
-            </p>
-            <ul class="space-y-1 text-xs text-emerald-600">
-                <li>1. Bukti pembayaran Anda telah kami terima</li>
-                <li>2. Tim EMBIM sedang memverifikasi pembayaran Anda</li>
-                <li>3. Status booking akan diperbarui menjadi <strong>Confirmed</strong> setelah diverifikasi</li>
-                <li>4. Kendaraan siap diantarkan sesuai jadwal</li>
-            </ul>
-        </div>
-
         <!-- CTA Buttons -->
         <div class="space-y-3">
+            <a href="index.php?page=receipt&id=<?php echo $booking['id']; ?>" target="_blank"
+               class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 rounded-xl shadow-md shadow-emerald-200/50 transition-all duration-200">
+                Unduh Struk
+            </a>
             <a href="index.php?page=bookings"
                class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 rounded-xl shadow-md shadow-blue-200/50 transition-all duration-200">
                 Lihat My Bookings

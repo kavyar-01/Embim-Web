@@ -15,7 +15,14 @@ class HomeController {
             $featuredCars = $carModel->getFeaturedCars(6);
         }
 
-        $reviews = $carModel->getReviews(6);
+        $reviewLimit = isset($_GET['review_limit']) ? (int)$_GET['review_limit'] : 6;
+        $allowedLimits = [6, 10, 30, 50, 100];
+        if (!in_array($reviewLimit, $allowedLimits)) {
+            $reviewLimit = 6;
+        }
+
+        $reviews = $carModel->getReviews($reviewLimit);
+        $totalReviews = $carModel->getTotalReviews();
 
         require_once 'views/user/home.php';
     }

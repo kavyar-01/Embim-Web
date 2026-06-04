@@ -22,6 +22,9 @@ class RegisterController {
             if (empty($fullName) || empty($email) || empty($password)) {
                 $error = 'Nama, email, dan password wajib diisi.';
 
+            } elseif (strlen($fullName) < 4) {
+                $error = 'Nama lengkap minimal 4 karakter.';
+
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $error = 'Format email tidak valid.';
 

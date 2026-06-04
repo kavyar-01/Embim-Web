@@ -163,6 +163,14 @@
                         <div class="flex items-center gap-2">
 
                             <?php if ($booking['status'] === 'confirmed'): ?>
+                            <a href="index.php?page=receipt&id=<?php echo $booking['id']; ?>" target="_blank"
+                               class="text-xs font-bold border border-green-200 text-green-600 hover:bg-green-50 px-4 py-2 rounded-xl transition duration-200 shadow-sm mr-2">
+                                Unduh Struk
+                            </a>
+                            <button onclick="confirmCancel(<?php echo $booking['id']; ?>)"
+                               class="text-xs font-bold border border-red-200 text-red-500 hover:bg-red-50 px-4 py-2 rounded-xl transition duration-200 shadow-sm mr-2">
+                                Batalkan Booking
+                            </button>
                             <a href="index.php?page=payment&id=<?php echo $booking['id']; ?>"
                                class="text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition duration-200 shadow-sm">
                                 Lihat Detail
@@ -175,6 +183,10 @@
 
                             <?php elseif ($booking['status'] === 'completed'): ?>
                             <div class="flex items-center gap-2">
+                                <a href="index.php?page=receipt&id=<?php echo $booking['id']; ?>" target="_blank"
+                                   class="text-xs font-bold border border-green-200 text-green-600 hover:bg-green-50 px-4 py-2 rounded-xl transition duration-200 shadow-sm">
+                                    Unduh Struk
+                                </a>
                                 <?php if (!$booking['has_review']): ?>
                                 <button
                                     onclick="openReviewModal(<?php echo $booking['id']; ?>, <?php echo $booking['car_id']; ?>, '<?php echo htmlspecialchars(addslashes($booking['car_brand'] . ' ' . $booking['car_model']), ENT_QUOTES); ?>')"
@@ -263,17 +275,25 @@
             </svg>
         </div>
         <h3 class="text-lg font-bold text-gray-900 mb-1">Batalkan Booking?</h3>
-        <p class="text-sm text-gray-500 mb-7">Booking yang dibatalkan tidak dapat dikembalikan. Yakin ingin melanjutkan?</p>
-        <div class="flex gap-3">
-            <button id="cancel-no"
-                class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition duration-200">
-                Tidak
-            </button>
-            <a id="cancel-yes" href="#"
-                class="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition duration-200 text-center">
-                Ya, Batalkan
-            </a>
+        <p class="text-sm text-gray-500 mb-3">Booking yang dibatalkan tidak dapat dikembalikan. Yakin ingin melanjutkan?</p>
+        <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-6">
+            <p class="text-xs text-amber-700 font-semibold mb-1">⚠️ Peringatan Refund</p>
+            <p class="text-[11px] text-amber-600 leading-tight">Jika dibatalkan, uang yang dikembalikan (refund) hanya sebesar <strong>80%</strong> dari total harga sewa.</p>
         </div>
+        <form id="cancel-form" method="POST" action="index.php?page=bookings">
+            <input type="hidden" name="action" value="cancel_booking">
+            <input type="hidden" name="booking_id" id="cancel-booking-id" value="">
+            <div class="flex gap-3">
+                <button type="button" id="cancel-no"
+                    class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition duration-200">
+                    Tidak
+                </button>
+                <button type="submit" id="cancel-yes"
+                    class="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition duration-200 text-center">
+                    Ya, Batalkan
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
