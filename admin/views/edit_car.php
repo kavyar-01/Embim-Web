@@ -2,8 +2,15 @@
 <div class="max-w-4xl space-y-8 pb-12">
 
   <div>
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Add New Car</h1>
-    <p class="text-gray-500 text-sm mt-2">Fill in the details below to list a new car for rental booking.</p>
+    <div class="flex items-center gap-4">
+        <a href="?page=manage_cars" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        </a>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Edit Car</h1>
+    </div>
+    <p class="text-gray-500 text-sm mt-2 ml-12">Modify the details below to update the car information.</p>
   </div>
 
   <?php if (!empty($success)): ?>
@@ -24,26 +31,29 @@
   </div>
   <?php endif; ?>
 
-  <form action="?page=add_car" method="POST" enctype="multipart/form-data" class="space-y-8">
+  <form action="?page=edit_car&id=<?= $old['id'] ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
 
     <!-- Photo Upload -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Car Photo</label>
-      <label for="photo" id="photo-label" class="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl p-12 text-center cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors overflow-hidden">
-        <div id="photo-placeholder">
+      <label for="photo" id="photo-label" class="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors overflow-hidden">
+        
+        <div id="photo-placeholder" class="<?= !empty($old['photo']) ? 'hidden' : '' ?>">
           <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mb-4 mx-auto">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
             </svg>
           </div>
-          <p class="font-medium text-sm text-gray-700">Click to upload a photo of the car</p>
-          <p class="text-xs text-gray-500 mt-1">PNG, JPG or WEBP up to 5MB</p>
+          <p class="font-medium text-sm text-gray-700">Click to upload a new photo</p>
+          <p class="text-xs text-gray-500 mt-1">Leave empty to keep current photo</p>
         </div>
-        <div id="photo-preview-wrap" class="hidden w-full">
-          <img id="photo-preview" src="" alt="Preview" class="max-h-64 mx-auto rounded-lg object-contain" />
-          <p id="photo-name" class="text-xs text-gray-500 mt-3"></p>
+
+        <div id="photo-preview-wrap" class="<?= empty($old['photo']) ? 'hidden' : '' ?> w-full">
+          <img id="photo-preview" src="<?= !empty($old['photo']) ? '../assets/images/' . htmlspecialchars($old['photo']) : '' ?>" alt="Preview" class="max-h-64 mx-auto rounded-lg object-contain" />
+          <p id="photo-name" class="text-xs text-gray-500 mt-3">Current Photo</p>
           <p class="text-xs text-blue-500 mt-1">Click to change photo</p>
         </div>
+
         <input type="file" id="photo" name="photo" accept="image/*" class="hidden" />
       </label>
     </div>
@@ -57,8 +67,6 @@
           document.getElementById('photo-preview-wrap').classList.remove('hidden');
           document.getElementById('photo-preview').src = e.target.result;
           document.getElementById('photo-name').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-          document.getElementById('photo-label').classList.remove('p-12');
-          document.getElementById('photo-label').classList.add('p-6');
         };
         reader.readAsDataURL(file);
       });
@@ -78,8 +86,8 @@
       </div>
     </div>
 
-    <!-- Year, License Plate, Price Per Day -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Year, License Plate, Price Per Day, Status -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <div>
         <label for="year" class="block text-sm font-medium text-gray-700 mb-1">Year</label>
         <input type="number" id="year" name="year" value="<?= htmlspecialchars($old['year'] ?? '') ?>" placeholder="e.g. 2024" min="1990" max="2099"
@@ -94,6 +102,14 @@
         <label for="price_per_day" class="block text-sm font-medium text-gray-700 mb-1">Price Per Day (Rp)</label>
         <input type="number" id="price_per_day" name="price_per_day" value="<?= htmlspecialchars($old['price_per_day'] ?? '') ?>" placeholder="e.g. 500000" min="0" step="0.01"
           class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
+      </div>
+      <div>
+        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+        <select id="status" name="status" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+            <option value="available" <?= ($old['status'] ?? '') === 'available' ? 'selected' : '' ?>>Available</option>
+            <option value="booked" <?= ($old['status'] ?? '') === 'booked' ? 'selected' : '' ?>>Booked</option>
+            <option value="maintenance" <?= ($old['status'] ?? '') === 'maintenance' ? 'selected' : '' ?>>Maintenance</option>
+        </select>
       </div>
     </div>
 
@@ -133,22 +149,22 @@
         <div>
           <label for="hl_drivetrain" class="block text-sm font-medium text-gray-700 mb-1">Drivetrain</label>
           <select id="hl_drivetrain" name="hl_drivetrain" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <option value="FWD" <?= ($old['hl_drivetrain'] ?? '') === 'FWD' ? 'selected' : '' ?>>FWD (Front Wheel Drive)</option>
-            <option value="RWD" <?= ($old['hl_drivetrain'] ?? '') === 'RWD' ? 'selected' : '' ?>>RWD (Rear Wheel Drive)</option>
-            <option value="AWD" <?= ($old['hl_drivetrain'] ?? '') === 'AWD' ? 'selected' : '' ?>>AWD/4WD (All Wheel Drive)</option>
+            <option value="FWD" <?= ($old['drivetrain'] ?? '') === 'FWD' ? 'selected' : '' ?>>FWD (Front Wheel Drive)</option>
+            <option value="RWD" <?= ($old['drivetrain'] ?? '') === 'RWD' ? 'selected' : '' ?>>RWD (Rear Wheel Drive)</option>
+            <option value="AWD" <?= ($old['drivetrain'] ?? '') === 'AWD' ? 'selected' : '' ?>>AWD/4WD (All Wheel Drive)</option>
           </select>
         </div>
         <div>
           <label for="hl_body_style" class="block text-sm font-medium text-gray-700 mb-1">Body Style</label>
           <select id="hl_body_style" name="hl_body_style" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <option value="Sedan" <?= ($old['hl_body_style'] ?? '') === 'Sedan' ? 'selected' : '' ?>>Sedan</option>
-            <option value="SUV" <?= ($old['hl_body_style'] ?? '') === 'SUV' ? 'selected' : '' ?>>SUV</option>
-            <option value="Sports" <?= ($old['hl_body_style'] ?? '') === 'Sports' ? 'selected' : '' ?>>Sports</option>
+            <option value="Sedan" <?= ($old['body_style'] ?? '') === 'Sedan' ? 'selected' : '' ?>>Sedan</option>
+            <option value="SUV" <?= ($old['body_style'] ?? '') === 'SUV' ? 'selected' : '' ?>>SUV</option>
+            <option value="Sports" <?= ($old['body_style'] ?? '') === 'Sports' ? 'selected' : '' ?>>Sports</option>
           </select>
         </div>
         <div>
           <label for="hl_engine" class="block text-sm font-medium text-gray-700 mb-1">Engine Detail</label>
-          <input type="text" id="hl_engine" name="hl_engine" value="<?= htmlspecialchars($old['hl_engine'] ?? '') ?>" placeholder="e.g. 2.0L Turbo 4-Cylinder"
+          <input type="text" id="hl_engine" name="hl_engine" value="<?= htmlspecialchars($old['engine'] ?? '') ?>" placeholder="e.g. 2.0L Turbo 4-Cylinder"
             class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
         </div>
         <div>
@@ -175,7 +191,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
         </svg>
-        List Your Car
+        Save Changes
       </button>
       <a href="?page=manage_cars" class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-6 py-3 rounded-md transition-colors">
         Cancel

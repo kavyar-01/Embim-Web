@@ -12,9 +12,8 @@
     <!-- Brand -->
     <div class="mb-8 text-center">
       <div class="flex items-center justify-center gap-2 mb-1">
-        <span class="text-2xl font-extrabold text-white tracking-tight">EMBIM ADMIN</span>
+        <a href="../index.php" class="text-2xl font-extrabold text-white tracking-tight">EMBIM ADMIN</a>
       </div>
-      <p class="text-blue-200 text-sm">Panel Manajemen Administrator</p>
     </div>
 
     <!-- Card -->
@@ -58,11 +57,17 @@
 
         <div>
           <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
-          <input type="tel" id="phone" name="phone"
-            value="<?= htmlspecialchars($old['phone'] ?? '') ?>"
-            placeholder="+62 812 3456 7890"
-            class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            autocomplete="tel" />
+          <div class="flex">
+            <span class="inline-flex items-center px-4 py-2.5 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-sm font-bold text-gray-600 select-none">
+              +62
+            </span>
+            <input type="tel" id="phone" name="phone"
+              value="<?= htmlspecialchars(preg_replace('/^\+?62/', '', $old['phone'] ?? '')) ?>"
+              placeholder="81234567890"
+              class="w-full border border-gray-300 rounded-r-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              autocomplete="tel" maxlength="13" inputmode="numeric" pattern="[0-9]*" />
+          </div>
+          <p id="phone-error" class="hidden mt-1 text-xs text-red-500 font-semibold">⚠ Nomor telepon hanya boleh berisi angka.</p>
         </div>
 
         <div>
@@ -73,11 +78,16 @@
               class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors pr-11"
               required autocomplete="new-password"
               oninput="checkPassword(this.value)" />
-            <button type="button" onclick="togglePass('password')"
+            <button type="button" id="toggle-password"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              <!-- Eye icon -->
+              <svg id="icon-eye" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              <!-- Eye-off icon -->
+              <svg id="icon-eye-off" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
               </svg>
             </button>
           </div>
@@ -95,7 +105,7 @@
         <div class="flex items-start gap-3">
           <input type="checkbox" id="terms" name="terms" value="1"
             class="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-            <?= !empty($old['terms']) ? 'checked' : '' ?> />
+            required <?= !empty($old['terms']) ? 'checked' : '' ?> />
           <label for="terms" class="text-xs text-gray-500 cursor-pointer leading-relaxed">
             Dengan mendaftar, saya menyetujui
             <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Syarat &amp; Ketentuan</a>,
@@ -104,8 +114,8 @@
           </label>
         </div>
 
-        <button type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 rounded-lg transition-colors text-sm shadow-sm">
+        <button type="submit" id="submit-btn"
+          class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 rounded-lg transition-colors text-sm shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
           Buat Akun
         </button>
 
@@ -123,10 +133,67 @@
     </p>
 
     <script>
-      function togglePass(id) {
-        const input = document.getElementById(id);
-        input.type = input.type === 'password' ? 'text' : 'password';
-      }
+      (function () {
+        const pwInput   = document.getElementById('password');
+        const toggleBtn = document.getElementById('toggle-password');
+        const iconEye   = document.getElementById('icon-eye');
+        const iconOff   = document.getElementById('icon-eye-off');
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function () {
+                const isHidden = pwInput.type === 'password';
+                pwInput.type   = isHidden ? 'text' : 'password';
+                iconEye.classList.toggle('hidden', isHidden);
+                iconOff.classList.toggle('hidden', !isHidden);
+            });
+        }
+
+        const phoneInput = document.getElementById('phone');
+        const phoneError = document.getElementById('phone-error');
+
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function () {
+                const cleaned = this.value.replace(/[^0-9]/g, '');
+                if (this.value !== cleaned) {
+                    this.value = cleaned;
+                }
+                if (this.value.length > 0 && !/^[0-9]+$/.test(this.value)) {
+                    phoneError.classList.remove('hidden');
+                } else {
+                    phoneError.classList.add('hidden');
+                }
+            });
+
+            phoneInput.addEventListener('keydown', function (e) {
+                const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','Home','End'];
+                if (!allowed.includes(e.key) && !/^[0-9]$/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+
+            phoneInput.addEventListener('paste', function (e) {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData).getData('text');
+                const digits = pasted.replace(/[^0-9]/g, '');
+                const start = this.selectionStart;
+                const end   = this.selectionEnd;
+                this.value  = this.value.slice(0, start) + digits + this.value.slice(end);
+                phoneError.classList.add('hidden');
+            });
+        }
+
+        const checkbox  = document.getElementById('terms');
+        const submitBtn = document.getElementById('submit-btn');
+
+        if (checkbox && submitBtn) {
+            function syncBtn() {
+                submitBtn.disabled = !checkbox.checked;
+            }
+            checkbox.addEventListener('change', syncBtn);
+            syncBtn(); 
+        }
+      })();
+
       function checkPassword(val) {
         const rules = {
           'req-len': val.length >= 8 && val.length <= 100,
@@ -136,13 +203,14 @@
         };
         for (const [id, ok] of Object.entries(rules)) {
           const li  = document.getElementById(id);
+          if (!li) continue;
           const dot = li.querySelector('.req-dot');
           if (ok) {
             li.classList.replace('text-gray-400', 'text-green-600');
-            dot.classList.replace('bg-gray-300',  'bg-green-500');
+            if (dot) dot.classList.replace('bg-gray-300', 'bg-green-500');
           } else {
             li.classList.replace('text-green-600', 'text-gray-400');
-            dot.classList.replace('bg-green-500',  'bg-gray-300');
+            if (dot) dot.classList.replace('bg-green-500', 'bg-gray-300');
           }
         }
       }
