@@ -1,0 +1,156 @@
+
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f1f5f9;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0);    }
+}
+
+.fade-up          { animation: fadeUp .45s ease both; }
+.delay-1          { animation-delay: .07s; }
+.delay-2          { animation-delay: .14s; }
+.delay-3          { animation-delay: .21s; }
+.delay-4          { animation-delay: .28s; }
+.delay-5          { animation-delay: .35s; }
+
+.login-card {
+    background    : #ffffff;
+    border-radius : 1.25rem;
+    box-shadow    : 0 4px 24px -4px rgba(0, 0, 0, 0.08),
+                    0 1px  4px  0   rgba(0, 0, 0, 0.04);
+    border        : 1px solid #e8edf2;
+}
+
+.form-input {
+    width         : 100%;
+    padding       : 0.8rem 1rem;
+    border        : 1.5px solid #e2e8f0;
+    border-radius : 0.75rem;
+    font-size     : 0.875rem;
+    color         : #1e293b;
+    background    : #f8fafc;
+    transition    : border-color .2s, box-shadow .2s, background .2s;
+    outline       : none;
+}
+
+.form-input::placeholder { color: #94a3b8; }
+
+.form-input:focus {
+    border-color : #2563eb;
+    background   : #ffffff;
+    box-shadow   : 0 0 0 3.5px rgba(37, 99, 235, 0.12);
+}
+
+.form-input.is-error {
+    border-color : #ef4444;
+    box-shadow   : 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.btn-whatsapp {
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    gap             : 0.625rem;
+    width           : 100%;
+    padding         : 0.75rem 1rem;
+    border          : 1.5px solid #e2e8f0;
+    border-radius   : 3rem;
+    background      : #ffffff;
+    font-size       : 0.875rem;
+    font-weight     : 500;
+    color           : #374151;
+    cursor          : pointer;
+    transition      : background .2s, border-color .2s, box-shadow .2s;
+}
+
+.btn-whatsapp:hover {
+    background   : #f0fdf4;
+    border-color : #22c55e;
+    box-shadow   : 0 2px 8px rgba(34, 197, 94, 0.15);
+}
+
+.btn-submit {
+    width           : 100%;
+    padding         : 0.875rem;
+    background      : #2563eb;
+    color           : #ffffff;
+    font-weight     : 700;
+    font-size       : 0.9375rem;
+    border          : none;
+    border-radius   : 0.75rem;
+    cursor          : pointer;
+    transition      : background .2s, transform .1s, box-shadow .2s;
+    box-shadow      : 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.btn-submit:hover  { background: #1d4ed8; box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35); }
+.btn-submit:active { transform: scale(0.98); }
+.btn-submit:disabled {
+    opacity : 0.55;
+    cursor  : not-allowed;
+    transform: none;
+}
+
+.divider {
+    display     : flex;
+    align-items : center;
+    gap         : 0.75rem;
+    margin      : 1.25rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content    : '';
+    flex       : 1;
+    height     : 1px;
+    background : #e2e8f0;
+}
+
+.divider span {
+    font-size   : 0.75rem;
+    font-weight : 600;
+    color       : #94a3b8;
+    letter-spacing: .08em;
+}
+
+.pw-wrapper { position: relative; }
+
+.pw-toggle {
+    position   : absolute;
+    inset-block: 0;
+    right      : 0.875rem;
+    display    : flex;
+    align-items: center;
+    background : none;
+    border     : none;
+    cursor     : pointer;
+    color      : #94a3b8;
+    padding    : 0;
+    transition : color .2s;
+}
+.pw-toggle:hover { color: #475569; }
+
+.alert {
+    display       : flex;
+    align-items   : flex-start;
+    gap           : 0.625rem;
+    padding       : 0.75rem 1rem;
+    border-radius : 0.75rem;
+    font-size     : 0.8125rem;
+    margin-bottom : 1.25rem;
+    line-height   : 1.5;
+}
+
+.alert-error   { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+.alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; }
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0);    }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX( 6px); }
+}
+.shake { animation: shake .35s ease; }
