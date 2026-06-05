@@ -35,7 +35,7 @@ class ReceiptController {
 
     private function generateReceiptImage($booking, $user) {
         $width = 600;
-        $height = 1000;
+        $height = 1200;
         $img = imagecreatetruecolor($width, $height);
 
         $bg = imagecolorallocate($img, 255, 255, 255);
@@ -56,9 +56,9 @@ class ReceiptController {
         $y += 30;
         $this->drawCenteredText($img, 3, "Easy Mobility Booking In Minutes", $y, $gray, $width);
         $y += 20;
-        $this->drawCenteredText($img, 3, "Jl. Contoh No. 1, Jakarta, Indonesia", $y, $gray, $width);
+        $this->drawCenteredText($img, 3, "Jl. Sukaasih V No.115 RT. 04/08, Sindang Jaya, Kec. Mandalajati, Kota Bandung", $y, $gray, $width);
         $y += 20;
-        $this->drawCenteredText($img, 3, "cs@embim.id  .  +62 812-0000-0000", $y, $gray, $width);
+        $this->drawCenteredText($img, 3, "cs@embim.id  .  +62821-4484-5847", $y, $gray, $width);
         $y += 40;
 
         imageline($img, 30, $y, $width - 30, $y, $lightGray);
@@ -110,7 +110,6 @@ class ReceiptController {
         $this->drawRow($img, 4, "Harga/hari", "Rp " . number_format($booking['price_per_day'], 0, ',', '.'), $y, $gray, $black, $width);
         $this->drawRow($img, 4, "Durasi", $booking['total_days'] . " hari", $y, $gray, $black, $width);
         $this->drawRow($img, 4, "Subtotal", "Rp " . number_format($booking['total_price'], 0, ',', '.'), $y, $gray, $black, $width);
-        $this->drawRow($img, 4, "Biaya Admin", "Rp 0", $y, $gray, $black, $width);
         $method = strtoupper(str_replace('_', ' ', $booking['payment_method']));
         $this->drawRow($img, 4, "Metode Bayar", $method, $y, $gray, $black, $width);
         $this->drawRow($img, 4, "Status Bayar", "Lunas", $y, $gray, $black, $width);

@@ -316,7 +316,6 @@ $paymentMethods = [
                         <ul class="space-y-1 text-xs text-amber-600">
                             <li>• Booking status becomes <strong>Confirmed</strong> after payment proof is uploaded</li>
                             <li>• Payment instructions are sent to your email</li>
-                            <li>• Payment max. <strong>1x24 hours</strong> after booking</li>
                         </ul>
                     </div>
 
