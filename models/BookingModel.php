@@ -105,10 +105,7 @@ class BookingModel {
         if ($success) {
             $bookingId = $this->conn->lastInsertId();
             
-            // Kurangi stok kendaraan
-            $stmtStock = $this->conn->prepare("UPDATE cars SET stock = stock - 1 WHERE id = :car_id");
-            $stmtStock->execute([':car_id' => $data['car_id']]);
-
+            // Ubah status kendaraan menjadi booked
             $this->updateCarStatus($data['car_id'], $bookingStatus);
             return $bookingId;
         }
@@ -124,11 +121,11 @@ class BookingModel {
 
 
     public function isCarAvailable($carId, $startDate, $endDate) {
-        $stmt = $this->conn->prepare("SELECT stock FROM cars WHERE id = :id");
+        $stmt = $this->conn->prepare("SELECT status FROM cars WHERE id = :id");
         $stmt->execute([':id' => $carId]);
-        $stock = (int)$stmt->fetchColumn();
+        $status = $stmt->fetchColumn();
 
-        return $stock > 0;
+        return $status === 'available';
     }
 
 
@@ -177,11 +174,11 @@ class BookingModel {
     }
 
     public function updateCarStatus($carId, $bookingStatus) {
-        $stmt = $this->conn->prepare("SELECT stock FROM cars WHERE id = :id");
-        $stmt->execute([':id' => $carId]);
-        $stock = (int)$stmt->fetchColumn();
-
-        $carStatus = ($stock <= 0) ? 'booked' : 'available';
+        if (in_array($bookingStatus, ['completed', 'cancelled'])) {
+            $carStatus = 'available';
+        } else {
+            $carStatus = 'booked';
+        }
 
         $sql = "UPDATE cars SET status = :status WHERE id = :car_id";
         $stmt = $this->conn->prepare($sql);
@@ -206,17 +203,6 @@ class BookingModel {
         ]);
 
         if ($success) {
-            $isOldTerminal = in_array($oldStatus, ['completed', 'cancelled']);
-            $isNewTerminal = in_array($newStatus, ['completed', 'cancelled']);
-            
-            if (!$isOldTerminal && $isNewTerminal) {
-                // Booking selesai atau batal, kembalikan stok
-                $this->conn->prepare("UPDATE cars SET stock = stock + 1 WHERE id = ?")->execute([$booking['car_id']]);
-            } elseif ($isOldTerminal && !$isNewTerminal) {
-                // Jika status diubah kembali menjadi aktif dari selesai/batal
-                $this->conn->prepare("UPDATE cars SET stock = stock - 1 WHERE id = ?")->execute([$booking['car_id']]);
-            }
-
             $this->updateCarStatus($booking['car_id'], $newStatus);
             return true;
         }

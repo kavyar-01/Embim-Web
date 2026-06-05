@@ -1,6 +1,6 @@
 <header class="h-16 border-b border-gray-200 bg-white flex items-center justify-between px-6 shrink-0">
   <div class="flex items-center gap-2">
-    <span class="font-bold text-lg text-gray-900 tracking-tight">EMBIM</span>
+    <span class="font-black text-2xl text-gray-900 tracking-tight uppercase">EMBIM</span>
   </div>
   <div class="flex items-center gap-4">
     <a href="?page=logout" class="flex items-center gap-2 bg-red-500 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-red-600 transition-colors">

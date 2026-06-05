@@ -25,9 +25,12 @@ class ReturnModel {
                 b.`start_date`,
                 b.`end_date`,
                 b.`status`          AS booking_status,
+                b.`total_price`,
+                b.`payment_status`,
                 u.`full_name`       AS customer_name,
                 CONCAT(c.`brand`, ' ', c.`model`) AS car_name,
-                c.`license_plate`
+                c.`license_plate`,
+                (SELECT COUNT(*) FROM `reviews` rev WHERE rev.`booking_id` = b.`id`) AS review_count
             FROM `returns` r
             JOIN `bookings` b ON b.`id` = r.`booking_id`
             JOIN `users`    u ON u.`id` = b.`user_id`

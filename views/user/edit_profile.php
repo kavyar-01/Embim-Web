@@ -101,6 +101,7 @@
                         name="full_name"
                         value="<?php echo htmlspecialchars($user['full_name']); ?>"
                         required
+                        minlength="4"
                         class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                         placeholder="Masukkan nama lengkap"
                     >

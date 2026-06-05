@@ -4,19 +4,19 @@
   <div>
     <a href="?page=manage_bookings" class="back-link">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-      Kembali ke Manage Bookings
+      Back to Manage Bookings
     </a>
   </div>
 
   <div class="page-heading">
-    <h1>Detail Booking</h1>
+    <h1>Booking Details</h1>
     <p>Booking #<?= (int)$booking['id'] ?> — <?= htmlspecialchars($booking['customer_name']) ?></p>
   </div>
 
   <?php if (isset($_GET['updated'])): ?>
     <div class="alert alert-success">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-      Data booking berhasil diperbarui.
+      Booking data successfully updated.
     </div>
   <?php endif; ?>
 
@@ -25,7 +25,7 @@
     <!-- Info Booking -->
     <div class="card">
       <div class="card-header">
-        <span class="card-title">Informasi Booking</span>
+        <span class="card-title">Booking Information</span>
         <?php
           $badgeClass = match($booking['status']) {
               'completed' => 'badge badge-paid',
@@ -43,34 +43,34 @@
       <dl class="detail-dl">
         <div class="detail-row"><dt>Booking ID</dt><dd><strong>#<?= (int)$booking['id'] ?></strong></dd></div>
         <div class="detail-row">
-          <dt>Periode Sewa</dt>
+          <dt>Rental Period</dt>
           <dd><?= htmlspecialchars($booking['start_date']) ?> → <?= htmlspecialchars($booking['end_date']) ?></dd>
         </div>
-        <div class="detail-row"><dt>Total Hari</dt><dd><?= (int)$booking['total_days'] ?> hari</dd></div>
+        <div class="detail-row"><dt>Total Days</dt><dd><?= (int)$booking['total_days'] ?> days</dd></div>
         <div class="detail-row">
-          <dt>Total Harga</dt>
+          <dt>Total Price</dt>
           <dd><strong style="font-size:1rem;">Rp <?= number_format((float)$booking['total_price'], 0, ',', '.') ?></strong></dd>
         </div>
         <div class="detail-row"><dt>Status</dt><dd><span class="<?= $badgeClass ?>"<?= $badgeStyle ?>><?= ucfirst(htmlspecialchars($booking['status'])) ?></span></dd></div>
         <div class="detail-row">
-          <dt>Catatan</dt>
+          <dt>Notes</dt>
           <dd><?= !empty($booking['notes']) ? htmlspecialchars($booking['notes']) : '<span class="td-muted">—</span>' ?></dd>
         </div>
-        <div class="detail-row"><dt>Dibuat Pada</dt><dd><?= htmlspecialchars($booking['created_at']) ?></dd></div>
-        <div class="detail-row"><dt>Diperbarui</dt><dd><?= htmlspecialchars($booking['updated_at']) ?></dd></div>
+        <div class="detail-row"><dt>Created At</dt><dd><?= htmlspecialchars($booking['created_at']) ?></dd></div>
+        <div class="detail-row"><dt>Updated At</dt><dd><?= htmlspecialchars($booking['updated_at']) ?></dd></div>
       </dl>
     </div>
 
     <!-- Info Pelanggan & Kendaraan -->
     <div class="card">
-      <div class="card-header"><span class="card-title">Pelanggan &amp; Kendaraan</span></div>
+      <div class="card-header"><span class="card-title">Customer &amp; Vehicle</span></div>
       <dl class="detail-dl">
-        <div class="detail-row"><dt>Nama Pelanggan</dt><dd><strong><?= htmlspecialchars($booking['customer_name']) ?></strong></dd></div>
+        <div class="detail-row"><dt>Customer Name</dt><dd><strong><?= htmlspecialchars($booking['customer_name']) ?></strong></dd></div>
         <div class="detail-row"><dt>Email</dt><dd><?= htmlspecialchars($booking['customer_email']) ?></dd></div>
-        <div class="detail-row"><dt>Telepon</dt><dd><?= !empty($booking['customer_phone']) ? htmlspecialchars($booking['customer_phone']) : '<span class="td-muted">—</span>' ?></dd></div>
-        <div class="detail-row"><dt>Kendaraan</dt><dd><strong><?= htmlspecialchars($booking['car_name']) ?></strong></dd></div>
-        <div class="detail-row"><dt>Plat Nomor</dt><dd><?= htmlspecialchars($booking['license_plate']) ?></dd></div>
-        <div class="detail-row"><dt>Harga/Hari</dt><dd>Rp <?= number_format((float)$booking['price_per_day'], 0, ',', '.') ?></dd></div>
+        <div class="detail-row"><dt>Phone</dt><dd><?= !empty($booking['customer_phone']) ? htmlspecialchars($booking['customer_phone']) : '<span class="td-muted">—</span>' ?></dd></div>
+        <div class="detail-row"><dt>Vehicle</dt><dd><strong><?= htmlspecialchars($booking['car_name']) ?></strong></dd></div>
+        <div class="detail-row"><dt>License Plate</dt><dd><?= htmlspecialchars($booking['license_plate']) ?></dd></div>
+        <div class="detail-row"><dt>Price/Day</dt><dd>Rp <?= number_format((float)$booking['price_per_day'], 0, ',', '.') ?></dd></div>
       </dl>
     </div>
 
@@ -78,7 +78,7 @@
 
   <!-- Aksi -->
   <div class="card">
-    <div class="card-header"><span class="card-title">Aksi</span></div>
+    <div class="card-header"><span class="card-title">Actions</span></div>
     <div class="card-body">
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
         <a href="?page=edit_booking&id=<?= (int)$booking['id'] ?>" class="btn btn-primary">
@@ -90,10 +90,10 @@
         <button type="button" class="btn" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;"
                 onclick="document.getElementById('modal-delete').style.display='flex'">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-          Hapus Booking
+          Delete Booking
         </button>
 
-        <a href="?page=manage_bookings" class="btn btn-ghost">← Kembali ke Daftar</a>
+        <a href="?page=manage_bookings" class="btn btn-ghost">← Back to List</a>
       </div>
     </div>
   </div>
@@ -109,17 +109,17 @@
         <svg xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;color:#dc2626;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
       </div>
       <div>
-        <p style="font-weight:700;font-size:1rem;color:#111827;margin:0;">Hapus Booking?</p>
-        <p style="font-size:0.825rem;color:#6b7280;margin:4px 0 0;">Booking #<?= (int)$booking['id'] ?> akan dihapus permanen beserta data return dan denda terkait.</p>
+        <p style="font-weight:700;font-size:1rem;color:#111827;margin:0;">Delete Booking?</p>
+        <p style="font-size:0.825rem;color:#6b7280;margin:4px 0 0;">Booking #<?= (int)$booking['id'] ?> will be permanently deleted along with its related return and fine data.</p>
       </div>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
       <button type="button" class="btn btn-ghost"
-              onclick="document.getElementById('modal-delete').style.display='none'">Batal</button>
+              onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
       <form method="POST" action="?page=delete_booking" style="margin:0;">
         <input type="hidden" name="id" value="<?= (int)$booking['id'] ?>" />
         <button type="submit" class="btn" style="background:#dc2626;color:#fff;border:1px solid #dc2626;">
-          Ya, Hapus
+          Yes, Delete
         </button>
       </form>
     </div>

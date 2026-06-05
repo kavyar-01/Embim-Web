@@ -61,6 +61,7 @@
                         value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>"
                         class="form-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 bg-gray-50 transition duration-200"
                         required
+                        minlength="4"
                         autocomplete="name"
                     >
                 </div>

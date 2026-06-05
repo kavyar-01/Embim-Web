@@ -19,7 +19,6 @@
           <li><a href="?page=dashboard"   class="text-sm text-gray-500 hover:text-blue-600 transition-colors">Home</a></li>
           <li><a href="?page=manage_cars" class="text-sm text-gray-500 hover:text-blue-600 transition-colors">Browse Cars</a></li>
           <li><a href="?page=add_car"     class="text-sm text-gray-500 hover:text-blue-600 transition-colors">List Your Car</a></li>
-          <li><a href="#"                 class="text-sm text-gray-500 hover:text-blue-600 transition-colors">About Us</a></li>
         </ul>
       </div>
       <div class="space-y-4">

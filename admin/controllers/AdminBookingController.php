@@ -23,12 +23,28 @@ class AdminBookingController
         $status = trim($_GET['status'] ?? '');
         $search = trim($_GET['search'] ?? '');
 
-        $validStatuses = ['', 'confirmed', 'ongoing', 'completed', 'cancelled'];
+        $validStatuses = ['', 'pending', 'confirmed', 'ongoing', 'completed', 'cancelled'];
         if (!in_array($status, $validStatuses, true)) {
             $status = '';
         }
 
         $all         = $this->dashModel->getBookingsFiltered($status, $search);
+        
+        $globalAll   = $this->dashModel->getBookings();
+        $stats = [
+            'pending'   => 0,
+            'confirmed' => 0,
+            'ongoing'   => 0,
+            'completed' => 0,
+            'cancelled' => 0,
+        ];
+        foreach ($globalAll as $b) {
+            $s = $b['status'] ?? 'pending';
+            if (isset($stats[$s])) {
+                $stats[$s]++;
+            }
+        }
+
         $total       = count($all);
         $totalPages  = max(1, (int) ceil($total / $this->perPage));
         $currentPage = max(1, min($totalPages, (int) ($_GET['p'] ?? 1)));
