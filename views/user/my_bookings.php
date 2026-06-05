@@ -6,7 +6,7 @@
     <!-- Page Header -->
     <div class="pt-6 mb-8">
         <h1 class="text-2xl font-extrabold text-gray-900">My Bookings</h1>
-        <p class="text-sm text-gray-400 mt-1">Riwayat dan status penyewaan kendaraan Anda</p>
+        <p class="text-sm text-gray-400 mt-1">Your vehicle rental history and status</p>
     </div>
 
     <?php
@@ -19,13 +19,13 @@
     ];
 
     $paymentCfg = [
-        'paid'     => ['label' => 'Lunas',    'class' => 'text-emerald-600 bg-emerald-50'],
-        'unpaid'   => ['label' => 'Belum Bayar', 'class' => 'text-amber-600 bg-amber-50'],
+        'paid'     => ['label' => 'Paid',    'class' => 'text-emerald-600 bg-emerald-50'],
+        'unpaid'   => ['label' => 'Unpaid', 'class' => 'text-amber-600 bg-amber-50'],
         'refunded' => ['label' => 'Refunded', 'class' => 'text-blue-600 bg-blue-50'],
     ];
 
     $tabs = [
-        'all'       => 'Semua',
+        'all'       => 'All',
         'confirmed' => 'Confirmed',
         'ongoing'   => 'Ongoing',
         'completed' => 'Completed',
@@ -131,19 +131,19 @@
                     <!-- Details Grid -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
                         <div>
-                            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-0.5">Tanggal Mulai</p>
+                            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-0.5">Start Date</p>
                             <p class="text-sm font-semibold text-gray-700"><?php echo $startDate; ?></p>
                         </div>
                         <div>
-                            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-0.5">Tanggal Selesai</p>
+                            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-0.5">End Date</p>
                             <p class="text-sm font-semibold text-gray-700"><?php echo $endDate; ?></p>
                         </div>
                         <div>
-                            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-0.5">Durasi</p>
-                            <p class="text-sm font-semibold text-gray-700"><?php echo $booking['total_days']; ?> Hari</p>
+                            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-0.5">Duration</p>
+                            <p class="text-sm font-semibold text-gray-700"><?php echo $booking['total_days']; ?> Days</p>
                         </div>
                         <div>
-                            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-0.5">Pembayaran</p>
+                            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-0.5">Payment</p>
                             <span class="inline-block text-xs font-bold px-2 py-0.5 rounded-full <?php echo $pay['class']; ?>">
                                 <?php echo $pay['label']; ?>
                             </span>
@@ -153,7 +153,7 @@
                     <!-- Footer: Total + Actions -->
                     <div class="flex items-center justify-between pt-3 border-t border-gray-100 gap-3">
                         <div>
-                            <p class="text-xs text-gray-400 font-medium">Total Pembayaran</p>
+                            <p class="text-xs text-gray-400 font-medium">Total Payment</p>
                             <p class="text-lg font-black text-blue-600">
                                 Rp <?php echo number_format($booking['total_price'], 0, ',', '.'); ?>
                             </p>
@@ -165,27 +165,27 @@
                             <?php if ($booking['status'] === 'confirmed'): ?>
                             <a href="index.php?page=receipt&id=<?php echo $booking['id']; ?>" target="_blank"
                                class="text-xs font-bold border border-green-200 text-green-600 hover:bg-green-50 px-4 py-2 rounded-xl transition duration-200 shadow-sm mr-2">
-                                Unduh Struk
+                                Download Receipt
                             </a>
                             <button onclick="confirmCancel(<?php echo $booking['id']; ?>)"
                                class="text-xs font-bold border border-red-200 text-red-500 hover:bg-red-50 px-4 py-2 rounded-xl transition duration-200 shadow-sm mr-2">
-                                Batalkan Booking
+                                Cancel Booking
                             </button>
                             <a href="index.php?page=payment&id=<?php echo $booking['id']; ?>"
                                class="text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition duration-200 shadow-sm">
-                                Lihat Detail
+                                View Details
                             </a>
 
                             <?php elseif ($booking['status'] === 'ongoing'): ?>
                             <span class="text-xs font-semibold text-violet-600 bg-violet-50 border border-violet-200 px-4 py-2 rounded-xl">
-                                Sedang Berjalan
+                                Ongoing
                             </span>
 
                             <?php elseif ($booking['status'] === 'completed'): ?>
                             <div class="flex items-center gap-2">
                                 <a href="index.php?page=receipt&id=<?php echo $booking['id']; ?>" target="_blank"
                                    class="text-xs font-bold border border-green-200 text-green-600 hover:bg-green-50 px-4 py-2 rounded-xl transition duration-200 shadow-sm">
-                                    Unduh Struk
+                                    Download Receipt
                                 </a>
                                 <?php if (!$booking['has_review']): ?>
                                 <button
@@ -195,7 +195,7 @@
                                     <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
                                     </svg>
-                                    Beri Ulasan
+                                    Give Review
                                 </button>
                                 <?php else: ?>
                                 <div class="flex items-center gap-1 text-xs font-semibold text-amber-500 bg-amber-50 border border-amber-200 px-3 py-2 rounded-xl">
@@ -204,18 +204,18 @@
                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                     </svg>
                                     <?php endfor; ?>
-                                    <span class="ml-1 text-gray-500">Sudah Diulas</span>
+                                    <span class="ml-1 text-gray-500">Reviewed</span>
                                 </div>
                                 <?php endif; ?>
                                 <a href="index.php?page=car-detail&id=<?php echo $booking['car_id']; ?>"
                                    class="text-xs font-bold border border-blue-200 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-xl transition duration-200">
-                                    Sewa Lagi
+                                    Rent Again
                                 </a>
                             </div>
 
                             <?php elseif ($booking['status'] === 'cancelled'): ?>
                             <span class="text-xs font-semibold text-red-400 bg-red-50 border border-red-200 px-4 py-2 rounded-xl">
-                                Dibatalkan
+                                Cancelled
                             </span>
                             <?php endif; ?>
 
@@ -247,15 +247,15 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
             </svg>
         </div>
-        <h3 class="text-lg font-bold text-gray-700 mb-2">Belum ada booking</h3>
+        <h3 class="text-lg font-bold text-gray-700 mb-2">No bookings yet</h3>
         <p class="text-sm text-gray-400 mb-6 max-w-xs">
             <?php echo $filterStatus !== 'all'
-                ? 'Tidak ada booking dengan status "' . ucfirst($filterStatus) . '".'
-                : 'Anda belum pernah melakukan pemesanan kendaraan.'; ?>
+                ? 'No bookings with status "' . ucfirst($filterStatus) . '".'
+                : 'You have never made a vehicle reservation.'; ?>
         </p>
         <a href="index.php?page=cars"
            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition duration-200 shadow-sm">
-            Jelajahi Kendaraan
+            Browse Vehicles
         </a>
     </div>
 
@@ -274,11 +274,11 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
         </div>
-        <h3 class="text-lg font-bold text-gray-900 mb-1">Batalkan Booking?</h3>
-        <p class="text-sm text-gray-500 mb-3">Booking yang dibatalkan tidak dapat dikembalikan. Yakin ingin melanjutkan?</p>
+        <h3 class="text-lg font-bold text-gray-900 mb-1">Cancel Booking?</h3>
+        <p class="text-sm text-gray-500 mb-3">Cancelled bookings cannot be reversed. Are you sure you want to proceed?</p>
         <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-6">
-            <p class="text-xs text-amber-700 font-semibold mb-1">⚠️ Peringatan Refund</p>
-            <p class="text-[11px] text-amber-600 leading-tight">Jika dibatalkan, uang yang dikembalikan (refund) hanya sebesar <strong>80%</strong> dari total harga sewa.</p>
+            <p class="text-xs text-amber-700 font-semibold mb-1">⚠️ Refund Warning</p>
+            <p class="text-[11px] text-amber-600 leading-tight">If cancelled, the refunded amount is only <strong>80%</strong> of the total rental price.</p>
         </div>
         <form id="cancel-form" method="POST" action="index.php?page=bookings">
             <input type="hidden" name="action" value="cancel_booking">
@@ -286,11 +286,11 @@
             <div class="flex gap-3">
                 <button type="button" id="cancel-no"
                     class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition duration-200">
-                    Tidak
+                    No
                 </button>
                 <button type="submit" id="cancel-yes"
                     class="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition duration-200 text-center">
-                    Ya, Batalkan
+                    Yes, Cancel
                 </button>
             </div>
         </form>
@@ -309,7 +309,7 @@
         <!-- Header Modal -->
         <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
             <div>
-                <h3 class="text-base font-extrabold text-gray-900">Beri Ulasan</h3>
+                <h3 class="text-base font-extrabold text-gray-900">Give Review</h3>
                 <p id="review-car-name" class="text-xs text-gray-400 mt-0.5"></p>
             </div>
             <button onclick="closeReviewModal()"
@@ -331,7 +331,7 @@
 
                 <!-- Star Rating -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Penilaian</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Rating</label>
                     <div class="flex items-center gap-2" id="star-container">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
                         <button type="button"
@@ -345,22 +345,22 @@
                             </svg>
                         </button>
                         <?php endfor; ?>
-                        <span id="rating-label" class="text-sm font-semibold text-gray-400 ml-2">Pilih bintang</span>
+                        <span id="rating-label" class="text-sm font-semibold text-gray-400 ml-2">Select stars</span>
                     </div>
-                    <p id="rating-error" class="hidden text-xs text-red-500 font-semibold mt-2">⚠ Penilaian wajib dipilih.</p>
+                    <p id="rating-error" class="hidden text-xs text-red-500 font-semibold mt-2">⚠ Rating must be selected.</p>
                 </div>
 
                 <!-- Komentar -->
                 <div>
                     <label for="review-comment" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                        Komentar <span class="text-gray-300 font-normal">(opsional)</span>
+                        Comment <span class="text-gray-300 font-normal">(optional)</span>
                     </label>
                     <textarea
                         id="review-comment"
                         name="comment"
                         rows="4"
                         maxlength="500"
-                        placeholder="Ceritakan pengalaman Anda menyewa kendaraan ini..."
+                        placeholder="Tell us about your experience renting this vehicle..."
                         class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-400 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400 transition resize-none"
                     ></textarea>
                     <p class="text-xs text-gray-300 text-right mt-1"><span id="char-count">0</span>/500</p>
@@ -372,11 +372,11 @@
             <div class="px-6 pb-6 flex gap-3">
                 <button type="button" onclick="closeReviewModal()"
                         class="flex-1 py-3 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition">
-                    Batal
+                    Cancel
                 </button>
                 <button type="submit" id="review-submit"
                         class="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold shadow-md shadow-amber-200/50 transition">
-                    Kirim Ulasan
+                    Submit Review
                 </button>
             </div>
         </form>

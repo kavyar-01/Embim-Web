@@ -70,7 +70,7 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
                             >
                                 <!-- Info User -->
                                 <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
-                                    <p class="text-xs text-gray-400 font-medium">Login sebagai</p>
+                                    <p class="text-xs text-gray-400 font-medium">Logged in as</p>
                                     <p class="text-sm font-bold text-gray-800 truncate"><?php echo htmlspecialchars($_SESSION['user_name']); ?></p>
                                 </div>
 
@@ -140,7 +140,7 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
                 <div class="flex items-center gap-3 px-3 py-2.5 bg-gray-50 rounded-lg mb-1">
                     <img src="<?php echo $_photoProfile; ?>" alt="Profile" class="h-9 w-9 rounded-full object-cover">
                     <div>
-                        <p class="text-xs text-gray-400">Login sebagai</p>
+                        <p class="text-xs text-gray-400">Logged in as</p>
                         <p class="text-sm font-bold text-gray-800 truncate max-w-[160px]"><?php echo htmlspecialchars($_SESSION['user_name']); ?></p>
                     </div>
                 </div>

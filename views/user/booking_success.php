@@ -8,11 +8,11 @@ $methodLabels = [
     'dana'                  => 'DANA',
     'shopeepay'             => 'ShopeePay',
     'qris'                  => 'QRIS',
-    'transfer_bank_bca'     => 'Transfer Bank BCA',
-    'transfer_bank_mandiri' => 'Transfer Bank Mandiri',
-    'transfer_bank_bni'     => 'Transfer Bank BNI',
-    'transfer_bank_bri'     => 'Transfer Bank BRI',
-    'transfer_bank_seabank' => 'Transfer Bank Seabank',
+    'transfer_bank_bca'     => 'Bank Transfer BCA',
+    'transfer_bank_mandiri' => 'Bank Transfer Mandiri',
+    'transfer_bank_bni'     => 'Bank Transfer BNI',
+    'transfer_bank_bri'     => 'Bank Transfer BRI',
+    'transfer_bank_seabank' => 'Bank Transfer Seabank',
 
 ];
 $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['payment_method']);
@@ -28,7 +28,7 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                 </svg>
             </div>
-            <span class="text-xs font-semibold text-emerald-600 hidden sm:inline">Booking Dibuat</span>
+            <span class="text-xs font-semibold text-emerald-600 hidden sm:inline">Booking Created</span>
         </div>
         <div class="flex-1 h-px bg-emerald-200 mx-1"></div>
         <div class="flex items-center gap-2">
@@ -37,7 +37,7 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                 </svg>
             </div>
-            <span class="text-xs font-semibold text-emerald-600 hidden sm:inline">Bukti Terupload</span>
+            <span class="text-xs font-semibold text-emerald-600 hidden sm:inline">Proof Uploaded</span>
         </div>
         <div class="flex-1 h-px bg-emerald-200 mx-1"></div>
         <div class="flex items-center gap-2">
@@ -46,7 +46,7 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
                 </svg>
             </div>
-            <span class="text-xs font-semibold text-emerald-600 hidden sm:inline">Selesai</span>
+            <span class="text-xs font-semibold text-emerald-600 hidden sm:inline">Completed</span>
         </div>
     </div>
 
@@ -60,10 +60,10 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
             </svg>
         </div>
 
-        <h1 class="text-2xl font-extrabold text-gray-900 mb-2">Pembayaran berhasil!</h1>
-        <p class="text-black-400 text-sm mb-1" > Kendaraan siap diambil!</p>
+        <h1 class="text-2xl font-extrabold text-gray-900 mb-2">Payment successful!</h1>
+        <p class="text-black-400 text-sm mb-1" > Vehicle is ready to be picked up!</p>
         <p class="text-gray-400 text-sm mb-1">
-            Nomor Booking: <span class="font-bold text-gray-700">#<?php echo str_pad($booking['id'], 4, '0', STR_PAD_LEFT); ?></span>
+            Booking Number: <span class="font-bold text-gray-700">#<?php echo str_pad($booking['id'], 4, '0', STR_PAD_LEFT); ?></span>
         </p>
 
         <!-- Ringkasan Booking -->
@@ -87,10 +87,10 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
 
             <?php
             $rows = [
-                ['Tanggal Pickup',  date('d F Y', strtotime($booking['start_date']))],
-                ['Tanggal Kembali', date('d F Y', strtotime($booking['end_date']))],
-                ['Durasi',          $booking['total_days'] . ' hari'],
-                ['Metode Bayar',    $methodLabel],
+                ['Pickup Date',  date('d F Y', strtotime($booking['start_date']))],
+                ['Return Date', date('d F Y', strtotime($booking['end_date']))],
+                ['Duration',          $booking['total_days'] . ' days'],
+                ['Payment Method',    $methodLabel],
             ];
             foreach ($rows as [$label, $value]): ?>
             <div class="flex justify-between text-sm">
@@ -100,7 +100,7 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
             <?php endforeach; ?>
 
             <div class="flex justify-between items-center pt-3 border-t border-slate-200">
-                <span class="text-sm font-bold text-gray-900">Total Pembayaran</span>
+                <span class="text-sm font-bold text-gray-900">Total Payment</span>
                 <span class="text-lg font-black text-blue-600">
                     Rp <?php echo number_format($booking['total_price'], 0, ',', '.'); ?>
                 </span>
@@ -111,15 +111,15 @@ $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['pa
         <div class="space-y-3">
             <a href="index.php?page=receipt&id=<?php echo $booking['id']; ?>" target="_blank"
                class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 rounded-xl shadow-md shadow-emerald-200/50 transition-all duration-200">
-                Unduh Struk
+                Download Receipt
             </a>
             <a href="index.php?page=bookings"
                class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 rounded-xl shadow-md shadow-blue-200/50 transition-all duration-200">
-                Lihat My Bookings
+                View My Bookings
             </a>
             <a href="index.php"
                class="block w-full border-2 border-gray-200 hover:border-blue-300 text-gray-600 hover:text-blue-600 font-semibold text-sm py-3 rounded-xl transition-all duration-200">
-                Kembali ke Beranda
+                Back to Home
             </a>
         </div>
 

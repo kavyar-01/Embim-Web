@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun — EMBIM</title>
+    <title>Create Account — EMBIM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/user-style/style.css">
@@ -23,7 +23,7 @@
 
             <!-- Heading -->
             <h1 class="text-2xl font-bold text-gray-900 text-center mb-7 fade-up delay-1">
-                Buat Akun Baru!
+                Create New Account!
             </h1>
 
             <!-- Error / Success Messages -->
@@ -51,13 +51,13 @@
                 <!-- Full Name -->
                 <div class="mb-4 fade-up delay-2">
                     <label for="full_name" class="block text-sm font-medium text-gray-700 mb-1.5">
-                        Nama Lengkap
+                        Full Name
                     </label>
                     <input
                         type="text"
                         id="full_name"
                         name="full_name"
-                        placeholder="Masukkan nama lengkap Anda"
+                        placeholder="Enter your full name"
                         value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>"
                         class="form-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 bg-gray-50 transition duration-200"
                         required
@@ -69,13 +69,13 @@
                 <!-- Email -->
                 <div class="mb-4 fade-up delay-2">
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">
-                        Alamat Email
+                        Email Address
                     </label>
                     <input
                         type="email"
                         id="email"
                         name="email"
-                        placeholder="contoh@email.com"
+                        placeholder="example@email.com"
                         value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>"
                         class="form-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 bg-gray-50 transition duration-200"
                         required
@@ -86,7 +86,7 @@
                 <!-- Phone -->
                 <div class="mb-4 fade-up delay-3">
                     <label for="phone" class="block text-sm font-medium text-gray-700 mb-1.5">
-                        Nomor Telepon
+                        Phone Number
                     </label>
                     <div class="flex">
                         <span class="inline-flex items-center px-4 py-3 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-sm font-bold text-gray-600 select-none">
@@ -106,7 +106,7 @@
                             oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
                         >
                     </div>
-                    <p id="phone-error" class="hidden mt-1.5 text-xs text-red-500 font-semibold">⚠ Nomor telepon hanya boleh berisi angka.</p>
+                    <p id="phone-error" class="hidden mt-1.5 text-xs text-red-500 font-semibold">⚠ Phone number must contain only numbers.</p>
                 </div>
 
                 <!-- Password -->
@@ -119,7 +119,7 @@
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="Buat password yang kuat"
+                            placeholder="Create a strong password"
                             class="form-input w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 bg-gray-50 transition duration-200"
                             required
                             autocomplete="new-password"
@@ -146,19 +146,19 @@
 
                 <!-- Password Rules -->
                 <div class="mb-5 bg-slate-50 border border-slate-100 rounded-xl px-4 py-3.5 fade-up delay-4">
-                    <p class="text-xs font-semibold text-gray-600 mb-2.5">Password harus mengandung:</p>
+                    <p class="text-xs font-semibold text-gray-600 mb-2.5">Password must contain:</p>
                     <ul class="space-y-1.5">
                         <li class="rule-item flex items-center gap-2.5 text-xs text-gray-400" id="rule-length">
-                            <span class="rule-dot"></span> 8–100 karakter
+                            <span class="rule-dot"></span> 8–100 characters
                         </li>
                         <li class="rule-item flex items-center gap-2.5 text-xs text-gray-400" id="rule-lower">
-                            <span class="rule-dot"></span> Minimal satu huruf kecil
+                            <span class="rule-dot"></span> At least one lowercase letter
                         </li>
                         <li class="rule-item flex items-center gap-2.5 text-xs text-gray-400" id="rule-upper">
-                            <span class="rule-dot"></span> Minimal satu huruf besar
+                            <span class="rule-dot"></span> At least one uppercase letter
                         </li>
                         <li class="rule-item flex items-center gap-2.5 text-xs text-gray-400" id="rule-digit">
-                            <span class="rule-dot"></span> Minimal satu angka
+                            <span class="rule-dot"></span> At least one number
                         </li>
                     </ul>
                 </div>
@@ -168,12 +168,11 @@
                     <label class="flex items-start gap-3 cursor-pointer">
                         <input type="checkbox" name="agree_terms" id="agree_terms" class="mt-0.5" required>
                         <span class="text-xs text-gray-500 leading-relaxed">
-                            Dengan mendaftar, saya menyetujui
-                            <a href="#" class="text-blue-600 hover:underline font-medium">Syarat & Ketentuan</a>,
-                            <a href="#" class="text-blue-600 hover:underline font-medium">Kebijakan Privasi</a>,
-                            dan
-                            <a href="#" class="text-blue-600 hover:underline font-medium">Kebijakan Penggunaan</a>
-                            EMBIM.
+                            By registering, I agree to EMBIM's
+                            <a href="#" class="text-blue-600 hover:underline font-medium">Terms & Conditions</a>,
+                            <a href="#" class="text-blue-600 hover:underline font-medium">Privacy Policy</a>,
+                            and
+                            <a href="#" class="text-blue-600 hover:underline font-medium">Acceptable Use Policy</a>.
                         </span>
                     </label>
                 </div>
@@ -185,7 +184,7 @@
                         id="submit-btn"
                         class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm py-3.5 rounded-xl transition duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Buat Akun
+                        Create Account
                     </button>
                 </div>
 
@@ -197,7 +196,7 @@
                     <div class="w-full border-t border-gray-100"></div>
                 </div>
                 <div class="relative flex justify-center text-xs text-gray-400 uppercase tracking-wider">
-                    <span class="bg-white px-3">Sudah punya akun?</span>
+                    <span class="bg-white px-3">Already have an account?</span>
                 </div>
             </div>
 
@@ -207,7 +206,7 @@
                     href="index.php?page=login"
                     class="text-sm font-semibold text-blue-600 hover:text-blue-700 underline underline-offset-2 transition duration-200"
                 >
-                    Login di sini
+                    Login here
                 </a>
             </div>
 

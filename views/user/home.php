@@ -22,7 +22,7 @@ if (!defined('BASE_URL')) {
             </h1>
             <!-- Subtitle — reveal with slight delay -->
             <p class="reveal reveal-delay-1 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-16 font-medium leading-relaxed">
-                Solusi sewa mobil premium paling praktis buat kamu yang antiribet. Karena liburan atau urusan bisnismu berhak mendapatkan yang terbaik!
+                The most practical premium car rental solution for those who want a hassle-free experience. Because your vacation or business trip deserves the best!
             </p>
 
             <!-- Search Widget — reveal with delay -->
@@ -44,14 +44,14 @@ if (!defined('BASE_URL')) {
 
         <!-- Section Heading -->
         <div class="text-center mb-20 reveal">
-            <span class="inline-block text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-full mb-4">Mengapa EMBIM?</span>
+            <span class="inline-block text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-full mb-4">Why EMBIM?</span>
             <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight">
-                Pengalaman Berkendara <br class="hidden md:block">
-                <span class="text-blue-600">yang Berbeda dari yang Lain</span>
+                A Driving Experience <br class="hidden md:block">
+                <span class="text-blue-600">Like No Other</span>
             </h2>
             <p class="text-lg text-gray-500 max-w-2xl mx-auto font-medium leading-relaxed">
-                Lebih dari sekadar sewa mobil — kami menghadirkan kenyamanan, kepercayaan,
-                dan kebebasan berkendara untuk setiap perjalanan Anda.
+                More than just a car rental — we bring comfort, trust,
+                and driving freedom for every journey.
             </p>
         </div>
 
@@ -67,9 +67,9 @@ if (!defined('BASE_URL')) {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Armada Kendaraan Premium</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Premium Fleet</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Pilihan kendaraan mewah kelas dunia — dari sedan eksekutif hingga SUV premium — semua terawat sempurna dan siap menemani perjalanan Anda.
+                        World-class luxury vehicle selection — from executive sedans to premium SUVs — all perfectly maintained and ready to accompany your journey.
                     </p>
                 </div>
             </div>
@@ -83,9 +83,9 @@ if (!defined('BASE_URL')) {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Booking dalam Hitungan Menit</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Booking in Minutes</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Proses pemesanan yang dirancang semudah mungkin. Pilih kendaraan, tentukan jadwal, dan konfirmasi — selesai dalam waktu kurang dari 5 menit.
+                        A booking process designed to be as easy as possible. Choose a vehicle, set a schedule, and confirm — done in less than 5 minutes.
                     </p>
                 </div>
             </div>
@@ -99,9 +99,9 @@ if (!defined('BASE_URL')) {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Harga Transparan, Tanpa Kejutan</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Transparent Prices, No Surprises</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Tidak ada biaya tersembunyi. Harga yang Anda lihat adalah harga yang Anda bayar — jelas, jujur, dan kompetitif untuk setiap kategori kendaraan.
+                        No hidden fees. The price you see is the price you pay — clear, honest, and competitive for every vehicle category.
                     </p>
                 </div>
             </div>
@@ -115,9 +115,9 @@ if (!defined('BASE_URL')) {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Dukungan Pelanggan 24/7</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">24/7 Customer Support</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Tim kami siap membantu kapan pun Anda membutuhkan — siang, malam, bahkan saat darurat di perjalanan. Karena kepuasan Anda adalah prioritas utama kami.
+                        Our team is ready to help whenever you need — day, night, even during emergencies on the road. Because your satisfaction is our top priority.
                     </p>
                 </div>
             </div>
@@ -131,9 +131,9 @@ if (!defined('BASE_URL')) {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Terlindungi dengan Asuransi Penuh</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Protected with Full Insurance</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Setiap penyewaan sudah mencakup perlindungan asuransi komprehensif. Berkendara dengan tenang, karena Anda dan kendaraan sepenuhnya terlindungi.
+                        Every rental includes comprehensive insurance protection. Drive with peace of mind, knowing you and the vehicle are fully protected.
                     </p>
                 </div>
             </div>
@@ -148,9 +148,9 @@ if (!defined('BASE_URL')) {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Antar-Jemput ke Lokasi Anda</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Delivery to Your Location</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Kendaraan diantarkan langsung ke alamat Anda — kantor, hotel, atau bandara. Tidak perlu repot datang ke kantor kami, kami yang menghampiri Anda.
+                        Vehicles delivered directly to your address — office, hotel, or airport. No need to come to our office, we come to you.
                     </p>
                 </div>
             </div>
@@ -161,10 +161,10 @@ if (!defined('BASE_URL')) {
         <div class="reveal bg-blue-600 rounded-3xl px-8 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
             <?php
             $stats = [
-                ['value' => '20+',  'label' => 'Kendaraan Tersedia'],
-                ['value' => '500+',  'label' => 'Pelanggan Puas'],
-                ['value' => '4.9★',  'label' => 'Rating Rata-rata'],
-                ['value' => '24/7',  'label' => 'Layanan Aktif'],
+                ['value' => '20+',  'label' => 'Available Vehicles'],
+                ['value' => '500+',  'label' => 'Satisfied Customers'],
+                ['value' => '4.9★',  'label' => 'Average Rating'],
+                ['value' => '24/7',  'label' => 'Active Service'],
             ];
             foreach ($stats as $stat): ?>
             <div class="text-center">
@@ -189,12 +189,12 @@ if (!defined('BASE_URL')) {
                 </h2>
                 <p class="text-gray-600 text-lg font-medium">
                     <?php echo !empty($_GET['search'])
-                        ? 'Found ' . count($featuredCars) . ' kendaraan berdasarkan pencarian anda.'
-                        : 'Temukan koleksi mobil kami.'; ?>
+                        ? 'Found ' . count($featuredCars) . ' vehicles based on your search.'
+                        : 'Discover our car collection.'; ?>
                 </p>
             </div>
             <a href="index.php?page=cars" class="hidden sm:block text-base font-bold text-blue-600 border-b-2 border-blue-600 pb-1 hover:text-blue-700 hover:border-blue-700 transition">
-                Lihat Semua →
+                View All →
             </a>
         </div>
 
@@ -260,7 +260,7 @@ if (!defined('BASE_URL')) {
                                     <svg class="h-4 w-4 mr-1.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                                     </svg>
-                                    <?php echo $car['seats']; ?> Kursi
+                                    <?php echo $car['seats']; ?> Seats
                                 </span>
                             </div>
 
@@ -269,7 +269,7 @@ if (!defined('BASE_URL')) {
                                     <span class="text-2xl font-black text-blue-600">
                                         Rp <?php echo number_format($car['price_per_day'], 0, ',', '.'); ?>
                                     </span>
-                                    <span class="block text-xs font-semibold text-gray-400 uppercase mt-0.5">per hari</span>
+                                    <span class="block text-xs font-semibold text-gray-400 uppercase mt-0.5">per day</span>
                                 </div>
                             </div>
 
@@ -277,7 +277,7 @@ if (!defined('BASE_URL')) {
                                 href="index.php?page=car-detail&id=<?php echo $car['id']; ?>"
                                 class="block w-full py-3 rounded-lg border-2 border-blue-600 font-bold text-sm text-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-blue-200/50"
                             >
-                                Sewa Sekarang
+                                Rent Now
                             </a>
                         </div>
                     </div>
@@ -313,7 +313,7 @@ if (!defined('BASE_URL')) {
 
         <!-- Lihat Semua (mobile) -->
         <div class="text-center mt-8 sm:hidden">
-            <a href="index.php?page=cars" class="text-sm font-bold text-blue-600 underline underline-offset-4">Lihat Semua Kendaraan →</a>
+            <a href="index.php?page=cars" class="text-sm font-bold text-blue-600 underline underline-offset-4">View All Vehicles →</a>
         </div>
 
         <?php endif; ?>
@@ -328,7 +328,7 @@ if (!defined('BASE_URL')) {
         <div class="text-center mb-20 reveal">
             <h2 class="text-4xl font-bold text-gray-900 mb-4">Booking Requirements</h2>
             <p class="text-lg text-gray-600 font-medium max-w-2xl mx-auto">
-                Untuk memastikan proses penyewaan berjalan lancar, siapkan dokumen-dokumen berikut dan penuhi persyaratan ini sebelum melakukan pemesanan.
+                To ensure a smooth rental process, please prepare the following documents and fulfill these requirements before making a booking.
             </p>
         </div>
 
@@ -344,8 +344,8 @@ if (!defined('BASE_URL')) {
                         </div>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Kartu Identitas Valid</h3>
-                        <p class="text-gray-700 font-medium">Salinan asli atau salinan yang dilegalisir dari Kartu Tanda Penduduk (KTP). Dokumen identitas tersebut harus masih berlaku dan belum kedaluwarsa.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Valid Identity Card</h3>
+                        <p class="text-gray-700 font-medium">Original or certified copy of Identity Card (KTP/ID). The identity document must be valid and not expired.</p>
                     </div>
                 </div>
             </div>
@@ -361,8 +361,8 @@ if (!defined('BASE_URL')) {
                         </div>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Surat Izin Mengemudi (Kelas A)</h3>
-                        <p class="text-gray-700 font-medium">Surat Izin Mengemudi (SIM A atau yang setara) yang masih berlaku dan belum kedaluwarsa, yang memungkinkan Anda mengemudikan kendaraan pribadi. Harus diterbitkan oleh otoritas perhubungan di negara Anda.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Driver's License</h3>
+                        <p class="text-gray-700 font-medium">Valid and unexpired Driver's License that allows you to drive private vehicles. Must be issued by the transportation authority in your country.</p>
                     </div>
                 </div>
             </div>
@@ -378,8 +378,8 @@ if (!defined('BASE_URL')) {
                         </div>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Persyaratan Usia Minimum</h3>
-                        <p class="text-gray-700 font-medium">Anda harus berusia minimal 21 tahun untuk menyewa kendaraan. Pengemudi yang berusia di bawah 21 tahun tidak diperbolehkan.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Minimum Age Requirement</h3>
+                        <p class="text-gray-700 font-medium">You must be at least 21 years old to rent a vehicle. Drivers under 21 years of age are not permitted.</p>
                     </div>
                 </div>
             </div>
@@ -395,8 +395,8 @@ if (!defined('BASE_URL')) {
                         </div>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Foto Identitas Diri</h3>
-                        <p class="text-gray-700 font-medium">Foto selfie terbaru yang jelas atau foto diri Anda sedang memegang kartu identitas resmi.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Self-Identity Photo</h3>
+                        <p class="text-gray-700 font-medium">A clear recent selfie or a photo of yourself holding your official identity card.</p>
                     </div>
                 </div>
             </div>
@@ -412,8 +412,8 @@ if (!defined('BASE_URL')) {
                         </div>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Informasi Kontak yang Valid</h3>
-                        <p class="text-gray-700 font-medium">Alamat email dan nomor telepon yang valid. Kami akan menggunakan informasi ini untuk mengonfirmasi pemesanan Anda, mengirimkan informasi terbaru, dan menghubungi Anda terkait penyewaan Anda.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Valid Contact Information</h3>
+                        <p class="text-gray-700 font-medium">Valid email address and phone number. We will use this information to confirm your booking, send updates, and contact you regarding your rental.</p>
                     </div>
                 </div>
             </div>
@@ -429,8 +429,8 @@ if (!defined('BASE_URL')) {
                         </div>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">Metode Pembayaran yang Valid</h3>
-                        <p class="text-gray-700 font-medium">Kartu kredit, kartu debit, atau metode pembayaran digital yang masih berlaku. Kami memerlukan metode pembayaran yang terdaftar untuk mengamankan pemesanan Anda dan memproses biaya sewa.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Valid Payment Method</h3>
+                        <p class="text-gray-700 font-medium">Valid credit card, debit card, or digital payment method. We require a registered payment method to secure your booking and process rental charges.</p>
                     </div>
                 </div>
             </div>
@@ -445,9 +445,9 @@ if (!defined('BASE_URL')) {
                 Important Notes
             </h3>
             <ul class="space-y-3 text-gray-700 font-medium">
-                <li class="flex items-start"><span class="text-blue-600 font-bold mr-3">•</span><span>Semua dokumen harus jelas, mudah dibaca, dan dalam kondisi baik. Dokumen yang buram atau tidak lengkap dapat ditolak.</span></li>
-                <li class="flex items-start"><span class="text-blue-600 font-bold mr-3">•</span><span>Penyewa dari luar negeri wajib menunjukkan paspor dan Surat Izin Mengemudi Internasional (SIMI) selain SIM yang dikeluarkan oleh negara asal mereka.</span></li>
-                <li class="flex items-start"><span class="text-blue-600 font-bold mr-3">•</span><span>Kami berhak meminta dokumen tambahan atau verifikasi jika diperlukan demi kepatuhan dan alasan keamanan.</span></li>
+                <li class="flex items-start"><span class="text-blue-600 font-bold mr-3">•</span><span>All documents must be clear, legible, and in good condition. Blurred or incomplete documents may be rejected.</span></li>
+                <li class="flex items-start"><span class="text-blue-600 font-bold mr-3">•</span><span>International renters are required to present a passport and International Driving Permit (IDP) in addition to their home country's driver's license.</span></li>
+                <li class="flex items-start"><span class="text-blue-600 font-bold mr-3">•</span><span>We reserve the right to request additional documents or verification if necessary for compliance and security reasons.</span></li>
             </ul>
         </div>
     </div>
@@ -463,12 +463,12 @@ if (!defined('BASE_URL')) {
 
         <!-- Heading -->
         <div class="text-center mb-16 reveal">
-            <span class="inline-block text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-full mb-4">Mudah & Cepat</span>
+            <span class="inline-block text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-full mb-4">Fast & Easy</span>
             <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight">
-                Alur Pemesanan <span class="text-blue-600">EMBIM</span>
+                Booking Flow <span class="text-blue-600">EMBIM</span>
             </h2>
             <p class="text-lg text-gray-500 max-w-2xl mx-auto font-medium leading-relaxed">
-                Dari pilih kendaraan hingga siap jalan — hanya butuh beberapa langkah!
+                From choosing a vehicle to hitting the road — it only takes a few steps!
             </p>
         </div>
 
@@ -480,38 +480,38 @@ if (!defined('BASE_URL')) {
                 [
                     'step'  => '01',
                     'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>',
-                    'title' => 'Buat Akun',
-                    'desc'  => 'Daftarkan diri Anda dan isi biodata diri.',
+                    'title' => 'Create Account',
+                    'desc'  => 'Register and fill in your personal details.',
                 ],
                 [
                     'step'  => '02',
                     'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>',
-                    'title' => 'Pilih Kendaraan',
-                    'desc'  => 'Jelajahi koleksi armada dan temukan kendaraan yang paling sesuai.',
+                    'title' => 'Choose a Vehicle',
+                    'desc'  => 'Browse our fleet collection and find the most suitable vehicle.',
                 ],
                 [
                     'step'  => '03',
                     'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>',
-                    'title' => 'Isi Formulir',
-                    'desc'  => 'Lengkapi detail pemesanan.',
+                    'title' => 'Fill the Form',
+                    'desc'  => 'Complete the booking details.',
                 ],
                 [
                     'step'  => '04',
                     'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>',
-                    'title' => 'Pembayaran',
-                    'desc'  => 'Pilih metode pembayaran favorit Anda. Aman, cepat, dan terkonfirmasi instan.',
+                    'title' => 'Payment',
+                    'desc'  => 'Choose your favorite payment method. Secure, fast, and instantly confirmed.',
                 ],
                 [
                     'step'  => '05',
                     'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>',
-                    'title' => 'Konfirmasi',
-                    'desc'  => 'Booking dikonfirmasi & detail dikirimkan ke email Anda.',
+                    'title' => 'Confirmation',
+                    'desc'  => 'Booking confirmed & details sent to your email.',
                 ],
                 [
                     'step'  => '06',
                     'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V6m0 0l-4 4m4-4l4 4M5 20h14"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l1.5-5h15L21 10H3z"/>',
-                    'title' => 'Ambil & Melaju!',
-                    'desc'  => 'Kendaraan siap! Nikmati perjalanan dengan penuh kenyamanan.',
+                    'title' => 'Pick Up & Drive!',
+                    'desc'  => 'Vehicle is ready! Enjoy your journey with full comfort.',
                 ],
             ];
 
@@ -581,7 +581,7 @@ if (!defined('BASE_URL')) {
                 href="index.php?page=cars"
                 class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-base px-8 py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-blue-200/60 hover:shadow-blue-300/60 hover:scale-105"
             >
-                Mulai Pesan Sekarang
+                Start Booking Now
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
@@ -605,13 +605,13 @@ if (!defined('BASE_URL')) {
             </div>
             <div>
                 <form method="GET" action="index.php" id="review-limit-form">
-                    <label for="review_limit" class="text-sm font-bold text-gray-700 mr-2">Tampilkan:</label>
+                    <label for="review_limit" class="text-sm font-bold text-gray-700 mr-2">Show:</label>
                     <select name="review_limit" id="review_limit" onchange="window.location.href='index.php?review_limit='+this.value+'#testimonials'" class="bg-white border border-gray-200 text-gray-700 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm cursor-pointer transition hover:border-blue-300">
-                        <option value="6" <?php echo $reviewLimit == 6 ? 'selected' : ''; ?>>6 Ulasan</option>
-                        <option value="10" <?php echo $reviewLimit == 10 ? 'selected' : ''; ?>>10 Ulasan</option>
-                        <option value="30" <?php echo $reviewLimit == 30 ? 'selected' : ''; ?>>30 Ulasan</option>
-                        <option value="50" <?php echo $reviewLimit == 50 ? 'selected' : ''; ?>>50 Ulasan</option>
-                        <option value="100" <?php echo $reviewLimit == 100 ? 'selected' : ''; ?>>100 Ulasan</option>
+                        <option value="6" <?php echo $reviewLimit == 6 ? 'selected' : ''; ?>>6 Reviews</option>
+                        <option value="10" <?php echo $reviewLimit == 10 ? 'selected' : ''; ?>>10 Reviews</option>
+                        <option value="30" <?php echo $reviewLimit == 30 ? 'selected' : ''; ?>>30 Reviews</option>
+                        <option value="50" <?php echo $reviewLimit == 50 ? 'selected' : ''; ?>>50 Reviews</option>
+                        <option value="100" <?php echo $reviewLimit == 100 ? 'selected' : ''; ?>>100 Reviews</option>
                     </select>
                     <?php if (!empty($_GET['search'])): ?>
                         <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
@@ -650,7 +650,7 @@ if (!defined('BASE_URL')) {
         </div>
         <?php else: ?>
         <div class="text-center py-16 text-gray-400 font-medium">
-            Belum ada ulasan dari pelanggan.
+            No reviews from customers yet.
         </div>
         <?php endif; ?>
 
@@ -660,7 +660,7 @@ if (!defined('BASE_URL')) {
 <section class="py-24 bg-white">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-4xl font-extrabold text-gray-900 mb-3">Never Miss a Deal!</h2>
-        <p class="text-gray-500 text-base mb-10">Subscribe untuk mendapatkan penawaran terbaru, produk baru, dan diskon eksklusif</p>
+        <p class="text-gray-500 text-base mb-10">Subscribe to get the latest offers, new products, and exclusive discounts</p>
         <form class="flex items-stretch max-w-xl mx-auto shadow-sm" id="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
             <input
                 id="newsletter-email"
@@ -724,12 +724,12 @@ if (!defined('BASE_URL')) {
                 </svg>
             </div>
 
-            <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Terima Kasih! </h3>
+            <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Thank You! </h3>
             <p class="text-gray-500 text-sm leading-relaxed mb-1">
                 <span id="popup-email" class="font-bold text-blue-600"></span>
             </p>
             <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                Kami akan mengirimkan penawaran eksklusif dan promo terbaru langsung ke inbox Anda!
+                We will send exclusive offers and the latest promos straight to your inbox!
             </p>
 
             <!-- CTA -->
@@ -737,7 +737,7 @@ if (!defined('BASE_URL')) {
                 onclick="closeNewsletterPopup()"
                 class="block w-full text-sm text-gray-400 hover:text-gray-600 transition py-2 font-medium"
             >
-                Tutup
+                Close
             </button>
         </div>
 

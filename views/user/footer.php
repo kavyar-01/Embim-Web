@@ -109,8 +109,8 @@
         >
             <!-- Header -->
             <div class="px-5 py-4 border-b border-gray-100">
-                <p class="text-sm font-bold text-gray-900">Hubungi Kami</p>
-                <p class="text-xs text-gray-400 mt-0.5">Pilih salah satu saluran di bawah ini</p>
+                <p class="text-sm font-bold text-gray-900">Contact Us</p>
+                <p class="text-xs text-gray-400 mt-0.5">Choose one of the channels below</p>
             </div>
 
             <!-- WhatsApp -->
@@ -126,8 +126,8 @@
                     </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-800">Hubungi via WhatsApp</p>
-                    <p class="text-xs text-green-500 font-medium">Kontak Whatsapp</p>
+                    <p class="text-sm font-semibold text-gray-800">Contact via WhatsApp</p>
+                    <p class="text-xs text-green-500 font-medium">Whatsapp Contact</p>
                 </div>
                 <svg class="h-4 w-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -149,7 +149,7 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-gray-800">Aksan Rent Car</p>
-                    <p class="text-xs text-gray-400">Lokasi Rental</p>
+                    <p class="text-xs text-gray-400">Rental Location</p>
                 </div>
                 <svg class="h-4 w-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -167,7 +167,7 @@
                     </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-800">Kirim Email</p>
+                    <p class="text-sm font-semibold text-gray-800">Send Email</p>
                     <p class="text-xs text-gray-400">embim@gmail.com</p>
                 </div>
                 <svg class="h-4 w-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,7 +179,7 @@
         <!-- Trigger Button -->
         <button
             id="contact-fab"
-            aria-label="Kontak Kami"
+            aria-label="Contact Us"
             class="h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl
                    flex items-center justify-center transition-all duration-300
                    focus:outline-none focus:ring-4 focus:ring-blue-300"

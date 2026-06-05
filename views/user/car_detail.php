@@ -9,8 +9,8 @@
         : 'assets/images/hrv-car.png';
 
     $statusConfig = [
-        'available'   => ['label' => 'Tersedia',   'color' => 'text-emerald-600 bg-emerald-50 border-emerald-200'],
-        'booked'      => ['label' => 'Disewa',      'color' => 'text-amber-600 bg-amber-50 border-amber-200'],
+        'available'   => ['label' => 'Available',   'color' => 'text-emerald-600 bg-emerald-50 border-emerald-200'],
+        'booked'      => ['label' => 'Booked',      'color' => 'text-amber-600 bg-amber-50 border-amber-200'],
         'maintenance' => ['label' => 'Maintenance', 'color' => 'text-red-600 bg-red-50 border-red-200'],
     ];
     $s = $statusConfig[$car['status']] ?? ['label' => ucfirst($car['status']), 'color' => 'text-gray-600 bg-gray-50 border-gray-200'];
@@ -144,7 +144,7 @@
 
             <!-- Ketentuan Denda & Refund -->
             <div class="bg-white rounded-2xl px-6 py-5 shadow-sm">
-                <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Ketentuan Denda & Refund</h2>
+                <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Fine & Refund Policy</h2>
 
                 <!-- Denda Keterlambatan -->
                 <div class="flex items-start gap-3 bg-red-45 border border-red-100 rounded-xl p-4 mb-3">
@@ -154,10 +154,10 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-red-700 mb-1">Denda Keterlambatan</p>
+                        <p class="text-sm font-bold text-red-700 mb-1">Late Fine</p>
                         <p class="text-xs text-red-600 leading-relaxed">
-                            Pengembalian kendaraan melewati tanggal yang ditentukan akan dikenakan denda sebesar
-                            <strong class="text-red-700">Rp 700.000 / hari</strong> keterlambatan.
+                            Returning the vehicle past the specified date will incur a fine of
+                            <strong class="text-red-700">Rp 700.000 / day</strong> of delay.
                         </p>
                     </div>
                 </div>
@@ -170,11 +170,11 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-amber-700 mb-1">Kebijakan Pembatalan & Refund</p>
+                        <p class="text-sm font-bold text-amber-700 mb-1">Cancellation & Refund Policy</p>
                         <p class="text-xs text-amber-600 leading-relaxed">
-                            Proses pembatalan booking hanya mengembalikan
-                            <strong class="text-amber-700">80%</strong> dari total harga sewa.
-                            Sisa 20% akan dipotong sebagai biaya administrasi.
+                            The booking cancellation process only refunds
+                            <strong class="text-amber-700">80%</strong> of the total rental price.
+                            The remaining 20% will be deducted as an administrative fee.
                         </p>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
 
             <!-- Dokumen Persyaratan -->
             <div class="bg-white rounded-2xl px-6 py-5 shadow-sm">
-                <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Dokumen Persyaratan</h2>
+                <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Required Documents</h2>
                 
                 <div class="flex items-start gap-3 bg-blue-49 border border-blue-100 rounded-xl p-4">
                     <div class="w-8 h-8 rounded-lg bg-blue-49 flex items-center justify-center flex-shrink-0">
@@ -191,13 +191,13 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-blue-700 mb-1">Wajib Ditunjukkan Saat Pengambilan</p>
+                        <p class="text-sm font-bold text-blue-700 mb-1">Must be Shown Upon Pick Up</p>
                         <p class="text-xs text-blue-600 leading-relaxed mb-2">
-                            Penyewa diwajibkan untuk menunjukkan dokumen asli berikut saat pengambilan kendaraan:
+                            Renters are required to show the following original documents when picking up the vehicle:
                         </p>
                         <ul class="list-disc list-inside text-xs text-blue-700 font-semibold space-y-1">
-                            <li>KTP Asli</li>
-                            <li>SIM A (Masih Berlaku/Aktif)</li>
+                            <li>Original ID Card (KTP)</li>
+                            <li>Driver's License (Valid/Active)</li>
                         </ul>
                     </div>
                 </div>
@@ -207,8 +207,8 @@
             <?php if (!empty($relatedCars)): ?>
             <div class="bg-white rounded-2xl px-6 py-5 shadow-sm">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Kendaraan Lainnya</h2>
-                    <a href="index.php?page=cars" class="text-xs font-semibold text-blue-600 hover:text-blue-700 transition">Lihat Semua →</a>
+                    <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Other Vehicles</h2>
+                    <a href="index.php?page=cars" class="text-xs font-semibold text-blue-600 hover:text-blue-700 transition">View All →</a>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <?php foreach ($relatedCars as $rel):
@@ -232,7 +232,7 @@
                             <p class="text-xs text-gray-400 mt-0.5"><?php echo $rel['year']; ?> · <?php echo ucfirst($rel['transmission']); ?></p>
                             <p class="text-sm font-black text-blue-600 mt-1.5">
                                 Rp <?php echo number_format($rel['price_per_day'], 0, ',', '.'); ?>
-                                <span class="text-xs font-normal text-gray-400">/ hari</span>
+                                <span class="text-xs font-normal text-gray-400">/ day</span>
                             </p>
                         </div>
                     </a>
@@ -249,10 +249,10 @@
 
                 <!-- Pricing & Booking -->
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wider mb-1">Harga Sewa</p>
+                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wider mb-1">Rental Price</p>
                     <div class="flex items-end gap-1 mb-5">
                         <span class="text-2xl font-black text-blue-600">Rp <?php echo number_format($car['price_per_day'], 0, ',', '.'); ?></span>
-                        <span class="text-sm text-gray-400 font-medium pb-0.5">/ hari</span>
+                        <span class="text-sm text-gray-400 font-medium pb-0.5">/ day</span>
                     </div>
 
                     <!-- Stock Info -->
@@ -269,7 +269,7 @@
                         <!-- Date Inputs -->
                         <div class="space-y-3 mb-4">
                             <div>
-                                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Tanggal Pickup</label>
+                                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Pickup Date</label>
                                 <input
                                     type="date"
                                     id="pickup_date"
@@ -280,7 +280,7 @@
                                 >
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Tanggal Kembali</label>
+                                <label class="block text-sm font-semibold text-gray-800 mb-1.5">Return Date</label>
                                 <input
                                     type="date"
                                     id="return_date"
@@ -294,11 +294,11 @@
                         <!-- Preview Durasi & Total -->
                         <div id="price-preview" class="hidden mb-4 bg-blue-50 rounded-xl p-3 border border-blue-100">
                             <div class="flex justify-between text-xs text-gray-500 mb-1">
-                                <span>Durasi</span>
+                                <span>Duration</span>
                                 <span id="duration-text" class="font-semibold text-gray-700">-</span>
                             </div>
                             <div class="flex justify-between text-sm font-bold">
-                                <span class="text-gray-700">Total Estimasi</span>
+                                <span class="text-gray-700">Estimated Total</span>
                                 <span id="total-price" class="text-blue-600">-</span>
                             </div>
                         </div>
@@ -307,14 +307,14 @@
                             type="submit"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 rounded-xl shadow-md shadow-blue-200/50 transition-all duration-200 mb-2"
                         >
-                            Booking Sekarang
+                            Book Now
                         </button>
                     </form>
                     <?php else: ?>
                     <button disabled class="block w-full bg-gray-100 text-gray-400 font-bold text-sm py-3 rounded-xl cursor-not-allowed mb-2">
-                        Tidak Tersedia
+                        Unavailable
                     </button>
-                    <p class="text-xs text-center text-gray-400">Kendaraan sedang tidak tersedia</p>
+                    <p class="text-xs text-center text-gray-400">Vehicle is currently unavailable</p>
                     <?php endif; ?>
                 </div>
 
@@ -335,7 +335,7 @@
                         }
                         const days = Math.ceil((end - start) / (1000*60*60*24));
                         const total = days * pricePerDay;
-                        durationEl.textContent = days + ' hari';
+                        durationEl.textContent = days + ' days';
                         totalEl.textContent    = 'Rp ' + total.toLocaleString('id-ID');
                         preview.classList.remove('hidden');
                         // set min return = pickup + 1 day
