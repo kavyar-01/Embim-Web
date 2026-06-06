@@ -19,8 +19,44 @@
   ?>
 
   <!-- Stats Cards -->
+  <?php
+    function getPaymentCardAttr($statusName, $currentStatus, $search, $month, $color) {
+        $isActive = ($statusName !== '' && $currentStatus === $statusName);
+        $urlParams = ['page' => 'manage_payments'];
+        
+        // If clicking the currently active status (unless it's 'total'/empty status), reset it.
+        // Otherwise set it to the new status.
+        $newStatus = $isActive ? '' : $statusName;
+        if ($newStatus !== '') $urlParams['status'] = $newStatus;
+        if ($search !== '') $urlParams['search'] = $search;
+        if ($month !== '') $urlParams['month'] = $month;
+        
+        $url = '?' . http_build_query($urlParams);
+        
+        $baseCls = "block bg-white rounded-xl border p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 cursor-pointer";
+        
+        $activeClasses = match($color) {
+            'blue'   => " border-blue-500 ring-2 ring-blue-200 shadow-[0_0_20px_rgba(59,130,246,0.2)]",
+            'green'  => " border-green-500 ring-2 ring-green-200 shadow-[0_0_20px_rgba(34,197,94,0.2)]",
+            'yellow' => " border-yellow-500 ring-2 ring-yellow-200 shadow-[0_0_20px_rgba(234,179,8,0.2)]",
+            'gray'   => " border-gray-500 ring-2 ring-gray-200 shadow-[0_0_20px_rgba(156,163,175,0.2)]",
+            default  => " border-gray-500 ring-2 ring-gray-200"
+        };
+        
+        $inactiveClasses = match($color) {
+            'blue'   => " border-gray-200 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]",
+            'green'  => " border-gray-200 hover:border-green-300 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]",
+            'yellow' => " border-gray-200 hover:border-yellow-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]",
+            'gray'   => " border-gray-200 hover:border-gray-300 hover:shadow-[0_0_20px_rgba(156,163,175,0.3)]",
+            default  => " border-gray-200"
+        };
+        
+        $cls = $baseCls . ($isActive ? $activeClasses : $inactiveClasses);
+        return 'href="' . $url . '" class="' . $cls . '"';
+    }
+  ?>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+    <a <?= getPaymentCardAttr('', $fStatus, $fSearch, $fMonth, 'blue') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Payments</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['total'] ?? 0 ?></p>
@@ -28,9 +64,9 @@
       <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
       </div>
-    </div>
+    </a>
     
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-green-300 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+    <a <?= getPaymentCardAttr('paid', $fStatus, $fSearch, $fMonth, 'green') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Paid</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['paid'] ?? 0 ?></p>
@@ -38,9 +74,9 @@
       <div class="p-3 bg-green-50 text-green-600 rounded-lg">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
       </div>
-    </div>
+    </a>
     
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-yellow-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+    <a <?= getPaymentCardAttr('unpaid', $fStatus, $fSearch, $fMonth, 'yellow') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Unpaid</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['unpaid'] ?? 0 ?></p>
@@ -48,9 +84,9 @@
       <div class="p-3 bg-yellow-50 text-yellow-600 rounded-lg">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
       </div>
-    </div>
+    </a>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-[0_0_20px_rgba(156,163,175,0.3)]">
+    <a <?= getPaymentCardAttr('refunded', $fStatus, $fSearch, $fMonth, 'gray') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Refunded</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['refunded'] ?? 0 ?></p>
@@ -58,13 +94,16 @@
       <div class="p-3 bg-gray-50 text-gray-500 rounded-lg">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
       </div>
-    </div>
+    </a>
   </div>
 
   <!-- FILTER FORM -->
   <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-6">
     <form action="" method="GET" class="flex flex-col md:flex-row gap-4 items-end">
       <input type="hidden" name="page" value="manage_payments">
+      <?php if ($fStatus !== ''): ?>
+        <input type="hidden" name="status" value="<?= htmlspecialchars($fStatus) ?>">
+      <?php endif; ?>
       
       <div class="flex-1 w-full">
         <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Search</label>
@@ -80,25 +119,17 @@
         <input type="month" name="month" value="<?= htmlspecialchars($fMonth) ?>" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
       </div>
 
-      <div class="w-full md:w-48">
-        <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Status</label>
-        <select name="status" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-          <option value="">All Statuses</option>
-          <option value="unpaid" <?= $fStatus==='unpaid' ? 'selected' : '' ?>>Unpaid</option>
-          <option value="paid" <?= $fStatus==='paid' ? 'selected' : '' ?>>Paid</option>
-          <option value="refunded" <?= $fStatus==='refunded' ? 'selected' : '' ?>>Refunded</option>
-        </select>
-      </div>
-
       <div class="flex gap-2 w-full md:w-auto">
         <button type="submit" class="flex-1 md:flex-none px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-colors">
-          Filter
+          Search
         </button>
-        <?php if ($fStatus !== '' || $fSearch !== ''): ?>
-          <a href="?page=manage_payments" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-xl transition-colors" title="Reset Filters">
-             Reset
-          </a>
-        <?php endif; ?>
+        <a href="?page=manage_payments<?= !empty($fStatus) ? '&status='.urlencode($fStatus) : '' ?>" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-xl transition-colors" title="Clear Search & Month">
+           Reset
+        </a>
+        <a href="?page=export_payments<?= !empty($fStatus) ? '&status='.urlencode($fStatus) : '' ?><?= !empty($fSearch) ? '&search='.urlencode($fSearch) : '' ?><?= !empty($fMonth) ? '&month='.urlencode($fMonth) : '' ?>" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-colors flex items-center gap-2" title="Export to Excel">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
+          Export
+        </a>
       </div>
     </form>
   </div>
@@ -106,17 +137,17 @@
   <!-- PAYMENTS TABLE -->
   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
     <div class="overflow-x-auto">
-      <table class="w-full text-left text-sm text-gray-600">
+      <table class="w-full text-left text-sm text-gray-600 table-fixed min-w-[950px]">
         <thead class="bg-gray-50/80 border-b border-gray-100 text-xs uppercase font-semibold text-gray-500">
           <tr>
-            <th class="px-5 py-4">Booking ID</th>
-            <th class="px-5 py-4">Customer</th>
-            <th class="px-5 py-4">Car</th>
-            <th class="px-5 py-4">Total Price</th>
-            <th class="px-5 py-4">Payment Method</th>
-            <th class="px-5 py-4">Status</th>
-            <th class="px-5 py-4">Paid At</th>
-            <th class="px-5 py-4 text-center">Proof</th>
+            <th class="px-5 py-4 w-[12%]">Booking ID</th>
+            <th class="px-5 py-4 w-[18%]">Customer</th>
+            <th class="px-5 py-4 w-[18%]">Car</th>
+            <th class="px-5 py-4 w-[14%]">Total Price</th>
+            <th class="px-5 py-4 w-[15%]">Payment Method</th>
+            <th class="px-5 py-4 w-[10%]">Status</th>
+            <th class="px-5 py-4 w-[13%]">Paid At</th>
+            <th class="px-5 py-4 w-[8%] text-center">Proof</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
@@ -188,29 +219,30 @@
         </tbody>
       </table>
     </div>
+  </div>
 
-    <div class="embim-pagination px-5 py-4 border-t border-gray-100 bg-gray-50">
-      <p class="embim-pagination__info text-sm text-gray-500">Showing <?= $from ?>–<?= $to ?> of <?= $total ?> results</p>
-      <div class="embim-pagination__pages flex items-center gap-2">
-        <?php if ($currentPage > 1): ?>
-          <a href="<?= $baseUrl ?>&p=<?= $currentPage - 1 ?>" class="embim-pagination__btn">← Previous</a>
-        <?php else: ?>
-          <span class="embim-pagination__btn embim-pagination__btn--disabled">← Previous</span>
+  <div class="embim-pagination">
+    <p class="embim-pagination__info">Showing <?= $from ?>–<?= $to ?> of <?= $total ?> results</p>
+    <div class="embim-pagination__pages">
+      <?php if ($currentPage > 1): ?>
+        <a href="<?= $baseUrl ?>&p=<?= $currentPage - 1 ?>" class="embim-pagination__btn">← Previous</a>
+      <?php else: ?>
+        <span class="embim-pagination__btn embim-pagination__btn--disabled">← Previous</span>
+      <?php endif; ?>
+      <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+        <?php if ($i === 1 || $i === $totalPages || abs($i - $currentPage) <= 1): ?>
+          <a href="<?= $baseUrl ?>&p=<?= $i ?>" class="embim-pagination__btn <?= $i === $currentPage ? 'embim-pagination__btn--active' : '' ?>"><?= $i ?></a>
+        <?php elseif (($i === 2 && $currentPage > 3) || ($i === $totalPages - 1 && $currentPage < $totalPages - 2)): ?>
+          <span class="embim-pagination__btn embim-pagination__btn--disabled">…</span>
         <?php endif; ?>
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-          <?php if ($i === 1 || $i === $totalPages || abs($i - $currentPage) <= 1): ?>
-            <a href="<?= $baseUrl ?>&p=<?= $i ?>" class="embim-pagination__btn <?= $i === $currentPage ? 'embim-pagination__btn--active' : '' ?>"><?= $i ?></a>
-          <?php elseif (($i === 2 && $currentPage > 3) || ($i === $totalPages - 1 && $currentPage < $totalPages - 2)): ?>
-            <span class="embim-pagination__btn embim-pagination__btn--disabled">…</span>
-          <?php endif; ?>
-        <?php endfor; ?>
-        <?php if ($currentPage < $totalPages): ?>
-          <a href="<?= $baseUrl ?>&p=<?= $currentPage + 1 ?>" class="embim-pagination__btn">Next →</a>
-        <?php else: ?>
-          <span class="embim-pagination__btn embim-pagination__btn--disabled">Next →</span>
-        <?php endif; ?>
-      </div>
+      <?php endfor; ?>
+      <?php if ($currentPage < $totalPages): ?>
+        <a href="<?= $baseUrl ?>&p=<?= $currentPage + 1 ?>" class="embim-pagination__btn">Next →</a>
+      <?php else: ?>
+        <span class="embim-pagination__btn embim-pagination__btn--disabled">Next →</span>
+      <?php endif; ?>
     </div>
   </div>
+
 </div>
 <?php require_once __DIR__ . '/partials/layout_bottom.php'; ?>

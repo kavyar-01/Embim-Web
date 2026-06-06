@@ -151,4 +151,38 @@ class AdminBookingController
         }
         exit;
     }
+
+    /**
+     * AJAX Endpoint to check for new bookings.
+     */
+    public function checkNewBookings(): void
+    {
+        header('Content-Type: application/json');
+        $lastId = (int)($_GET['last_id'] ?? 0);
+        
+        if ($lastId === 0) {
+            $all = $this->model->getNewBookingsSince(0);
+            $maxId = count($all) > 0 ? max(array_column($all, 'id')) : 0;
+            echo json_encode([
+                'new_count' => 0,
+                'max_id' => $maxId,
+                'bookings' => []
+            ]);
+            exit;
+        }
+
+        $newBookings = $this->model->getNewBookingsSince($lastId);
+        $maxId = $lastId;
+        $count = count($newBookings);
+        if ($count > 0) {
+            $maxId = max(array_column($newBookings, 'id'));
+        }
+        
+        echo json_encode([
+            'new_count' => $count,
+            'max_id' => $maxId,
+            'bookings' => $newBookings
+        ]);
+        exit;
+    }
 }

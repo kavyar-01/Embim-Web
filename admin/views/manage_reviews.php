@@ -27,10 +27,15 @@
     </div>
   <?php endif; ?>
 
+  <?php $fRating = $_GET['rating'] ?? ''; ?>
   <!-- Rating Stats -->
   <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
     <?php for ($i = 5; $i >= 1; $i--): ?>
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:border-amber-300 hover:shadow-[0_0_20px_rgba(251,191,36,0.3)] cursor-default">
+      <?php
+        $isSel = ($fRating === (string)$i);
+        $activeClass = $isSel ? 'border-amber-500 ring-2 ring-amber-200 shadow-[0_0_20px_rgba(245,158,11,0.2)] bg-white' : 'border-gray-100 hover:border-amber-300 hover:shadow-[0_0_20px_rgba(251,191,36,0.3)] hover:-translate-y-1 bg-white';
+      ?>
+      <div onclick="handleFilter('rating', '<?= $i ?>')" class="bg-white rounded-xl shadow-sm border p-4 flex flex-col items-center justify-center transition-all duration-300 cursor-pointer <?= $activeClass ?>">
         <div class="text-2xl font-black text-gray-900 mb-1"><?= $stats[$i] ?? 0 ?></div>
         <div class="flex items-center gap-1 text-sm text-gray-500 font-medium">
           <?= $i ?> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-400" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg> Stars
@@ -95,23 +100,33 @@
   <?php endif; ?>
 
   <!-- Pagination -->
-  <?php if (!empty($totalPages) && $totalPages > 1): ?>
-    <div class="flex justify-center mt-8">
-      <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-          <a href="?page=manage_reviews&p=<?= $i ?>"
-             class="relative inline-flex items-center px-4 py-2 border text-sm font-medium
-                    <?= $i === $currentPage
-                      ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                      : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50' ?>
-                    <?= $i === 1 ? 'rounded-l-md' : '' ?>
-                    <?= $i === $totalPages ? 'rounded-r-md' : '' ?>">
-            <?= $i ?>
-          </a>
-        <?php endfor; ?>
-      </nav>
+  <?php
+    $baseUrl = '?page=manage_reviews' . ($fRating !== '' ? '&rating=' . urlencode($fRating) : '');
+    $from = $total > 0 ? min($total, ($currentPage - 1) * $perPage + 1) : 0;
+    $to   = min($total, $currentPage * $perPage);
+  ?>
+  <div class="embim-pagination">
+    <p class="embim-pagination__info">Showing <?= $from ?>–<?= $to ?> of <?= $total ?> results</p>
+    <div class="embim-pagination__pages">
+      <?php if ($currentPage > 1): ?>
+        <a href="<?= $baseUrl ?>&p=<?= $currentPage - 1 ?>" class="embim-pagination__btn">← Previous</a>
+      <?php else: ?>
+        <span class="embim-pagination__btn embim-pagination__btn--disabled">← Previous</span>
+      <?php endif; ?>
+      <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+        <?php if ($i === 1 || $i === $totalPages || abs($i - $currentPage) <= 1): ?>
+          <a href="<?= $baseUrl ?>&p=<?= $i ?>" class="embim-pagination__btn <?= $i === $currentPage ? 'embim-pagination__btn--active' : '' ?>"><?= $i ?></a>
+        <?php elseif (($i === 2 && $currentPage > 3) || ($i === $totalPages - 1 && $currentPage < $totalPages - 2)): ?>
+          <span class="embim-pagination__btn embim-pagination__btn--disabled">…</span>
+        <?php endif; ?>
+      <?php endfor; ?>
+      <?php if ($currentPage < $totalPages): ?>
+        <a href="<?= $baseUrl ?>&p=<?= $currentPage + 1 ?>" class="embim-pagination__btn">Next →</a>
+      <?php else: ?>
+        <span class="embim-pagination__btn embim-pagination__btn--disabled">Next →</span>
+      <?php endif; ?>
     </div>
-  <?php endif; ?>
+  </div>
 
 </div>
 
@@ -126,11 +141,11 @@
     <h3 style="font-weight:800;font-size:1.25rem;color:#111827;margin:0 0 8px 0;">Are you sure?</h3>
     <p style="font-size:0.875rem;color:#6b7280;margin:0 0 24px 0;line-height:1.5;">Are you sure you want to delete this data? This action cannot be undone.</p>
     <div style="display:flex;gap:12px;justify-content:center;">
-      <button type="button" class="btn btn-ghost" style="flex:1;"
+      <button type="button" class="btn btn-ghost" style="flex:1; justify-content:center; text-align:center;"
               onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
       <form id="form-delete" method="POST" action="?page=delete_review" style="margin:0;flex:1;display:flex;">
         <input type="hidden" id="delete-id" name="id" value="" />
-        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;">
+        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer; justify-content:center; text-align:center;">
           Yes, Delete
         </button>
       </form>
@@ -147,6 +162,23 @@ function openDeleteModal(id) {
 document.getElementById('modal-delete').addEventListener('click', function(e) {
   if (e.target === this) this.style.display = 'none';
 });
+
+function handleFilter(key, value) {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // Reset pagination when filtering
+  urlParams.delete('p');
+
+  if (urlParams.get(key) === value) {
+    // If the same filter is clicked, toggle it off
+    urlParams.delete(key);
+  } else {
+    // Set the new filter value
+    urlParams.set(key, value);
+  }
+  
+  window.location.search = urlParams.toString();
+}
 </script>
 
 <?php require_once __DIR__ . '/partials/layout_bottom.php'; ?>

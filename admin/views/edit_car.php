@@ -31,7 +31,7 @@
   </div>
   <?php endif; ?>
 
-  <form action="?page=edit_car&id=<?= $old['id'] ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
+  <form action="?page=edit_car&id=<?= $old['id'] ?>" method="POST" enctype="multipart/form-data" class="space-y-8" onsubmit="event.preventDefault(); showConfirmModal(this);">
 
     <!-- Photo Upload -->
     <div>

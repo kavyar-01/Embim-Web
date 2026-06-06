@@ -34,10 +34,10 @@
       <div class="card-header">
         <span class="card-title">Return Information</span>
         <?php
-          $condClass = $return['car_condition'] === 'good' ? 'badge badge-paid' : 'badge badge-unpaid';
+          $condClass = $return['car_condition'] === 'good' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200';
           $condLabel = $return['car_condition'] === 'good' ? 'Good Condition' : 'Damaged';
         ?>
-        <span class="<?= $condClass ?>"><?= $condLabel ?></span>
+        <span class="px-2 py-1 border rounded-md text-xs font-bold uppercase tracking-wider <?= $condClass ?>"><?= $condLabel ?></span>
       </div>
       <dl class="detail-dl">
         <div class="detail-row"><dt>Return ID</dt><dd><?= $return['id'] ?></dd></div>
@@ -47,9 +47,9 @@
           <dt>Late Status</dt>
           <dd>
             <?php if ((int)$return['late_days'] > 0): ?>
-              <span class="badge" style="background:#fef2f2;color:#dc2626;border-color:#fecaca;"><?= (int)$return['late_days'] ?> Days Late</span>
+              <span class="px-2 py-1 border rounded-md text-xs font-bold uppercase tracking-wider bg-red-100 text-red-700 border-red-200"><?= (int)$return['late_days'] ?> Days Late</span>
             <?php else: ?>
-              <span class="badge badge-paid">On Time</span>
+              <span class="px-2 py-1 border rounded-md text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 border-emerald-200">On Time</span>
             <?php endif; ?>
           </dd>
         </div>
@@ -65,13 +65,13 @@
         <span class="card-title">Booking &amp; Customer</span>
         <?php
           $bookingBadge = match($return['booking_status']) {
-              'completed'  => 'badge badge-paid',
-              'cancelled'  => 'badge badge-refunded',
-              'ongoing'    => 'badge badge-unpaid',
-              default      => 'badge',
+              'completed'  => 'bg-emerald-100 text-emerald-700 border-emerald-200',
+              'cancelled'  => 'bg-red-100 text-red-700 border-red-200',
+              'ongoing'    => 'bg-blue-100 text-blue-700 border-blue-200',
+              default      => 'bg-gray-100 text-gray-700 border-gray-200',
           };
         ?>
-        <span class="<?= $bookingBadge ?>"><?= ucfirst($return['booking_status']) ?></span>
+        <span class="px-2 py-1 border rounded-md text-xs font-bold uppercase tracking-wider <?= $bookingBadge ?>"><?= ucfirst($return['booking_status']) ?></span>
       </div>
       <dl class="detail-dl">
         <div class="detail-row"><dt>Customer</dt><dd><strong><?= htmlspecialchars($return['customer_name']) ?></strong></dd></div>

@@ -227,6 +227,7 @@ class DashboardModel {
             SELECT u.*, COUNT(b.id) as booking_count 
             FROM `users` u 
             JOIN `bookings` b ON u.id = b.user_id 
+            WHERE b.`status` = 'completed'
             GROUP BY u.id 
             ORDER BY booking_count DESC 
             LIMIT 1

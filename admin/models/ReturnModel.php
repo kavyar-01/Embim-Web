@@ -254,7 +254,7 @@ class ReturnModel {
     /**
      * Update return (return_date, car_condition, notes) + recalc late_days + re-update car status.
      */
-    public function updateReturn(int $id, string $returnDate, string $carCondition, string $notes, float $damageFine = 0): bool {
+    public function updateReturn(int $id, string $returnDate, string $carCondition, string $notes, float $damageFine = 0, string $fineStatusStr = ''): bool {
         $existing = $this->getReturnById($id);
         if ($existing === null) {
             return false;
@@ -273,12 +273,16 @@ class ReturnModel {
             $fineAmount = ($lateDays > 0 ? $lateDays * $finePerDay : 0) + $damageFine;
             
             // Pertahankan status 'paid' jika sudah dibayar, kalau belum set 'unpaid' / 'none'
-            // Kita harus ambil fine_status sebelumnya
-            $oldFineStatus = $existing['fine_status'] ?? 'none';
-            if ($oldFineStatus === 'paid' && $fineAmount > 0) {
-                $fineStatus = 'paid';
+            // atau gunakan dari form jika dikirim
+            if ($fineStatusStr !== '') {
+                $fineStatus = $fineStatusStr;
             } else {
-                $fineStatus = $fineAmount > 0 ? 'unpaid' : 'none';
+                $oldFineStatus = $existing['fine_status'] ?? 'none';
+                if ($oldFineStatus === 'paid' && $fineAmount > 0) {
+                    $fineStatus = 'paid';
+                } else {
+                    $fineStatus = $fineAmount > 0 ? 'unpaid' : 'none';
+                }
             }
 
             $stmt = $this->pdo->prepare("

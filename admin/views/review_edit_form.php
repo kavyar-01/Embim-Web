@@ -27,7 +27,7 @@
   <div class="card" style="max-width:600px;">
     <div class="card-header"><span class="card-title">Review Details</span></div>
     <div class="card-body">
-      <form method="POST" action="?page=edit_review&id=<?= $review['id'] ?>">
+      <form method="POST" action="?page=edit_review&id=<?= $review['id'] ?>" onsubmit="event.preventDefault(); showConfirmModal(this);">
 
         <!-- Read Only Info -->
         <div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-100">

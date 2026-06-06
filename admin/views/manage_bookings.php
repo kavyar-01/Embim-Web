@@ -26,8 +26,40 @@
   <?php endif; ?>
 
   <!-- Stats Cards -->
+  <?php
+    $currentStatus = $_GET['status'] ?? '';
+    $searchParam = !empty($_GET['search']) ? '&search=' . urlencode($_GET['search']) : '';
+    
+    function getStatusCardAttr($status, $currentStatus, $searchParam, $color) {
+        $isActive = ($currentStatus === $status);
+        $url = $isActive ? "?page=manage_bookings" . $searchParam : "?page=manage_bookings&status=" . urlencode($status) . $searchParam;
+        
+        $baseCls = "block bg-white rounded-xl border p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 cursor-pointer";
+        
+        $activeClasses = match($color) {
+            'yellow'  => " border-yellow-500 ring-2 ring-yellow-200 shadow-[0_0_20px_rgba(234,179,8,0.2)]",
+            'indigo'  => " border-indigo-500 ring-2 ring-indigo-200 shadow-[0_0_20px_rgba(99,102,241,0.2)]",
+            'blue'    => " border-blue-500 ring-2 ring-blue-200 shadow-[0_0_20px_rgba(59,130,246,0.2)]",
+            'emerald' => " border-emerald-500 ring-2 ring-emerald-200 shadow-[0_0_20px_rgba(16,185,129,0.2)]",
+            'red'     => " border-red-500 ring-2 ring-red-200 shadow-[0_0_20px_rgba(239,68,68,0.2)]",
+            default   => " border-gray-500 ring-2 ring-gray-200"
+        };
+        
+        $inactiveClasses = match($color) {
+            'yellow'  => " border-gray-200 hover:border-yellow-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]",
+            'indigo'  => " border-gray-200 hover:border-indigo-300 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]",
+            'blue'    => " border-gray-200 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]",
+            'emerald' => " border-gray-200 hover:border-emerald-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]",
+            'red'     => " border-gray-200 hover:border-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]",
+            default   => " border-gray-200"
+        };
+        
+        $cls = $baseCls . ($isActive ? $activeClasses : $inactiveClasses);
+        return 'href="' . $url . '" class="' . $cls . '"';
+    }
+  ?>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-yellow-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+    <a <?= getStatusCardAttr('pending', $currentStatus, $searchParam, 'yellow') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Pending</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['pending'] ?? 0 ?></p>
@@ -35,9 +67,9 @@
       <div class="p-3 bg-yellow-50 rounded-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       </div>
-    </div>
+    </a>
     
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+    <a <?= getStatusCardAttr('confirmed', $currentStatus, $searchParam, 'indigo') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Confirmed</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['confirmed'] ?? 0 ?></p>
@@ -45,9 +77,9 @@
       <div class="p-3 bg-indigo-50 rounded-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       </div>
-    </div>
+    </a>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+    <a <?= getStatusCardAttr('ongoing', $currentStatus, $searchParam, 'blue') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Ongoing</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['ongoing'] ?? 0 ?></p>
@@ -55,9 +87,9 @@
       <div class="p-3 bg-blue-50 rounded-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
       </div>
-    </div>
+    </a>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+    <a <?= getStatusCardAttr('completed', $currentStatus, $searchParam, 'emerald') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Completed</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['completed'] ?? 0 ?></p>
@@ -65,9 +97,9 @@
       <div class="p-3 bg-emerald-50 rounded-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
       </div>
-    </div>
+    </a>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+    <a <?= getStatusCardAttr('cancelled', $currentStatus, $searchParam, 'red') ?>>
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Cancelled</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['cancelled'] ?? 0 ?></p>
@@ -75,7 +107,7 @@
       <div class="p-3 bg-red-50 rounded-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </div>
-    </div>
+    </a>
   </div>
 
   <!-- Top Insights -->
@@ -113,47 +145,52 @@
     <?php endif; ?>
   </div>
 
-  <!-- Filter Bar -->
-  <form method="GET" action="" class="filter-bar">
-    <input type="hidden" name="page" value="manage_bookings" />
+  <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-6">
+    <form method="GET" action="" class="flex flex-col md:flex-row gap-4 items-end">
+      <input type="hidden" name="page" value="manage_bookings" />
+      <?php if ($currentStatus !== ''): ?>
+        <input type="hidden" name="status" value="<?= htmlspecialchars($currentStatus) ?>" />
+      <?php endif; ?>
 
-    <div class="search-wrap">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
-      <input type="search" name="search"
-             value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-             placeholder="Booking ID, customer name, or car..."
-             class="form-control w-64" />
-    </div>
+      <div class="flex-1 w-full">
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Search</label>
+        <div class="relative">
+          <input type="text" name="search"
+                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                 placeholder="Booking ID, customer name, or car..."
+                 class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+          <svg class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+      </div>
 
-    <select name="status" class="form-control" style="width:auto;">
-      <option value=""          <?= (($_GET['status'] ?? '') === '')          ? 'selected' : '' ?>>All Status</option>
-      <option value="pending"   <?= (($_GET['status'] ?? '') === 'pending')   ? 'selected' : '' ?>>Pending</option>
-      <option value="confirmed" <?= (($_GET['status'] ?? '') === 'confirmed') ? 'selected' : '' ?>>Confirmed</option>
-      <option value="ongoing"   <?= (($_GET['status'] ?? '') === 'ongoing')   ? 'selected' : '' ?>>Ongoing</option>
-      <option value="completed" <?= (($_GET['status'] ?? '') === 'completed') ? 'selected' : '' ?>>Completed</option>
-      <option value="cancelled" <?= (($_GET['status'] ?? '') === 'cancelled') ? 'selected' : '' ?>>Cancelled</option>
-    </select>
-
-    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
-    <a href="?page=manage_bookings" class="btn btn-ghost btn-sm">Reset</a>
-  </form>
+      <div class="flex gap-2 w-full md:w-auto">
+        <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-colors">
+          Search
+        </button>
+        <a href="?page=manage_bookings<?= !empty($currentStatus) ? '&status='.urlencode($currentStatus) : '' ?>" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-xl transition-colors">
+          Reset
+        </a>
+      </div>
+    </form>
+  </div>
 
   <!-- Table -->
   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-    <table class="w-full text-left text-sm text-gray-600">
-      <thead class="bg-gray-50/80 border-b border-gray-100 text-xs uppercase font-semibold text-gray-500">
-        <tr>
-          <th class="px-4 py-3">ID</th>
-          <th class="px-4 py-3">Customer</th>
-          <th class="px-4 py-3">Car</th>
-          <th class="px-4 py-3">Period</th>
-          <th class="px-4 py-3">Days</th>
-          <th class="px-4 py-3 text-center">Status</th>
-          <th class="px-4 py-3">Notes</th>
-          <th class="px-4 py-3">Created</th>
-          <th class="px-4 py-3 text-right">Actions</th>
-        </tr>
-      </thead>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm text-gray-600 table-fixed min-w-[1000px]">
+        <thead class="bg-gray-50/80 border-b border-gray-100 text-xs uppercase font-semibold text-gray-500">
+          <tr>
+            <th class="px-4 py-3 w-[6%]">ID</th>
+            <th class="px-4 py-3 w-[15%]">Customer</th>
+            <th class="px-4 py-3 w-[15%]">Car</th>
+            <th class="px-4 py-3 w-[12%]">Period</th>
+            <th class="px-4 py-3 w-[7%]">Days</th>
+            <th class="px-4 py-3 w-[10%] text-center">Status</th>
+            <th class="px-4 py-3 w-[15%]">Notes</th>
+            <th class="px-4 py-3 w-[10%]">Created</th>
+            <th class="px-4 py-3 w-[10%] text-right">Actions</th>
+          </tr>
+        </thead>
       <tbody>
         <?php if (empty($bookings)): ?>
           <tr><td colspan="9" class="text-center py-10 text-gray-400">No booking data found.</td></tr>
@@ -212,6 +249,7 @@
         <?php endforeach; endif; ?>
       </tbody>
     </table>
+    </div>
   </div>
 
   <?php
@@ -260,11 +298,11 @@
     <h3 style="font-weight:800;font-size:1.25rem;color:#111827;margin:0 0 8px 0;">Are you sure?</h3>
     <p style="font-size:0.875rem;color:#6b7280;margin:0 0 24px 0;line-height:1.5;">Are you sure you want to delete this data? This action cannot be undone.</p>
     <div style="display:flex;gap:12px;justify-content:center;">
-      <button type="button" class="btn btn-ghost" style="flex:1;"
+      <button type="button" class="btn btn-ghost" style="flex:1; justify-content:center; text-align:center;"
               onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
       <form id="form-delete" method="POST" action="?page=delete_booking" style="margin:0;flex:1;display:flex;">
         <input type="hidden" id="delete-id" name="id" value="" />
-        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;">
+        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer; justify-content:center; text-align:center;">
           Yes, Delete
         </button>
       </form>

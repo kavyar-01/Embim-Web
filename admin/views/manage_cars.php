@@ -7,56 +7,33 @@
   </div>
 
   <!-- Stats Cards -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-green-300 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]">
-      <div>
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Available</p>
-        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['available'] ?? 0 ?></p>
-      </div>
-      <div class="p-3 bg-green-50 rounded-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-      </div>
-    </div>
+  <?php
+    $fStatus  = $filterVars['status']       ?? '';
+    $fTrans   = $filterVars['transmission'] ?? '';
     
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+    $ccards=[
+      ['label'=>'Available',   'value'=>$stats['available']??0,  'type'=>'status',       'key'=>'available',   'bg'=>'bg-green-50',  'color'=>'text-green-500',  'hover'=>'hover:border-green-300 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]',     'active'=>'border-green-500 ring-2 ring-green-200 shadow-[0_0_20px_rgba(34,197,94,0.2)] bg-white',     'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>'],
+      ['label'=>'Booked',      'value'=>$stats['booked']??0,     'type'=>'status',       'key'=>'booked',      'bg'=>'bg-blue-50',   'color'=>'text-blue-500',   'hover'=>'hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]',      'active'=>'border-blue-500 ring-2 ring-blue-200 shadow-[0_0_20px_rgba(59,130,246,0.2)] bg-white',      'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>'],
+      ['label'=>'Maintenance', 'value'=>$stats['maintenance']??0,'type'=>'status',       'key'=>'maintenance', 'bg'=>'bg-red-50',    'color'=>'text-red-500',    'hover'=>'hover:border-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]',        'active'=>'border-red-500 ring-2 ring-red-200 shadow-[0_0_20px_rgba(239,68,68,0.2)] bg-white',        'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>'],
+      ['label'=>'Automatic',   'value'=>$stats['automatic']??0,  'type'=>'transmission', 'key'=>'automatic',   'bg'=>'bg-purple-50', 'color'=>'text-purple-500', 'hover'=>'hover:border-purple-300 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)]', 'active'=>'border-purple-500 ring-2 ring-purple-200 shadow-[0_0_20px_rgba(168,85,247,0.2)] bg-white', 'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>'],
+      ['label'=>'Manual',      'value'=>$stats['manual']??0,     'type'=>'transmission', 'key'=>'manual',      'bg'=>'bg-orange-50', 'color'=>'text-orange-500', 'hover'=>'hover:border-orange-300 hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]',  'active'=>'border-orange-500 ring-2 ring-orange-200 shadow-[0_0_20px_rgba(249,115,22,0.2)] bg-white',  'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>'],
+    ];
+  ?>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+    <?php foreach($ccards as $cc): 
+      $isSel = ($cc['type'] === 'status' && $fStatus === $cc['key']) || ($cc['type'] === 'transmission' && $fTrans === $cc['key']);
+      $activeClass = $isSel ? $cc['active'] : 'border-gray-200 hover:-translate-y-1 bg-white';
+    ?>
+    <div onclick="handleFilter('<?= $cc['type'] ?>', '<?= $cc['key'] ?>')" class="rounded-xl border p-4 flex items-center justify-between shadow-sm transition-all duration-300 cursor-pointer <?= $cc['hover'] ?> <?= $activeClass ?>">
       <div>
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Booked</p>
-        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['booked'] ?? 0 ?></p>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><?= $cc['label'] ?></p>
+        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $cc['value'] ?></p>
       </div>
-      <div class="p-3 bg-blue-50 rounded-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      <div class="p-3 <?= $cc['bg'] ?> rounded-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 <?= $cc['color'] ?>" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><?= $cc['icon'] ?></svg>
       </div>
     </div>
-
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]">
-      <div>
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Maintenance</p>
-        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['maintenance'] ?? 0 ?></p>
-      </div>
-      <div class="p-3 bg-red-50 rounded-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-300 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
-      <div>
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Automatic</p>
-        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['automatic'] ?? 0 ?></p>
-      </div>
-      <div class="p-3 bg-purple-50 rounded-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-300 hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-      <div>
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Manual</p>
-        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['manual'] ?? 0 ?></p>
-      </div>
-      <div class="p-3 bg-orange-50 rounded-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-      </div>
-    </div>
+    <?php endforeach; ?>
   </div>
 
   <?php
@@ -77,40 +54,44 @@
   <!-- ═══════════════════════════════════════════════════════════ -->
   <!--  FILTER FORM                                               -->
   <!-- ═══════════════════════════════════════════════════════════ -->
-  <form method="GET" action="" id="cars-filter-form">
-    <input type="hidden" name="page" value="manage_cars" />
+  <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-6">
+    <form method="GET" action="" id="cars-filter-form" class="flex flex-col gap-4">
+      <input type="hidden" name="page" value="manage_cars" />
 
-    <!-- Baris 1: Search + tombol advanced + aksi -->
-    <div class="filter-bar" style="margin-bottom:10px;">
-      <div class="search-wrap">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
-        <input type="search" name="search"
-               value="<?= htmlspecialchars($fSearch) ?>"
-               placeholder="Search brand, model, atau plat nomor..."
-               class="form-control" style="width:280px;" />
+      <div class="flex flex-col md:flex-row gap-4 items-end w-full">
+        <div class="flex-1 w-full">
+          <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Search</label>
+          <div class="relative">
+            <input type="text" name="search"
+                   value="<?= htmlspecialchars($fSearch) ?>"
+                   placeholder="Search brand, model, or license plate..."
+                   class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+            <svg class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 w-full md:w-auto">
+          <button type="button" class="px-4 py-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-semibold rounded-xl transition-colors flex items-center gap-2"
+                  onclick="toggleAdvanced()" id="btn-advanced">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+            Advanced
+            <?php if ($hasAdvanced): ?>
+              <span style="width:7px;height:7px;border-radius:50%;background:#2563eb;flex-shrink:0;"></span>
+            <?php endif; ?>
+          </button>
+
+          <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-colors flex items-center gap-2">
+            Apply
+          </button>
+
+          <a href="?page=manage_cars" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-xl transition-colors">Reset</a>
+          
+          <a href="?page=add_car" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            Add Car
+          </a>
+        </div>
       </div>
-
-      <button type="button" class="btn btn-ghost btn-sm"
-              onclick="toggleAdvanced()"
-              id="btn-advanced"
-              style="border:1px solid #e5e7eb;">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
-        Filter Lanjutan
-        <?php if ($hasAdvanced): ?>
-          <span style="width:7px;height:7px;border-radius:50%;background:#2563eb;flex-shrink:0;"></span>
-        <?php endif; ?>
-      </button>
-
-      <button type="submit" class="btn btn-primary btn-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
-        Terapkan
-      </button>
-      <a href="?page=manage_cars" class="btn btn-ghost btn-sm">Reset</a>
-      <a href="?page=add_car" class="btn btn-primary btn-sm" style="margin-left:auto;">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-        Add Car
-      </a>
-    </div>
 
     <!-- Baris 2: Panel filter lanjutan -->
     <div id="advanced-panel"
@@ -133,7 +114,7 @@
         <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
           <label class="form-label" style="font-size:12px;margin:0;">Transmission</label>
           <select name="transmission" class="form-control" style="width:auto;">
-            <option value=""          <?= $fTrans === ''          ? 'selected' : '' ?>>Semua</option>
+            <option value=""          <?= $fTrans === ''          ? 'selected' : '' ?>>All</option>
             <option value="automatic" <?= $fTrans === 'automatic' ? 'selected' : '' ?>>Automatic</option>
             <option value="manual"    <?= $fTrans === 'manual'    ? 'selected' : '' ?>>Manual</option>
           </select>
@@ -143,7 +124,7 @@
         <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
           <label class="form-label" style="font-size:12px;margin:0;">Fuel Type</label>
           <select name="fuel_type" class="form-control" style="width:auto;">
-            <option value=""         <?= $fFuel === ''         ? 'selected' : '' ?>>Semua</option>
+            <option value=""         <?= $fFuel === ''         ? 'selected' : '' ?>>All</option>
             <option value="gasoline" <?= $fFuel === 'gasoline' ? 'selected' : '' ?>>Gasoline</option>
             <option value="diesel"   <?= $fFuel === 'diesel'   ? 'selected' : '' ?>>Diesel</option>
             <option value="electric" <?= $fFuel === 'electric' ? 'selected' : '' ?>>Electric</option>
@@ -156,7 +137,7 @@
 
         <!-- Price / Hari -->
         <div style="display:flex;flex-direction:column;gap:4px;">
-          <label class="form-label" style="font-size:12px;margin:0;">Price / Hari (Rp)</label>
+          <label class="form-label" style="font-size:12px;margin:0;">Price / Day (Rp)</label>
           <div style="display:flex;align-items:center;gap:8px;">
             <input type="number" name="price_min" min="0" step="10000"
                    value="<?= htmlspecialchars($fPMin) ?>"
@@ -165,7 +146,7 @@
             <span style="color:#9ca3af;font-size:12px;">—</span>
             <input type="number" name="price_max" min="0" step="10000"
                    value="<?= htmlspecialchars($fPMax) ?>"
-                   placeholder="Maks"
+                   placeholder="Max"
                    class="form-control" style="width:130px;" />
           </div>
         </div>
@@ -179,12 +160,12 @@
           <div style="display:flex;align-items:center;gap:8px;">
             <input type="number" name="year_min" min="1990" max="2099"
                    value="<?= htmlspecialchars($fYMin) ?>"
-                   placeholder="Dari"
+                   placeholder="From"
                    class="form-control" style="width:100px;" />
             <span style="color:#9ca3af;font-size:12px;">—</span>
             <input type="number" name="year_max" min="1990" max="2099"
                    value="<?= htmlspecialchars($fYMax) ?>"
-                   placeholder="Sampai"
+                   placeholder="To"
                    class="form-control" style="width:100px;" />
           </div>
         </div>
@@ -193,6 +174,7 @@
     </div><!-- /advanced-panel -->
 
   </form>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════════════ -->
   <!--  ACTIVE FILTER CHIPS                                       -->
@@ -202,25 +184,25 @@
     if ($fSearch !== '') $chips[] = 'Search: "' . htmlspecialchars($fSearch) . '"';
     if ($fStatus !== '') $chips[] = 'Status: ' . ucfirst($fStatus);
     if ($fTrans  !== '') $chips[] = 'Transmission: ' . ucfirst($fTrans);
-    if ($fFuel   !== '') $chips[] = 'BBM: ' . ucfirst($fFuel);
+    if ($fFuel   !== '') $chips[] = 'Fuel: ' . ucfirst($fFuel);
     if ($fPMin   !== '' || $fPMax !== '') {
         $lbl = 'Price: ';
         if ($fPMin !== '' && $fPMax !== '') $lbl .= 'Rp ' . number_format((float)$fPMin,0,',','.') . ' – Rp ' . number_format((float)$fPMax,0,',','.');
         elseif ($fPMin !== '')              $lbl .= 'Min Rp ' . number_format((float)$fPMin,0,',','.');
-        else                               $lbl .= 'Maks Rp ' . number_format((float)$fPMax,0,',','.');
+        else                               $lbl .= 'Max Rp ' . number_format((float)$fPMax,0,',','.');
         $chips[] = $lbl;
     }
     if ($fYMin !== '' || $fYMax !== '') {
         $lbl = 'Year: ';
         if ($fYMin !== '' && $fYMax !== '') $lbl .= $fYMin . ' – ' . $fYMax;
-        elseif ($fYMin !== '')              $lbl .= 'dari ' . $fYMin;
-        else                               $lbl .= 's/d ' . $fYMax;
+        elseif ($fYMin !== '')              $lbl .= 'From ' . $fYMin;
+        else                               $lbl .= 'To ' . $fYMax;
         $chips[] = $lbl;
     }
   ?>
   <?php if (!empty($chips)): ?>
   <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-    <span style="font-size:12px;color:#6b7280;">Filter aktif:</span>
+    <span style="font-size:12px;color:#6b7280;">Active filters:</span>
     <?php foreach ($chips as $chip): ?>
       <span style="font-size:12px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:3px 10px;border-radius:20px;">
         <?= $chip ?>
@@ -339,7 +321,6 @@
     $from = $total > 0 ? min($total, ($currentPage - 1) * 10 + 1) : 0;
     $to   = min($total, $currentPage * 10);
   ?>
-  <?php if ($totalPages > 1): ?>
   <div class="embim-pagination">
     <p class="embim-pagination__info">Showing <?= $from ?>–<?= $to ?> of <?= $total ?> results</p>
     <div class="embim-pagination__pages">
@@ -362,7 +343,6 @@
       <?php endif; ?>
     </div>
   </div>
-  <?php endif; ?>
 
 </div>
 
@@ -480,6 +460,17 @@
     panel.style.display = panel.style.display === 'none' ? '' : 'none';
   }
 
+  function handleFilter(type, val) {
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get(type) === val) {
+      urlParams.delete(type);
+    } else {
+      urlParams.set(type, val);
+    }
+    urlParams.delete('p');
+    window.location.search = urlParams.toString();
+  }
+
   // Modal Logic
   const modal = document.getElementById('carDetailModal');
   const modalInner = modal.querySelector('div');
@@ -560,11 +551,11 @@
     <h3 style="font-weight:800;font-size:1.25rem;color:#111827;margin:0 0 8px 0;">Are you sure?</h3>
     <p style="font-size:0.875rem;color:#6b7280;margin:0 0 24px 0;line-height:1.5;">Are you sure you want to delete this data? This action cannot be undone.</p>
     <div style="display:flex;gap:12px;justify-content:center;">
-      <button type="button" class="btn btn-ghost" style="flex:1;"
+      <button type="button" class="btn btn-ghost" style="flex:1; justify-content:center; text-align:center;"
               onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
       <form id="form-delete" method="POST" action="?page=delete_car" style="margin:0;flex:1;display:flex;">
         <input type="hidden" id="delete-id" name="id" value="" />
-        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;">
+        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer; justify-content:center; text-align:center;">
           Yes, Delete
         </button>
       </form>
