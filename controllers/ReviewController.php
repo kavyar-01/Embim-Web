@@ -8,12 +8,12 @@ class ReviewController {
         header('Content-Type: application/json');
 
         if (!isset($_SESSION['user_id'])) {
-            echo json_encode(['success' => false, 'message' => 'Silakan login terlebih dahulu.']);
+            echo json_encode(['success' => false, 'message' => 'Please login first.']);
             exit;
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'message' => 'Method tidak valid.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid method.']);
             exit;
         }
 
@@ -23,15 +23,15 @@ class ReviewController {
         $comment   = trim($_POST['comment']     ?? '');
 
         if (!$bookingId || !$carId) {
-            echo json_encode(['success' => false, 'message' => 'Data booking tidak valid.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid booking data.']);
             exit;
         }
         if ($rating < 1 || $rating > 5) {
-            echo json_encode(['success' => false, 'message' => 'Rating harus antara 1 sampai 5.']);
+            echo json_encode(['success' => false, 'message' => 'Rating must be between 1 and 5.']);
             exit;
         }
         if (empty($comment)) {
-            echo json_encode(['success' => false, 'message' => 'Ulasan tidak boleh kosong.']);
+            echo json_encode(['success' => false, 'message' => 'Review cannot be empty.']);
             exit;
         }
         if (mb_strlen($comment) < 10) {
@@ -55,9 +55,9 @@ class ReviewController {
         );
 
         if ($result) {
-            echo json_encode(['success' => true, 'message' => 'Ulasan berhasil dikirim. Terima kasih!']);
+            echo json_encode(['success' => true, 'message' => 'Review submitted successfully. Thank you!']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Gagal menyimpan ulasan. Pastikan booking berstatus Completed.']);
+            echo json_encode(['success' => false, 'message' => 'Failed to save review. Ensure the booking status is Completed.']);
         }
         exit;
     }

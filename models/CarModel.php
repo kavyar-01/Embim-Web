@@ -11,6 +11,20 @@ class CarModel {
         $this->conn = $db->getConnection();
     }
 
+    public function getTotalAvailableCars() {
+        $sql = "SELECT COUNT(*) FROM {$this->table} WHERE status = 'available'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function getAverageRating() {
+        $sql = "SELECT AVG(rating) FROM reviews";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $avg = $stmt->fetchColumn();
+        return $avg ? round((float)$avg, 1) : 0;
+    }
 
     public function getFeaturedCars($limit = null) {
         $sql = "SELECT c.*, 

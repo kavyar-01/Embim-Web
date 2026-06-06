@@ -8,7 +8,7 @@ class ForgotPasswordController {
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'message' => 'Method tidak valid.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid method.']);
             exit;
         }
 
@@ -16,7 +16,7 @@ class ForgotPasswordController {
         $phone    = trim($_POST['phone']     ?? '');
 
         if (empty($fullName) || empty($phone)) {
-            echo json_encode(['success' => false, 'message' => 'Nama lengkap dan nomor telepon wajib diisi.']);
+            echo json_encode(['success' => false, 'message' => 'Full name and phone number are required.']);
             exit;
         }
 
@@ -45,7 +45,7 @@ class ForgotPasswordController {
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'message' => 'Method tidak valid.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid method.']);
             exit;
         }
 
@@ -54,7 +54,7 @@ class ForgotPasswordController {
         $confirm  = $_POST['confirm']         ?? '';
 
         if (!isset($_SESSION['reset_user_id']) || (int)$_SESSION['reset_user_id'] !== $userId) {
-            echo json_encode(['success' => false, 'message' => 'Sesi tidak valid. Silakan ulangi verifikasi.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid session. Please repeat verification.']);
             exit;
         }
 
@@ -63,15 +63,15 @@ class ForgotPasswordController {
             exit;
         }
         if (!preg_match('/[a-z]/', $password)) {
-            echo json_encode(['success' => false, 'message' => 'Password harus mengandung minimal satu huruf kecil.']);
+            echo json_encode(['success' => false, 'message' => 'Password must contain at least one lowercase letter.']);
             exit;
         }
         if (!preg_match('/[A-Z]/', $password)) {
-            echo json_encode(['success' => false, 'message' => 'Password harus mengandung minimal satu huruf besar.']);
+            echo json_encode(['success' => false, 'message' => 'Password must contain at least one uppercase letter.']);
             exit;
         }
         if (!preg_match('/[0-9]/', $password)) {
-            echo json_encode(['success' => false, 'message' => 'Password harus mengandung minimal satu angka.']);
+            echo json_encode(['success' => false, 'message' => 'Password must contain at least one number.']);
             exit;
         }
         if ($password !== $confirm) {
@@ -84,9 +84,9 @@ class ForgotPasswordController {
 
         if ($result) {
             unset($_SESSION['reset_user_id']);
-            echo json_encode(['success' => true, 'message' => 'Password berhasil diubah. Silakan login.']);
+            echo json_encode(['success' => true, 'message' => 'Password changed successfully. Please login.']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Gagal menyimpan password. Silakan coba lagi.']);
+            echo json_encode(['success' => false, 'message' => 'Failed to save password. Please try again.']);
         }
         exit;
     }

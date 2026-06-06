@@ -94,7 +94,7 @@
             </button>
           </div>
           <div class="mt-2 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-            <p class="text-xs font-semibold text-gray-700 mb-2">Password harus mengandung:</p>
+            <p class="text-xs font-semibold text-gray-700 mb-2">Password must contain:</p>
             <ul class="space-y-1">
               <li id="req-len" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> 8–100 karakter</li>
               <li id="req-low" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu huruf kecil</li>

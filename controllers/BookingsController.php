@@ -32,7 +32,7 @@ class BookingsController {
         $bookingId = (int)($_POST['booking_id'] ?? 0);
         
         if (!$bookingId) {
-            $_SESSION['booking_error'] = 'Booking ID tidak valid.';
+            $_SESSION['booking_error'] = 'Invalid Booking ID.';
             header('Location: index.php?page=bookings');
             exit;
         }
@@ -45,9 +45,9 @@ class BookingsController {
         }
 
         if ($bookingModel->updateBookingStatus($bookingId, 'cancelled')) {
-            $_SESSION['review_success'] = 'Booking berhasil dibatalkan. Refund 80% akan segera diproses.';
+            $_SESSION['review_success'] = 'Booking cancelled successfully. 80% refund will be processed shortly.';
         } else {
-            $_SESSION['booking_error'] = 'Gagal membatalkan booking.';
+            $_SESSION['booking_error'] = 'Failed to cancel booking.';
         }
 
         header('Location: index.php?page=bookings');
@@ -60,7 +60,7 @@ class BookingsController {
         $comment   = trim($_POST['comment']     ?? '');
 
         if (!$bookingId || $rating < 1 || $rating > 5) {
-            $_SESSION['review_error'] = 'Data ulasan tidak valid.';
+            $_SESSION['review_error'] = 'Invalid review data.';
             header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
         }
@@ -88,7 +88,7 @@ class BookingsController {
             'comment'    => $comment,
         ]);
 
-        $_SESSION['review_success'] = 'Ulasan berhasil dikirim. Terima kasih!';
+        $_SESSION['review_success'] = 'Review submitted successfully. Thank you!';
         header('Location: ' . $_SERVER['REQUEST_URI']);
         exit;
     }

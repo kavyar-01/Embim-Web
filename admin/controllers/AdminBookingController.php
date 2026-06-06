@@ -108,7 +108,7 @@ class AdminBookingController
 
         $allowed = ['confirmed', 'ongoing', 'completed', 'cancelled'];
         if (!in_array($status, $allowed, true)) {
-            $errors[] = 'Status tidak valid.';
+            $errors[] = 'Invalid status.';
         }
 
         if (!empty($errors)) {
@@ -121,7 +121,7 @@ class AdminBookingController
         if ($ok) {
             header('Location: ?page=booking_detail&id=' . $id . '&updated=1');
         } else {
-            $errors[] = 'Gagal memperbarui data. Silakan coba lagi.';
+            $errors[] = 'Failed to update data. Please try again.';
             $page     = 'manage_bookings';
             require_once __DIR__ . '/../views/booking_edit_form.php';
         }

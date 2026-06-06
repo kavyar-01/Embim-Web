@@ -161,9 +161,9 @@ if (!defined('BASE_URL')) {
         <div class="reveal bg-blue-600 rounded-3xl px-8 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
             <?php
             $stats = [
-                ['value' => '20+',  'label' => 'Available Vehicles'],
-                ['value' => '500+',  'label' => 'Satisfied Customers'],
-                ['value' => '4.9★',  'label' => 'Average Rating'],
+                ['value' => (isset($totalAvailableCars) ? $totalAvailableCars : '0') . '+',  'label' => 'Available Vehicles'],
+                ['value' => (isset($totalCustomers) ? $totalCustomers : '0') . '+',  'label' => 'Customers'],
+                ['value' => (isset($averageRating) ? $averageRating : '0') . '★',  'label' => 'Average Rating'],
                 ['value' => '24/7',  'label' => 'Active Service'],
             ];
             foreach ($stats as $stat): ?>
@@ -201,13 +201,18 @@ if (!defined('BASE_URL')) {
         <?php if (empty($featuredCars)): ?>
             <div class="reveal text-center py-24 bg-white rounded-3xl border border-blue-100/50 shadow-sm">
                 <div class="bg-blue-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg class="h-12 w-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <svg class="h-12 w-12 text-blue-400" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                         viewBox="0 0 32 32" xml:space="preserve">
+                        <style type="text/css">
+                            .st0{fill:none;stroke:#2563eb;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+                        </style>
+                        <circle class="st0" cx="16" cy="16" r="13"/>
+                        <line class="st0" x1="12" y1="12" x2="12" y2="16"/>
+                        <line class="st0" x1="20" y1="12" x2="20" y2="16"/>
+                        <line class="st0" x1="10" y1="20" x2="22" y2="20"/>
                     </svg>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-3">No cars found</h3>
-                <p class="text-gray-600 text-lg mb-8">Try searching with different keywords.</p>
-                <a href="index.php" class="inline-block bg-blue-600 text-white px-10 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200/50">Back to Home</a>
             </div>
 
         <?php else: ?>

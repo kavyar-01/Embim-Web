@@ -30,13 +30,13 @@ class ProfileController {
             $password = $_POST['password']       ?? '';
             $passConf = $_POST['password_confirm'] ?? '';
 
-            if (empty($fullName)) $errors[] = 'Nama lengkap tidak boleh kosong.';
+            if (empty($fullName)) $errors[] = 'Full name cannot be empty.';
             elseif (preg_match('/[0-9]/', $fullName)) $errors[] = 'Nama lengkap tidak boleh mengandung angka.';
             
-            if (empty($email))    $errors[] = 'Email tidak boleh kosong.';
-            elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Format email tidak valid.';
+            if (empty($email))    $errors[] = 'Email cannot be empty.';
+            elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
             
-            if (empty($rawPhone)) $errors[] = 'Nomor telepon tidak boleh kosong.';
+            if (empty($rawPhone)) $errors[] = 'Phone number cannot be empty.';
             elseif (strlen($rawPhone) < 7) $errors[] = 'Nomor telepon minimal 7 karakter.';
 
             if (!empty($email)) {
@@ -50,11 +50,11 @@ class ProfileController {
                 if (strlen($password) < 8) {
                     $errors[] = 'Password minimal 8 karakter.';
                 } elseif (!preg_match('/[a-z]/', $password)) {
-                    $errors[] = 'Password harus mengandung minimal satu huruf kecil.';
+                    $errors[] = 'Password must contain at least one lowercase letter.';
                 } elseif (!preg_match('/[A-Z]/', $password)) {
-                    $errors[] = 'Password harus mengandung minimal satu huruf besar.';
+                    $errors[] = 'Password must contain at least one uppercase letter.';
                 } elseif (!preg_match('/[0-9]/', $password)) {
-                    $errors[] = 'Password harus mengandung minimal satu angka.';
+                    $errors[] = 'Password must contain at least one number.';
                 } elseif ($password !== $passConf) {
                     $errors[] = 'Konfirmasi password tidak cocok.';
                 }
@@ -99,7 +99,7 @@ class ProfileController {
                     $success = true;
                     $admin = $this->model->findAdminById($adminId);
                 } else {
-                    $errors[] = 'Gagal menyimpan perubahan. Silakan coba lagi.';
+                    $errors[] = 'Failed to save changes. Please try again.';
                 }
             }
         }
@@ -112,14 +112,14 @@ class ProfileController {
         $file = $_FILES[$inputName];
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            return ['error' => 'Gagal mengupload file.', 'filename' => null];
+            return ['error' => 'Failed to upload file.', 'filename' => null];
         }
         if ($file['size'] > $maxSize) {
             return ['error' => 'Ukuran file maksimal 2 MB.', 'filename' => null];
         }
         $mime = mime_content_type($file['tmp_name']);
         if (!in_array($mime, $allowedTypes)) {
-            return ['error' => 'Format file harus JPG, PNG, atau WebP.', 'filename' => null];
+            return ['error' => 'File format must be JPG, PNG, or WebP.', 'filename' => null];
         }
 
         $ext      = pathinfo($file['name'], PATHINFO_EXTENSION);
@@ -127,7 +127,7 @@ class ProfileController {
         $dest     = $this->uploadDir . $filename;
 
         if (!move_uploaded_file($file['tmp_name'], $dest)) {
-            return ['error' => 'Gagal menyimpan file ke server.', 'filename' => null];
+            return ['error' => 'Failed to save file to server.', 'filename' => null];
         }
 
         return ['error' => null, 'filename' => $filename];

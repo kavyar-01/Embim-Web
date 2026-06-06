@@ -18,7 +18,7 @@
           <svg class="h-5 w-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          Profil berhasil diperbarui.
+          Profile updated successfully.
       </div>
       <?php endif; ?>
 
@@ -110,7 +110,7 @@
           <!-- ── Ganti Password ── -->
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
               <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-1">Ganti Password</h2>
-              <p class="text-xs text-gray-400 mb-5">Kosongkan jika tidak ingin mengganti password.</p>
+              <p class="text-xs text-gray-400 mb-5">Leave empty if you do not want to change password.</p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">Password Baru</label>
@@ -122,7 +122,7 @@
                           </button>
                       </div>
                       <div class="mt-2 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 hidden" id="password-req-box">
-                        <p class="text-xs font-semibold text-gray-700 mb-2">Password harus mengandung:</p>
+                        <p class="text-xs font-semibold text-gray-700 mb-2">Password must contain:</p>
                         <ul class="space-y-1">
                           <li id="req-len" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> 8–100 karakter</li>
                           <li id="req-low" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu huruf kecil</li>

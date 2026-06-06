@@ -66,10 +66,10 @@ class BookingController {
             $notes  = trim($_POST['notes']          ?? '');
             $method = trim($_POST['payment_method'] ?? '');
 
-            if (!$carId)           $errors[] = 'Data kendaraan tidak valid.';
-            if (empty($startDate)) $errors[] = 'Tanggal pickup wajib diisi.';
-            if (empty($endDate))   $errors[] = 'Tanggal kembali wajib diisi.';
-            if (empty($method))    $errors[] = 'Metode pembayaran wajib dipilih.';
+            if (!$carId)           $errors[] = 'Invalid vehicle data.';
+            if (empty($startDate)) $errors[] = 'Pickup date is required.';
+            if (empty($endDate))   $errors[] = 'Return date is required.';
+            if (empty($method))    $errors[] = 'Payment method must be selected.';
 
             if ($startDate && $endDate) {
                 $start = new DateTime($startDate);
@@ -77,7 +77,7 @@ class BookingController {
                 $today = new DateTime('today');
 
                 if ($start < $today)  $errors[] = 'Tanggal pickup tidak boleh di masa lalu.';
-                if ($end <= $start)   $errors[] = 'Tanggal kembali harus setelah tanggal pickup.';
+                if ($end <= $start)   $errors[] = 'Return date must be after pickup date.';
 
                 $totalDays  = $start->diff($end)->days;
                 $totalPrice = $totalDays * (int)$car['price_per_day'];
@@ -85,7 +85,7 @@ class BookingController {
 
             $selfieFilename = null;
             if (empty($_FILES['selfie_ktp']['name'])) {
-                $errors[] = 'Foto selfie memegang KTP wajib diunggah.';
+                $errors[] = 'Selfie with ID card must be uploaded.';
             } else {
                 $upload = $this->handleUpload('selfie_ktp', $this->uploadDir);
                 if ($upload['error']) {
@@ -148,7 +148,7 @@ class BookingController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($_FILES['payment_proof']['name'])) {
-                $errors[] = 'Bukti pembayaran wajib diunggah.';
+                $errors[] = 'Payment proof must be uploaded.';
             } else {
                 $upload = $this->handleUpload('payment_proof', $this->proofUploadDir);
                 if ($upload['error']) {
@@ -182,7 +182,7 @@ class BookingController {
                             header('Location: index.php?page=booking-success&id=' . $bookingId);
                             exit;
                         } else {
-                            $errors[] = 'Gagal menyimpan booking. Silakan coba lagi.';
+                            $errors[] = 'Failed to save booking. Please try again.';
                         }
                     }
                 }
@@ -222,14 +222,14 @@ class BookingController {
         $maxSize      = 5 * 1024 * 1024; // 5 MB
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            return ['error' => 'Gagal mengupload foto.', 'filename' => null];
+            return ['error' => 'Failed to upload photo.', 'filename' => null];
         }
         if ($file['size'] > $maxSize) {
             return ['error' => 'Ukuran foto maksimal 5 MB.', 'filename' => null];
         }
         $mime = mime_content_type($file['tmp_name']);
         if (!in_array($mime, $allowedTypes)) {
-            return ['error' => 'Format foto harus JPG, PNG, atau WebP.', 'filename' => null];
+            return ['error' => 'Photo format must be JPG, PNG, or WebP.', 'filename' => null];
         }
 
         $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
@@ -238,7 +238,7 @@ class BookingController {
         $dest     = $dir . $filename;
 
         if (!move_uploaded_file($file['tmp_name'], $dest)) {
-            return ['error' => 'Gagal menyimpan foto ke server.', 'filename' => null];
+            return ['error' => 'Failed to save photo to server.', 'filename' => null];
         }
 
         return ['error' => null, 'filename' => $filename];

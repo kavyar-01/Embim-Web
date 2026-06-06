@@ -35,7 +35,7 @@
             }
 
             if (!pwInput.value) {
-                setError(pwInput, 'Password tidak boleh kosong.');
+                setError(pwInput, 'Password cannot be empty.');
                 valid = false;
             } else {
                 clearError(pwInput);
@@ -152,11 +152,11 @@ function submitWhatsappLogin() {
     const btn   = document.getElementById('wa-btn');
 
     if (!phone) {
-        setWaAlert('error', 'Nomor telepon wajib diisi.');
+        setWaAlert('error', 'Phone number is required.');
         return;
     }
     if (phone.length < 7 || phone.length > 13) {
-        setWaAlert('error', 'Nomor telepon tidak valid (7–13 digit).');
+        setWaAlert('error', 'Invalid phone number (7-13 digits).');
         return;
     }
 
@@ -179,7 +179,7 @@ function submitWhatsappLogin() {
             }
         })
         .catch(() => {
-            setWaAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
+            setWaAlert('error', 'An error occurred. Please try again.');
             resetWaBtn();
         });
 }
@@ -257,7 +257,7 @@ function verifyIdentity() {
     const btn   = document.getElementById('verify-btn');
 
     if (!name || !phone) {
-        setAlert('verify-alert', 'error', 'Nama lengkap dan nomor telepon wajib diisi.');
+        setAlert('verify-alert', 'error', 'Full name and phone number are required.');
         return;
     }
 
@@ -289,7 +289,7 @@ function verifyIdentity() {
         .catch(() => {
             btn.disabled    = false;
             btn.textContent = 'Verifikasi Akun';
-            setAlert('verify-alert', 'error', 'Terjadi kesalahan. Silakan coba lagi.');
+            setAlert('verify-alert', 'error', 'An error occurred. Please try again.');
         });
 }
 
@@ -331,7 +331,7 @@ function submitReset() {
         .catch(() => {
             btn.disabled    = false;
             btn.textContent = 'Simpan Password Baru';
-            setAlert('reset-alert', 'error', 'Terjadi kesalahan. Silakan coba lagi.');
+            setAlert('reset-alert', 'error', 'An error occurred. Please try again.');
         });
 }
 

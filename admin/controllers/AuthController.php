@@ -14,13 +14,13 @@
               $email = trim($_POST['email'] ?? '');
               $pass  = $_POST['password'] ?? '';
 
-              if (empty($email)) $errors[] = 'Alamat email wajib diisi.';
-              if (empty($pass))  $errors[] = 'Password wajib diisi.';
+              if (empty($email)) $errors[] = 'Email address is required.';
+              if (empty($pass))  $errors[] = 'Password is required.';
 
               if (empty($errors)) {
                   $admin = $this->model->findAdminByEmail($email);
                   if (!$admin || !password_verify($pass, $admin['password'])) {
-                      $errors[] = 'Email atau password salah, atau akun bukan admin.';
+                      $errors[] = 'Incorrect email or password, or account is not admin.';
                   } else {
                       session_regenerate_id(true);
                       $_SESSION['admin_id']    = $admin['id'];
@@ -55,18 +55,18 @@
               $pass     = $_POST['password']        ?? '';
               $terms    = !empty($_POST['terms']);
 
-              if (empty($fullName))  $errors[] = 'Nama lengkap wajib diisi.';
+              if (empty($fullName))  $errors[] = 'Full name is required.';
               elseif (preg_match('/[0-9]/', $fullName)) $errors[] = 'Nama lengkap tidak boleh mengandung angka.';
-              if (empty($email))     $errors[] = 'Alamat email wajib diisi.';
-              elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Format email tidak valid.';
-              if (empty($rawPhone))  $errors[] = 'Nomor telepon wajib diisi.';
+              if (empty($email))     $errors[] = 'Email address is required.';
+              elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
+              if (empty($rawPhone))  $errors[] = 'Phone number is required.';
               elseif (strlen($rawPhone) < 7) $errors[] = 'Nomor telepon minimal 7 karakter.';
-              if (empty($pass))      $errors[] = 'Password wajib diisi.';
+              if (empty($pass))      $errors[] = 'Password is required.';
               elseif (strlen($pass) < 8)             $errors[] = 'Password minimal 8 karakter.';
-              elseif (!preg_match('/[a-z]/', $pass)) $errors[] = 'Password harus mengandung minimal satu huruf kecil.';
-              elseif (!preg_match('/[A-Z]/', $pass)) $errors[] = 'Password harus mengandung minimal satu huruf besar.';
-              elseif (!preg_match('/[0-9]/', $pass)) $errors[] = 'Password harus mengandung minimal satu angka.';
-              if (!$terms) $errors[] = 'Anda harus menyetujui Syarat & Ketentuan.';
+              elseif (!preg_match('/[a-z]/', $pass)) $errors[] = 'Password must contain at least one lowercase letter.';
+              elseif (!preg_match('/[A-Z]/', $pass)) $errors[] = 'Password must contain at least one uppercase letter.';
+              elseif (!preg_match('/[0-9]/', $pass)) $errors[] = 'Password must contain at least one number.';
+              if (!$terms) $errors[] = 'You must agree to the Terms & Conditions.';
 
               if (empty($errors)) {
                   $result = $this->model->createAdmin([
@@ -76,12 +76,12 @@
                       'phone'     => $phone,
                   ]);
                   if ($result === 'duplicate') {
-                      $errors[] = 'Email sudah terdaftar. Silakan gunakan email lain atau login.';
+                      $errors[] = 'Email is already registered. Please use another email or login.';
                   } elseif ($result === true) {
                       header('Location: ?page=login&registered=1');
                       exit;
                   } else {
-                      $errors[] = 'Pendaftaran gagal. Silakan coba lagi.';
+                      $errors[] = 'Registration failed. Please try again.';
                   }
               }
           }
@@ -102,7 +102,7 @@
           header('Content-Type: application/json');
 
           if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-              echo json_encode(['success' => false, 'message' => 'Method tidak valid.']);
+              echo json_encode(['success' => false, 'message' => 'Invalid method.']);
               exit;
           }
 
@@ -110,7 +110,7 @@
           $phone    = trim($_POST['phone']     ?? '');
 
           if (empty($fullName) || empty($phone)) {
-              echo json_encode(['success' => false, 'message' => 'Nama lengkap dan nomor telepon wajib diisi.']);
+              echo json_encode(['success' => false, 'message' => 'Full name and phone number are required.']);
               exit;
           }
 
@@ -141,7 +141,7 @@
           header('Content-Type: application/json');
 
           if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-              echo json_encode(['success' => false, 'message' => 'Method tidak valid.']);
+              echo json_encode(['success' => false, 'message' => 'Invalid method.']);
               exit;
           }
 
@@ -150,7 +150,7 @@
           $confirm  = $_POST['confirm']         ?? '';
 
           if (!isset($_SESSION['reset_admin_id']) || (int)$_SESSION['reset_admin_id'] !== $userId) {
-              echo json_encode(['success' => false, 'message' => 'Sesi tidak valid. Silakan ulangi verifikasi.']);
+              echo json_encode(['success' => false, 'message' => 'Invalid session. Please repeat verification.']);
               exit;
           }
 
@@ -159,15 +159,15 @@
               exit;
           }
           if (!preg_match('/[a-z]/', $password)) {
-              echo json_encode(['success' => false, 'message' => 'Password harus mengandung minimal satu huruf kecil.']);
+              echo json_encode(['success' => false, 'message' => 'Password must contain at least one lowercase letter.']);
               exit;
           }
           if (!preg_match('/[A-Z]/', $password)) {
-              echo json_encode(['success' => false, 'message' => 'Password harus mengandung minimal satu huruf besar.']);
+              echo json_encode(['success' => false, 'message' => 'Password must contain at least one uppercase letter.']);
               exit;
           }
           if (!preg_match('/[0-9]/', $password)) {
-              echo json_encode(['success' => false, 'message' => 'Password harus mengandung minimal satu angka.']);
+              echo json_encode(['success' => false, 'message' => 'Password must contain at least one number.']);
               exit;
           }
           if ($password !== $confirm) {
@@ -179,9 +179,9 @@
 
           if ($result) {
               unset($_SESSION['reset_admin_id']);
-              echo json_encode(['success' => true, 'message' => 'Password admin berhasil diubah. Silakan login.']);
+              echo json_encode(['success' => true, 'message' => 'Admin password changed successfully. Please login.']);
           } else {
-              echo json_encode(['success' => false, 'message' => 'Gagal menyimpan password. Silakan coba lagi.']);
+              echo json_encode(['success' => false, 'message' => 'Failed to save password. Please try again.']);
           }
           exit;
       }

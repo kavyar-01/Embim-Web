@@ -1,10 +1,12 @@
 <?php
 
 require_once 'models/CarModel.php';
+require_once 'models/UserModel.php';
 
 class HomeController {
     public function index() {
         $carModel = new CarModel();
+        $userModel = new UserModel();
 
         $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 
@@ -23,6 +25,10 @@ class HomeController {
 
         $reviews = $carModel->getReviews($reviewLimit);
         $totalReviews = $carModel->getTotalReviews();
+
+        $totalAvailableCars = $carModel->getTotalAvailableCars();
+        $totalCustomers = $userModel->getTotalCustomers();
+        $averageRating = $carModel->getAverageRating();
 
         require_once 'views/user/home.php';
     }

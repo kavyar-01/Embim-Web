@@ -21,7 +21,7 @@ class Database {
         } catch (PDOException $e) {
             die(json_encode([
                 'status'  => 'error',
-                'message' => 'Koneksi database gagal: ' . $e->getMessage()
+                'message' => 'Database connection failed: ' . $e->getMessage()
             ]));
         }
         return $this->conn;

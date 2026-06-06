@@ -37,14 +37,14 @@
       <?php if (!empty($_GET['registered'])): ?>
       <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg px-4 py-3 mb-5 text-sm flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Akun admin berhasil dibuat! Silakan login.
+        Admin account created successfully! Please login.
       </div>
       <?php endif; ?>
 
       <?php if (!empty($_GET['logout'])): ?>
       <div class="bg-blue-50 border border-blue-300 text-blue-700 rounded-lg px-4 py-3 mb-5 text-sm flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
-        Anda telah berhasil logout.
+        You have successfully logged out.
       </div>
       <?php endif; ?>
 
@@ -132,7 +132,7 @@
                     </svg>
                 </div>
                 <h3 class="text-lg font-extrabold text-gray-900">Lupa Password Admin?</h3>
-                <p class="text-sm text-gray-400 mt-1">Masukkan nama lengkap dan nomor telepon yang terdaftar untuk verifikasi akun Anda.</p>
+                <p class="text-sm text-gray-400 mt-1">Enter registered full name and phone number to verify your account.</p>
             </div>
 
             <div id="verify-alert" class="hidden mb-4 px-4 py-3 rounded-xl text-sm font-semibold border"></div>
@@ -342,7 +342,7 @@
           const btn   = document.getElementById('verify-btn');
 
           if (!name || !phone) {
-              setAlert('verify-alert', 'error', 'Nama lengkap dan nomor telepon wajib diisi.');
+              setAlert('verify-alert', 'error', 'Full name and phone number are required.');
               return;
           }
 
@@ -374,7 +374,7 @@
               .catch(() => {
                   btn.disabled    = false;
                   btn.textContent = 'Verifikasi Akun';
-                  setAlert('verify-alert', 'error', 'Terjadi kesalahan. Silakan coba lagi.');
+                  setAlert('verify-alert', 'error', 'An error occurred. Please try again.');
               });
       }
 
@@ -416,7 +416,7 @@
               .catch(() => {
                   btn.disabled    = false;
                   btn.textContent = 'Simpan Password Baru';
-                  setAlert('reset-alert', 'error', 'Terjadi kesalahan. Silakan coba lagi.');
+                  setAlert('reset-alert', 'error', 'An error occurred. Please try again.');
               });
       }
 
