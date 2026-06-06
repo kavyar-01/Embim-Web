@@ -85,7 +85,7 @@ class AdminReturnController {
         if ($newId !== false) {
             header('Location: ?page=return_detail&id=' . $newId . '&created=1');
         } else {
-            $errors[]  = 'Gagal menyimpan data. Silakan coba lagi.';
+            $errors[]  = 'Failed to save data. Please try again.';
             $bookings  = $this->model->getBookingsWithoutReturn();
             $page      = 'manage_returns';
             require_once __DIR__ . '/../views/return_form.php';
@@ -133,7 +133,7 @@ class AdminReturnController {
         if ($ok) {
             header('Location: ?page=return_detail&id=' . $id . '&updated=1');
         } else {
-            $errors[] = 'Gagal memperbarui data. Silakan coba lagi.';
+            $errors[] = 'Failed to update data. Please try again.';
             $page     = 'manage_returns';
             require_once __DIR__ . '/../views/return_edit_form.php';
         }
@@ -169,26 +169,26 @@ class AdminReturnController {
         $errors = [];
 
         if ($bookingId <= 0) {
-            $errors[] = 'Booking ID wajib dipilih.';
+            $errors[] = 'Booking ID is required.';
         } else {
             $booking = $this->model->getBookingById($bookingId);
             if ($booking === null) {
-                $errors[] = 'Booking ID tidak ditemukan.';
+                $errors[] = 'Booking ID not found.';
             } elseif ($booking['status'] !== 'completed') {
-                $errors[] = 'Hanya booking dengan status "completed" yang dapat ditambahkan data return-nya.';
+                $errors[] = 'Only "completed" bookings can have return data added.';
             } elseif ($this->model->existsByBookingId($bookingId, $excludeId)) {
-                $errors[] = 'Booking #' . $bookingId . ' sudah memiliki data pengembalian.';
+                $errors[] = 'Booking #' . $bookingId . ' already has return data.';
             }
         }
 
         if ($returnDate === '') {
-            $errors[] = 'Tanggal pengembalian wajib diisi.';
+            $errors[] = 'Return date is required.';
         } elseif (!strtotime($returnDate)) {
-            $errors[] = 'Format tanggal pengembalian tidak valid.';
+            $errors[] = 'Invalid return date format.';
         }
 
         if (!in_array($carCondition, ['good', 'damaged'], true)) {
-            $errors[] = 'Kondisi kendaraan hanya boleh "good" atau "damaged".';
+            $errors[] = 'Car condition must be "good" or "damaged".';
         }
 
         return $errors;

@@ -142,11 +142,11 @@
                 </div>
             </div>
 
-            <!-- Ketentuan Denda & Refund -->
+            <!-- Ketentuan Fine & Refund -->
             <div class="bg-white rounded-2xl px-6 py-5 shadow-sm">
                 <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Fine & Refund Policy</h2>
 
-                <!-- Denda Keterlambatan -->
+                <!-- Fine Keterlambatan -->
                 <div class="flex items-start gap-3 bg-red-45 border border-red-100 rounded-xl p-4 mb-3">
                     <div class="w-8 h-8 rounded-lg bg-red-45 flex items-center justify-center flex-shrink-0">
                         <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

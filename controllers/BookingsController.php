@@ -32,22 +32,22 @@ class BookingsController {
         $bookingId = (int)($_POST['booking_id'] ?? 0);
         
         if (!$bookingId) {
-            $_SESSION['booking_error'] = 'Booking ID tidak valid.';
+            $_SESSION['booking_error'] = 'Invalid booking ID.';
             header('Location: index.php?page=bookings');
             exit;
         }
 
         $booking = $bookingModel->getBookingById($bookingId);
         if (!$booking || (int)$booking['user_id'] !== $userId || $booking['status'] !== 'confirmed') {
-            $_SESSION['booking_error'] = 'Booking tidak ditemukan atau tidak dapat dibatalkan.';
+            $_SESSION['booking_error'] = 'Booking not found or cannot be cancelled.';
             header('Location: index.php?page=bookings');
             exit;
         }
 
         if ($bookingModel->updateBookingStatus($bookingId, 'cancelled')) {
-            $_SESSION['review_success'] = 'Booking berhasil dibatalkan. Refund 80% akan segera diproses.';
+            $_SESSION['review_success'] = 'Booking successfully cancelled. 80% refund will be processed shortly.';
         } else {
-            $_SESSION['booking_error'] = 'Gagal membatalkan booking.';
+            $_SESSION['booking_error'] = 'Failed to cancel booking.';
         }
 
         header('Location: index.php?page=bookings');
@@ -60,7 +60,7 @@ class BookingsController {
         $comment   = trim($_POST['comment']     ?? '');
 
         if (!$bookingId || $rating < 1 || $rating > 5) {
-            $_SESSION['review_error'] = 'Data ulasan tidak valid.';
+            $_SESSION['review_error'] = 'Invalid review data.';
             header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
         }
@@ -88,7 +88,7 @@ class BookingsController {
             'comment'    => $comment,
         ]);
 
-        $_SESSION['review_success'] = 'Ulasan berhasil dikirim. Terima kasih!';
+        $_SESSION['review_success'] = 'Review sent successfully. Thank you!';
         header('Location: ' . $_SERVER['REQUEST_URI']);
         exit;
     }

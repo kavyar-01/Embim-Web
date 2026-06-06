@@ -105,7 +105,7 @@ $paymentMethods = [
                     </div>
                 </div>
 
-                <!-- ── 2. Detail Tanggal ── -->
+                <!-- ── 2. Detail Date ── -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-100">
                         <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Rental Date Details</h2>
@@ -142,7 +142,7 @@ $paymentMethods = [
                     </div>
                 </div>
 
-                <!-- ── 3. Catatan ── -->
+                <!-- ── 3. Notes ── -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-100">
                         <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Additional Notes</h2>
@@ -295,7 +295,7 @@ $paymentMethods = [
                             Confirm Booking
                         </button>
 
-                        <!-- Tombol Batal -->
+                        <!-- Cancel Button -->
                         <button
                             type="button"
                             onclick="confirmCancelBooking()"
@@ -328,7 +328,7 @@ $paymentMethods = [
 </div>
 </main>
 
-<!-- Modal Konfirmasi Batalkan -->
+<!-- Cancel Confirmation Modal -->
 <div id="cancel-overlay" class="hidden fixed inset-0 z-[999] flex items-center justify-center">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" id="cancel-backdrop"></div>
     <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-7 text-center">

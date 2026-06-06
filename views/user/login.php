@@ -33,7 +33,7 @@
         </div>
         <?php endif; ?>
 
-        <!-- Alert Success (setelah register berhasil) -->
+        <!-- Success Alert (after successful register) -->
         <?php if (!empty($success)): ?>
         <div class="alert alert-success fade-up">
             <svg class="h-5 w-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,7 +137,7 @@
 
         </form>
 
-        <!-- Daftar Akun Baru -->
+        <!-- Register New Account -->
         <div class="text-center mt-6 fade-up delay-5">
             <a
                 href="index.php?page=register"
@@ -149,7 +149,7 @@
 
     </div>
 
-    <!-- Catatan Bawah -->
+    <!-- Notes Bawah -->
     <div class="text-center mt-6 fade-up delay-5">
         <p class="text-xs text-gray-400 leading-relaxed max-w-sm mx-auto">
             By logging in, you agree to EMBIM's
@@ -267,14 +267,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
                     </svg>
                 </div>
-                <h3 class="text-lg font-extrabold text-gray-900">Lupa Password?</h3>
+                <h3 class="text-lg font-extrabold text-gray-900">Forgot Password?</h3>
                 <p class="text-sm text-gray-400 mt-1">Enter your full name and registered phone number to verify your account.</p>
             </div>
 
             <div id="verify-alert" class="hidden mb-4 px-4 py-3 rounded-xl text-sm font-semibold border"></div>
 
             <div class="space-y-4">
-                <!-- Nama Lengkap -->
+                <!-- Full Name -->
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Full Name</label>
                     <input
@@ -286,7 +286,7 @@
                     >
                 </div>
 
-                <!-- Nomor Telepon -->
+                <!-- Phone Number -->
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Phone Number</label>
                     <div class="flex">
@@ -331,7 +331,7 @@
             <div id="reset-alert" class="hidden mb-4 px-4 py-3 rounded-xl text-sm font-semibold border"></div>
 
             <div class="space-y-4">
-                <!-- Password Baru -->
+                <!-- New Password -->
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">New Password</label>
                     <div class="relative">
@@ -351,7 +351,7 @@
                     </div>
                 </div>
 
-                <!-- Konfirmasi Password -->
+                <!-- Confirm Password -->
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Confirm Password</label>
                     <div class="relative">

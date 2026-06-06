@@ -37,24 +37,24 @@
       <?php if (!empty($_GET['registered'])): ?>
       <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg px-4 py-3 mb-5 text-sm flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Akun admin berhasil dibuat! Silakan login.
+        Admin account successfully created! Please login.
       </div>
       <?php endif; ?>
 
       <?php if (!empty($_GET['logout'])): ?>
       <div class="bg-blue-50 border border-blue-300 text-blue-700 rounded-lg px-4 py-3 mb-5 text-sm flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
-        Anda telah berhasil logout.
+        You have successfully logged out.
       </div>
       <?php endif; ?>
 
       <form action="?page=login" method="POST" class="space-y-5">
 
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
           <input type="email" id="email" name="email"
             value="<?= htmlspecialchars($old['email'] ?? '') ?>"
-            placeholder="Masukkan alamat email Anda"
+            placeholder="Enter your email address"
             class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             required autocomplete="email" />
         </div>
@@ -63,7 +63,7 @@
           <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
           <div class="relative">
             <input type="password" id="password" name="password"
-              placeholder="Masukkan password Anda"
+              placeholder="Enter your password"
               class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors pr-11"
               required autocomplete="current-password" />
             <button type="button" onclick="togglePass('password')"
@@ -75,7 +75,7 @@
             </button>
           </div>
           <div class="flex justify-end mt-1.5">
-            <button type="button" onclick="openForgotModal()" class="text-xs text-blue-600 hover:text-blue-700 font-medium transition-colors">Lupa Password?</button>
+            <button type="button" onclick="openForgotModal()" class="text-xs text-blue-600 hover:text-blue-700 font-medium transition-colors">Forgot Password?</button>
           </div>
         </div>
 
@@ -87,16 +87,16 @@
       </form>
 
       <p class="text-center text-sm text-gray-500 mt-6">
-        Belum punya akun admin?
-        <a href="?page=register" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Daftar Akun Baru</a>
+        Don't have an admin account?
+        <a href="?page=register" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Register New Account</a>
       </p>
 
     </div>
 
     <p class="mt-8 text-gray-300 text-xs text-center relative z-10">
-      Dengan login, Anda menyetujui
-      <a href="#" class="underline hover:text-white transition-colors">Syarat &amp; Ketentuan</a> dan
-      <a href="#" class="underline hover:text-white transition-colors">Kebijakan Privasi</a> EMBIM.
+      By logging in, you agree to
+      <a href="#" class="underline hover:text-white transition-colors">Terms &amp; Conditions</a> dan
+      <a href="#" class="underline hover:text-white transition-colors">Privacy Policy</a> EMBIM.
     </p>
 
 <!-- ══════════════════════════════════════════
@@ -131,28 +131,28 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
                     </svg>
                 </div>
-                <h3 class="text-lg font-extrabold text-gray-900">Lupa Password Admin?</h3>
-                <p class="text-sm text-gray-400 mt-1">Masukkan nama lengkap dan nomor telepon yang terdaftar untuk verifikasi akun Anda.</p>
+                <h3 class="text-lg font-extrabold text-gray-900">Forgot Admin Password?</h3>
+                <p class="text-sm text-gray-400 mt-1">Enter your registered full name and phone number to verify your account.</p>
             </div>
 
             <div id="verify-alert" class="hidden mb-4 px-4 py-3 rounded-xl text-sm font-semibold border"></div>
 
             <div class="space-y-4">
-                <!-- Nama Lengkap -->
+                <!-- Full Name -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Nama Lengkap</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Full Name</label>
                     <input
                         type="text"
                         id="verify-name"
-                        placeholder="Masukkan nama lengkap Anda"
+                        placeholder="Enter your full name"
                         class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-800 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                         autocomplete="name"
                     >
                 </div>
 
-                <!-- Nomor Telepon -->
+                <!-- Phone Number -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Nomor Telepon</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Phone Number</label>
                     <div class="flex">
                         <span class="inline-flex items-center px-4 py-3 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-sm font-bold text-gray-600 select-none">
                             +62
@@ -173,7 +173,7 @@
                     id="verify-btn"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 rounded-xl shadow-md shadow-blue-200/50 transition duration-200"
                 >
-                    Verifikasi Akun
+                    Verify Account
                 </button>
             </div>
         </div>
@@ -187,7 +187,7 @@
                     </svg>
                 </div>
                 <h3 class="text-lg font-extrabold text-gray-900">Reset Password Admin</h3>
-                <p class="text-sm text-gray-400 mt-1">Identitas terverifikasi. Buat password baru untuk akun Anda.</p>
+                <p class="text-sm text-gray-400 mt-1">Identity verified. Create a new password for your account.</p>
             </div>
 
             <input type="hidden" id="reset-user-id">
@@ -195,14 +195,14 @@
             <div id="reset-alert" class="hidden mb-4 px-4 py-3 rounded-xl text-sm font-semibold border"></div>
 
             <div class="space-y-4">
-                <!-- Password Baru -->
+                <!-- New Password -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Password Baru</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">New Password</label>
                     <div class="relative">
                         <input
                             type="password"
                             id="reset-password"
-                            placeholder="Min. 8 karakter"
+                            placeholder="Min. 8 characters"
                             class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl text-sm text-gray-800 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                         >
                         <button type="button" onclick="toggleResetPw('reset-password', 'eye1')"
@@ -215,14 +215,14 @@
                     </div>
                 </div>
 
-                <!-- Konfirmasi Password -->
+                <!-- Confirm Password -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Konfirmasi Password</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Confirm Password</label>
                     <div class="relative">
                         <input
                             type="password"
                             id="reset-confirm"
-                            placeholder="Ulangi password baru"
+                            placeholder="Repeat new password"
                             class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl text-sm text-gray-800 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                         >
                         <button type="button" onclick="toggleResetPw('reset-confirm', 'eye2')"
@@ -238,11 +238,11 @@
                 <!-- Password Rules mini -->
                 <div class="bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 space-y-1.5" id="reset-rules">
                     <?php foreach ([
-                        ['id' => 'rr-len',   'text' => '8–100 karakter'],
-                        ['id' => 'rr-lower', 'text' => 'Minimal satu huruf kecil'],
-                        ['id' => 'rr-upper', 'text' => 'Minimal satu huruf besar'],
-                        ['id' => 'rr-digit', 'text' => 'Minimal satu angka'],
-                        ['id' => 'rr-match', 'text' => 'Password cocok'],
+                        ['id' => 'rr-len',   'text' => '8–100 characters'],
+                        ['id' => 'rr-lower', 'text' => 'At least one lowercase letter'],
+                        ['id' => 'rr-upper', 'text' => 'At least one uppercase letter'],
+                        ['id' => 'rr-digit', 'text' => 'At least one number'],
+                        ['id' => 'rr-match', 'text' => 'Passwords match'],
                     ] as $r): ?>
                     <div class="flex items-center gap-2 text-xs text-gray-400" id="<?php echo $r['id']; ?>">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 rule-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +258,7 @@
                     id="reset-btn"
                     class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 rounded-xl shadow-md shadow-emerald-200/50 transition duration-200"
                 >
-                    Simpan Password Baru
+                    Save New Password
                 </button>
             </div>
         </div>
@@ -347,7 +347,7 @@
           }
 
           btn.disabled    = true;
-          btn.textContent = 'Memverifikasi...';
+          btn.textContent = 'Verifying...';
           setAlert('verify-alert', '', '');
 
           const formData = new FormData();
@@ -358,7 +358,7 @@
               .then(r => r.json())
               .then(data => {
                   btn.disabled    = false;
-                  btn.textContent = 'Verifikasi Akun';
+                  btn.textContent = 'Verify Account';
 
                   if (data.success) {
                       document.getElementById('reset-user-id').value = data.user_id;
@@ -373,8 +373,8 @@
               })
               .catch(() => {
                   btn.disabled    = false;
-                  btn.textContent = 'Verifikasi Akun';
-                  setAlert('verify-alert', 'error', 'Terjadi kesalahan. Silakan coba lagi.');
+                  btn.textContent = 'Verify Account';
+                  setAlert('verify-alert', 'error', 'An error occurred. Please try again.');
               });
       }
 
@@ -386,12 +386,12 @@
 
           const valid = checkRules(password, confirm);
           if (!valid) {
-              setAlert('reset-alert', 'error', 'Pastikan semua persyaratan password terpenuhi.');
+              setAlert('reset-alert', 'error', 'Make sure all password requirements are met.');
               return;
           }
 
           btn.disabled    = true;
-          btn.textContent = 'Menyimpan...';
+          btn.textContent = 'Saving...';
           setAlert('reset-alert', '', '');
 
           const formData = new FormData();
@@ -405,18 +405,18 @@
                   if (data.success) {
                       setAlert('reset-alert', 'success', '✓ ' + data.message);
                       btn.disabled    = true;
-                      btn.textContent = 'Password Tersimpan';
+                      btn.textContent = 'Password Saved';
                       setTimeout(closeForgotModal, 2000);
                   } else {
                       setAlert('reset-alert', 'error', data.message);
                       btn.disabled    = false;
-                      btn.textContent = 'Simpan Password Baru';
+                      btn.textContent = 'Save New Password';
                   }
               })
               .catch(() => {
                   btn.disabled    = false;
-                  btn.textContent = 'Simpan Password Baru';
-                  setAlert('reset-alert', 'error', 'Terjadi kesalahan. Silakan coba lagi.');
+                  btn.textContent = 'Save New Password';
+                  setAlert('reset-alert', 'error', 'An error occurred. Please try again.');
               });
       }
 

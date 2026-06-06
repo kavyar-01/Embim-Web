@@ -86,7 +86,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
         <input type="search" name="search"
                value="<?= htmlspecialchars($fSearch) ?>"
-               placeholder="Cari brand, model, atau plat nomor..."
+               placeholder="Search brand, model, atau plat nomor..."
                class="form-control" style="width:280px;" />
       </div>
 
@@ -122,16 +122,16 @@
         <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
           <label class="form-label" style="font-size:12px;margin:0;">Status</label>
           <select name="status" class="form-control" style="width:auto;">
-            <option value=""            <?= $fStatus === ''            ? 'selected' : '' ?>>Semua Status</option>
+            <option value=""            <?= $fStatus === ''            ? 'selected' : '' ?>>All Statuses</option>
             <option value="available"   <?= $fStatus === 'available'   ? 'selected' : '' ?>>Available</option>
             <option value="booked"      <?= $fStatus === 'booked'      ? 'selected' : '' ?>>Booked</option>
             <option value="maintenance" <?= $fStatus === 'maintenance' ? 'selected' : '' ?>>Maintenance</option>
           </select>
         </div>
 
-        <!-- Transmisi -->
+        <!-- Transmission -->
         <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
-          <label class="form-label" style="font-size:12px;margin:0;">Transmisi</label>
+          <label class="form-label" style="font-size:12px;margin:0;">Transmission</label>
           <select name="transmission" class="form-control" style="width:auto;">
             <option value=""          <?= $fTrans === ''          ? 'selected' : '' ?>>Semua</option>
             <option value="automatic" <?= $fTrans === 'automatic' ? 'selected' : '' ?>>Automatic</option>
@@ -139,9 +139,9 @@
           </select>
         </div>
 
-        <!-- Bahan Bakar -->
+        <!-- Fuel Type -->
         <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
-          <label class="form-label" style="font-size:12px;margin:0;">Bahan Bakar</label>
+          <label class="form-label" style="font-size:12px;margin:0;">Fuel Type</label>
           <select name="fuel_type" class="form-control" style="width:auto;">
             <option value=""         <?= $fFuel === ''         ? 'selected' : '' ?>>Semua</option>
             <option value="gasoline" <?= $fFuel === 'gasoline' ? 'selected' : '' ?>>Gasoline</option>
@@ -154,9 +154,9 @@
         <!-- Divider visual -->
         <div style="width:1px;background:#e5e7eb;align-self:stretch;margin:0 4px;"></div>
 
-        <!-- Harga / Hari -->
+        <!-- Price / Hari -->
         <div style="display:flex;flex-direction:column;gap:4px;">
-          <label class="form-label" style="font-size:12px;margin:0;">Harga / Hari (Rp)</label>
+          <label class="form-label" style="font-size:12px;margin:0;">Price / Hari (Rp)</label>
           <div style="display:flex;align-items:center;gap:8px;">
             <input type="number" name="price_min" min="0" step="10000"
                    value="<?= htmlspecialchars($fPMin) ?>"
@@ -173,9 +173,9 @@
         <!-- Divider visual -->
         <div style="width:1px;background:#e5e7eb;align-self:stretch;margin:0 4px;"></div>
 
-        <!-- Tahun -->
+        <!-- Year -->
         <div style="display:flex;flex-direction:column;gap:4px;">
-          <label class="form-label" style="font-size:12px;margin:0;">Tahun</label>
+          <label class="form-label" style="font-size:12px;margin:0;">Year</label>
           <div style="display:flex;align-items:center;gap:8px;">
             <input type="number" name="year_min" min="1990" max="2099"
                    value="<?= htmlspecialchars($fYMin) ?>"
@@ -199,19 +199,19 @@
   <!-- ═══════════════════════════════════════════════════════════ -->
   <?php
     $chips = [];
-    if ($fSearch !== '') $chips[] = 'Cari: "' . htmlspecialchars($fSearch) . '"';
+    if ($fSearch !== '') $chips[] = 'Search: "' . htmlspecialchars($fSearch) . '"';
     if ($fStatus !== '') $chips[] = 'Status: ' . ucfirst($fStatus);
-    if ($fTrans  !== '') $chips[] = 'Transmisi: ' . ucfirst($fTrans);
+    if ($fTrans  !== '') $chips[] = 'Transmission: ' . ucfirst($fTrans);
     if ($fFuel   !== '') $chips[] = 'BBM: ' . ucfirst($fFuel);
     if ($fPMin   !== '' || $fPMax !== '') {
-        $lbl = 'Harga: ';
+        $lbl = 'Price: ';
         if ($fPMin !== '' && $fPMax !== '') $lbl .= 'Rp ' . number_format((float)$fPMin,0,',','.') . ' – Rp ' . number_format((float)$fPMax,0,',','.');
         elseif ($fPMin !== '')              $lbl .= 'Min Rp ' . number_format((float)$fPMin,0,',','.');
         else                               $lbl .= 'Maks Rp ' . number_format((float)$fPMax,0,',','.');
         $chips[] = $lbl;
     }
     if ($fYMin !== '' || $fYMax !== '') {
-        $lbl = 'Tahun: ';
+        $lbl = 'Year: ';
         if ($fYMin !== '' && $fYMax !== '') $lbl .= $fYMin . ' – ' . $fYMax;
         elseif ($fYMin !== '')              $lbl .= 'dari ' . $fYMin;
         else                               $lbl .= 's/d ' . $fYMax;
@@ -226,7 +226,7 @@
         <?= $chip ?>
       </span>
     <?php endforeach; ?>
-    <a href="?page=manage_cars" style="font-size:12px;color:#ef4444;margin-left:4px;">× Hapus semua filter</a>
+    <a href="?page=manage_cars" style="font-size:12px;color:#ef4444;margin-left:4px;">× Clear all filters</a>
   </div>
   <?php endif; ?>
 
