@@ -184,7 +184,7 @@
                                class="text-xs font-bold border border-red-200 text-red-500 hover:bg-red-50 px-4 py-2 rounded-xl transition duration-200 shadow-sm mr-2">
                                 Cancel Booking
                             </button>
-                            <a href="index.php?page=payment&id=<?php echo $booking['id']; ?>"
+                            <a href="index.php?page=car-detail&id=<?php echo $booking['car_id']; ?>"
                                class="text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition duration-200 shadow-sm">
                                 View Details
                             </a>
@@ -296,7 +296,7 @@
         <h3 class="text-lg font-bold text-gray-900 mb-1">Cancel Booking?</h3>
         <p class="text-sm text-gray-500 mb-3">Cancelled bookings cannot be reversed. Are you sure you want to proceed?</p>
         <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-6">
-            <p class="text-xs text-amber-700 font-semibold mb-1">⚠️ Refund Warning</p>
+            <p class="text-xs text-amber-700 font-semibold mb-1"> Refund Warning</p>
             <p class="text-[11px] text-amber-600 leading-tight">If cancelled, the refunded amount is only <strong>80%</strong> of the total rental price.</p>
         </div>
         <form id="cancel-form" method="POST" action="index.php?page=bookings">

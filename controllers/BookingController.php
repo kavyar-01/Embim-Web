@@ -158,7 +158,7 @@ class BookingController {
 
                     // Check availability one last time
                     if (!$bookingModel->isCarAvailable($booking['car_id'], $booking['start_date'], $booking['end_date'])) {
-                        $errors[] = 'Maaf, kendaraan sudah tidak tersedia pada tanggal tersebut.';
+                        $errors[] = 'The vehicle is not available on the selected date.';
                     } else {
                         // Create Booking
                         $bookingId = $bookingModel->createBooking([
@@ -219,13 +219,13 @@ class BookingController {
 
         $file         = $_FILES[$inputName];
         $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-        $maxSize      = 5 * 1024 * 1024; // 5 MB
+        $maxSize      = 5 * 1024 * 1024;
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
             return ['error' => 'Failed to upload photo.', 'filename' => null];
         }
         if ($file['size'] > $maxSize) {
-            return ['error' => 'Ukuran foto maksimal 5 MB.', 'filename' => null];
+            return ['error' => 'The photo size must be less than 5 MB.', 'filename' => null];
         }
         $mime = mime_content_type($file['tmp_name']);
         if (!in_array($mime, $allowedTypes)) {

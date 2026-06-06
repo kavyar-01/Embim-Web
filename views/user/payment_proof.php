@@ -200,7 +200,7 @@ $imgSrc = !empty($booking['car']['photo'])
             </label>
 
             <p id="proof-error" class="hidden text-xs text-red-500 font-semibold mb-3">
-                ⚠ Payment proof is required.
+                Payment proof is required.
             </p>
 
             <p class="text-xs text-gray-400 flex items-center gap-1.5">
@@ -234,7 +234,6 @@ $imgSrc = !empty($booking['car']['photo'])
     const form     = document.getElementById('proof-form');
     const submitBtn= document.getElementById('proof-submit');
 
-    // Preview gambar saat dipilih
     if (input) {
         input.addEventListener('change', function () {
             const file = this.files[0];
@@ -251,7 +250,6 @@ $imgSrc = !empty($booking['car']['photo'])
         });
     }
 
-    // Validasi sebelum submit
     if (form) {
         form.addEventListener('submit', function (e) {
             if (!input || !input.files || input.files.length === 0) {
