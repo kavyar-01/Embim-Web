@@ -27,7 +27,7 @@
 
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-yellow-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Pending</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['pending'] ?? 0 ?></p>
@@ -37,7 +37,7 @@
       </div>
     </div>
     
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Confirmed</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['confirmed'] ?? 0 ?></p>
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Ongoing</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['ongoing'] ?? 0 ?></p>
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Completed</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['completed'] ?? 0 ?></p>
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Cancelled</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['cancelled'] ?? 0 ?></p>
@@ -76,6 +76,41 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </div>
     </div>
+  </div>
+
+  <!-- Top Insights -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <?php if (!empty($topCar)): ?>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+        <img src="../assets/images/<?= htmlspecialchars($topCar['photo']) ?>" alt="Top Car" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Car&background=f3f4f6&color=9ca3af'" />
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-0.5">Most Booked Car</p>
+        <p class="text-lg font-bold text-gray-900 truncate"><?= htmlspecialchars($topCar['brand'] . ' ' . $topCar['model']) ?></p>
+        <p class="text-sm text-gray-500 mt-1 flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span class="font-medium text-gray-700"><?= $topCar['booking_count'] ?></span> Total Bookings
+        </p>
+      </div>
+    </div>
+    <?php endif; ?>
+
+    <?php if (!empty($topUser)): ?>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+      <div class="w-16 h-16 shrink-0 rounded-full overflow-hidden bg-gray-100 border-2 border-blue-100">
+        <img src="../assets/images/user/<?= htmlspecialchars($topUser['photo_profile'] ?? 'default.png') ?>" alt="Top User" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($topUser['full_name']) ?>&background=eff6ff&color=1d4ed8'" />
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-0.5">Top Customer</p>
+        <p class="text-lg font-bold text-gray-900 truncate"><?= htmlspecialchars($topUser['full_name']) ?></p>
+        <p class="text-sm text-gray-500 mt-1 flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          <span class="font-medium text-gray-700"><?= $topUser['booking_count'] ?></span> Completed Bookings
+        </p>
+      </div>
+    </div>
+    <?php endif; ?>
   </div>
 
   <!-- Filter Bar -->
@@ -105,39 +140,38 @@
 
   <!-- Table -->
   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-    <div class="overflow-x-auto">
-      <table class="w-full text-left text-sm text-gray-600">
-        <thead class="bg-gray-50/80 border-b border-gray-100 text-xs uppercase font-semibold text-gray-500">
+    <table class="w-full text-left text-sm text-gray-600">
+      <thead class="bg-gray-50/80 border-b border-gray-100 text-xs uppercase font-semibold text-gray-500">
         <tr>
-          <th class="px-5 py-4">Booking ID</th>
-          <th class="px-5 py-4">Customer</th>
-          <th class="px-5 py-4">Car</th>
-          <th class="px-5 py-4">Rental Period</th>
-          <th class="px-5 py-4">Total Days</th>
-          <th class="px-5 py-4 text-center">Booking Status</th>
-          <th class="px-5 py-4">Notes</th>
-          <th class="px-5 py-4">Created At</th>
-          <th class="px-5 py-4 text-right">Actions</th>
+          <th class="px-4 py-3">ID</th>
+          <th class="px-4 py-3">Customer</th>
+          <th class="px-4 py-3">Car</th>
+          <th class="px-4 py-3">Period</th>
+          <th class="px-4 py-3">Days</th>
+          <th class="px-4 py-3 text-center">Status</th>
+          <th class="px-4 py-3">Notes</th>
+          <th class="px-4 py-3">Created</th>
+          <th class="px-4 py-3 text-right">Actions</th>
         </tr>
       </thead>
       <tbody>
         <?php if (empty($bookings)): ?>
-          <tr><td colspan="10" class="text-center py-10 text-gray-400">No booking data found.</td></tr>
+          <tr><td colspan="9" class="text-center py-10 text-gray-400">No booking data found.</td></tr>
         <?php else: foreach ($bookings as $b): ?>
         <tr class="hover:bg-blue-50/30 transition-colors group border-b border-gray-50">
-          <td class="px-5 py-4 font-medium text-gray-900">#<?= str_pad((string)$b['id'], 4, '0', STR_PAD_LEFT) ?></td>
-          <td class="px-5 py-4 font-medium text-gray-800"><?= htmlspecialchars($b['customer_name']) ?></td>
-          <td class="px-5 py-4">
-            <?= htmlspecialchars($b['car_name']) ?><br>
-            <span class="text-xs text-gray-500 font-mono"><?= htmlspecialchars($b['license_plate']) ?></span>
+          <td class="px-4 py-3 font-medium text-gray-900"><?= (int)$b['id'] ?></td>
+          <td class="px-4 py-3 font-medium text-gray-800"><?= htmlspecialchars($b['customer_name']) ?></td>
+          <td class="px-4 py-3">
+            <div class="font-medium text-gray-900"><?= htmlspecialchars($b['car_name']) ?></div>
+            <div class="text-xs text-gray-500 font-mono"><?= htmlspecialchars($b['license_plate']) ?></div>
           </td>
-          <td class="px-5 py-4 text-sm text-gray-600 whitespace-nowrap">
-            <?= date('d M Y', strtotime($b['start_date'])) ?> - <?= date('d M Y', strtotime($b['end_date'])) ?>
+          <td class="px-4 py-3 text-xs text-gray-600">
+            <?= date('d M Y', strtotime($b['start_date'])) ?><br><span class="text-gray-400">to</span> <?= date('d M Y', strtotime($b['end_date'])) ?>
           </td>
-          <td class="px-5 py-4 font-medium text-gray-800 whitespace-nowrap">
-            <?= (int)$b['total_days'] ?> Days
+          <td class="px-4 py-3 font-medium text-gray-800">
+            <?= (int)$b['total_days'] ?>d
           </td>
-          <td class="px-5 py-4 text-center">
+          <td class="px-4 py-3 text-center">
             <?php
               $bs = $b['status'] ?? 'completed';
               $bsCls = match($bs) {
@@ -149,18 +183,20 @@
                 default => 'bg-gray-100 text-gray-700 border-gray-200'
               };
             ?>
-            <span class="px-2.5 py-1 border rounded-full text-xs font-bold uppercase tracking-wider <?= $bsCls ?>">
+            <span class="px-2 py-1 border rounded-md text-[10px] font-bold uppercase tracking-wider <?= $bsCls ?>">
               <?= htmlspecialchars($bs) ?>
             </span>
           </td>
-          <td class="px-5 py-4 text-sm text-gray-500 truncate max-w-[150px]" title="<?= htmlspecialchars($b['notes'] ?? '') ?>">
-            <?= !empty($b['notes']) ? htmlspecialchars($b['notes']) : '<span class="italic text-gray-400">—</span>' ?>
+          <td class="px-4 py-3 text-xs text-gray-500">
+            <div class="truncate max-w-[120px]" title="<?= htmlspecialchars($b['notes'] ?? '') ?>">
+              <?= !empty($b['notes']) ? htmlspecialchars($b['notes']) : '<span class="italic text-gray-400">—</span>' ?>
+            </div>
           </td>
-          <td class="px-5 py-4 text-sm text-gray-500 whitespace-nowrap">
-            <?= htmlspecialchars(date('d M Y, H:i', strtotime($b['created_at']))) ?>
+          <td class="px-4 py-3 text-xs text-gray-500">
+            <?= htmlspecialchars(date('d M Y', strtotime($b['created_at']))) ?><br><?= htmlspecialchars(date('H:i', strtotime($b['created_at']))) ?>
           </td>
-          <td class="px-5 py-4">
-            <div class="flex items-center justify-end gap-2">
+          <td class="px-4 py-3">
+            <div class="flex items-center justify-end gap-1.5">
               <a href="?page=booking_detail&id=<?= $b['id'] ?>" class="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors" title="View Details">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               </a>
@@ -177,7 +213,6 @@
       </tbody>
     </table>
   </div>
-</div>
 
   <?php
     $totalPages  = (int) ($totalPages  ?? 1);
@@ -217,22 +252,19 @@
 <!-- Delete Confirmation Modal -->
 <div id="modal-delete"
      style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:12px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-      <div style="background:#fef2f2;border-radius:50%;padding:10px;flex-shrink:0;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;color:#dc2626;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-      </div>
-      <div>
-        <p style="font-weight:700;font-size:1rem;color:#111827;margin:0;">Delete Booking?</p>
-        <p id="modal-desc" style="font-size:0.825rem;color:#6b7280;margin:4px 0 0;"></p>
-      </div>
+  <div style="background:#fff;border-radius:16px;padding:32px;max-width:400px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);text-align:center;">
+    <!-- Large Exclamation Icon -->
+    <div style="margin: 0 auto 16px auto; width: 64px; height: 64px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+      <svg xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px;color:#dc2626;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
     </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
-      <button type="button" class="btn btn-ghost"
+    <h3 style="font-weight:800;font-size:1.25rem;color:#111827;margin:0 0 8px 0;">Are you sure?</h3>
+    <p style="font-size:0.875rem;color:#6b7280;margin:0 0 24px 0;line-height:1.5;">Are you sure you want to delete this data? This action cannot be undone.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button type="button" class="btn btn-ghost" style="flex:1;"
               onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
-      <form id="form-delete" method="POST" action="?page=delete_booking" style="margin:0;">
+      <form id="form-delete" method="POST" action="?page=delete_booking" style="margin:0;flex:1;display:flex;">
         <input type="hidden" id="delete-id" name="id" value="" />
-        <button type="submit" class="btn" style="background:#dc2626;color:#fff;border:1px solid #dc2626;">
+        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;">
           Yes, Delete
         </button>
       </form>
@@ -243,8 +275,6 @@
 <script>
 function openDeleteModal(id, name) {
   document.getElementById('delete-id').value  = id;
-  document.getElementById('modal-desc').textContent =
-    'Booking #' + id + ' for ' + name + ' will be permanently deleted along with its related return and fine data.';
   document.getElementById('modal-delete').style.display = 'flex';
 }
 // Close modal if clicking outside

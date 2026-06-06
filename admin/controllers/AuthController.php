@@ -46,17 +46,21 @@
               $old      = $_POST;
               $fullName = trim($_POST['full_name']  ?? '');
               $email    = trim($_POST['email']      ?? '');
-              $phone    = trim($_POST['phone']      ?? '');
-              if ($phone !== '') {
-                  $phone = ltrim($phone, '0');
+              $rawPhone = trim($_POST['phone'] ?? '');
+              $phone    = $rawPhone;
+              if ($rawPhone !== '') {
+                  $phone = ltrim($rawPhone, '0');
                   $phone = '+62' . $phone;
               }
               $pass     = $_POST['password']        ?? '';
               $terms    = !empty($_POST['terms']);
 
               if (empty($fullName))  $errors[] = 'Nama lengkap wajib diisi.';
+              elseif (preg_match('/[0-9]/', $fullName)) $errors[] = 'Nama lengkap tidak boleh mengandung angka.';
               if (empty($email))     $errors[] = 'Alamat email wajib diisi.';
               elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Format email tidak valid.';
+              if (empty($rawPhone))  $errors[] = 'Nomor telepon wajib diisi.';
+              elseif (strlen($rawPhone) < 7) $errors[] = 'Nomor telepon minimal 7 karakter.';
               if (empty($pass))      $errors[] = 'Password wajib diisi.';
               elseif (strlen($pass) < 8)             $errors[] = 'Password minimal 8 karakter.';
               elseif (!preg_match('/[a-z]/', $pass)) $errors[] = 'Password harus mengandung minimal satu huruf kecil.';

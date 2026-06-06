@@ -51,7 +51,8 @@ class CarModel {
     public function getAll(): array {
         return getPDO()->query("
             SELECT c.*, 
-                   vh.drivetrain, vh.body_style, vh.engine, vh.transmission AS hl_transmission 
+                   vh.drivetrain, vh.body_style, vh.engine, vh.transmission AS hl_transmission,
+                   (SELECT COUNT(*) FROM `cars` c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') AS stock
             FROM `cars` c
             LEFT JOIN `vehicle_highlights` vh ON vh.car_id = c.id
             ORDER BY c.`created_at` DESC
@@ -61,7 +62,8 @@ class CarModel {
     public function findById(int $id): array|false {
         $stmt = getPDO()->prepare("
             SELECT c.*, 
-                   vh.drivetrain, vh.body_style, vh.engine, vh.transmission AS hl_transmission 
+                   vh.drivetrain, vh.body_style, vh.engine, vh.transmission AS hl_transmission,
+                   (SELECT COUNT(*) FROM `cars` c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') AS stock
             FROM `cars` c 
             LEFT JOIN `vehicle_highlights` vh ON vh.car_id = c.id 
             WHERE c.`id` = :id LIMIT 1
@@ -146,8 +148,29 @@ class CarModel {
     }
 
     public function delete(int $id): bool {
-        $stmt = getPDO()->prepare("DELETE FROM `cars` WHERE `id` = :id");
-        return $stmt->execute([':id' => $id]);
+        try {
+            $pdo = getPDO();
+            $pdo->beginTransaction();
+            
+            // Hapus data vehicle_highlights terlebih dahulu untuk menghindari foreign key constraint error
+            $stmt = $pdo->prepare("DELETE FROM `vehicle_highlights` WHERE `car_id` = :id");
+            $stmt->execute([':id' => $id]);
+            
+            $stmt = $pdo->prepare("DELETE FROM `cars` WHERE `id` = :id");
+            $result = $stmt->execute([':id' => $id]);
+            
+            $pdo->commit();
+            return $result;
+        } catch (\PDOException $e) {
+            if (isset($pdo) && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            // Jika error karena masih ada data booking/rental yang terhubung dengan mobil ini
+            if ($e->getCode() === '23000') {
+                return false; 
+            }
+            throw $e;
+        }
     }
 
     /**
@@ -173,7 +196,8 @@ class CarModel {
     ): array {
         $sql = "
             SELECT c.*, 
-                   vh.drivetrain, vh.body_style, vh.engine, vh.transmission AS hl_transmission 
+                   vh.drivetrain, vh.body_style, vh.engine, vh.transmission AS hl_transmission,
+                   (SELECT COUNT(*) FROM `cars` c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') AS stock
             FROM `cars` c
             LEFT JOIN `vehicle_highlights` vh ON vh.car_id = c.id
             WHERE 1=1

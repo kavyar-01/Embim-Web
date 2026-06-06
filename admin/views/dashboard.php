@@ -13,17 +13,19 @@
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
     <?php $cards = [
-      ['label'=>'Total Cars',        'value'=>$stats['total_cars'],       'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M9 17l-1-4H5l-1-3h12l-1 3h-3l-1 4H9zm0 0h6M6 10V7a2 2 0 012-2h8a2 2 0 012 2v3"/>'],
-      ['label'=>'Active Bookings',   'value'=>$stats['active_bookings'],  'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>'],
-      ['label'=>'Revenue This Month','value'=>'Rp. '.number_format($stats['revenue'],0,',','.'), 'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.21 0-4 .895-4 2s1.79 2 4 2 4 .895 4 2-1.79 2-4 2m0-8v1m0 10v1M8 10H7m10 0h-1"/>'],
-      ['label'=>'Available Cars',    'value'=>$stats['available_cars'],   'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
+      ['label'=>'Total Cars',        'value'=>$stats['total_cars'],       'bg'=>'bg-blue-50',   'color'=>'text-blue-500',   'hover'=>'hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]', 'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M5 11l1.5-4.5h11L19 11M5 11v6h2v2h2v-2h6v2h2v-2h2v-6M5 11h14M8 14h.01M16 14h.01"/>'],
+      ['label'=>'Active Bookings',   'value'=>$stats['active_bookings'],  'bg'=>'bg-indigo-50', 'color'=>'text-indigo-500', 'hover'=>'hover:border-indigo-300 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]', 'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>'],
+      ['label'=>'Revenue This Month','value'=>'Rp. '.number_format($stats['revenue'],0,',','.'), 'bg'=>'bg-emerald-50', 'color'=>'text-emerald-500', 'hover'=>'hover:border-emerald-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]', 'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
+      ['label'=>'Available Cars',    'value'=>$stats['available_cars'],   'bg'=>'bg-green-50',  'color'=>'text-green-500',  'hover'=>'hover:border-green-300 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]', 'icon'=>'<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
     ]; foreach ($cards as $c): ?>
-    <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-[0_0_15px_rgba(59,130,246,0.1)] hover:shadow-[0_0_20px_rgba(59,130,246,0.25)] transition-shadow duration-300">
-      <div class="flex items-center justify-between pb-2">
-        <span class="text-sm font-medium text-gray-500"><?= $c['label'] ?></span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><?= $c['icon'] ?></svg>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 <?= $c['hover'] ?>">
+      <div>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><?= $c['label'] ?></p>
+        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $c['value'] ?></p>
       </div>
-      <div class="text-2xl font-bold text-gray-900"><?= $c['value'] ?></div>
+      <div class="p-3 <?= $c['bg'] ?> rounded-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 <?= $c['color'] ?>" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><?= $c['icon'] ?></svg>
+      </div>
     </div>
     <?php endforeach; ?>
   </div>

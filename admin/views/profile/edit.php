@@ -89,7 +89,7 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div class="sm:col-span-2">
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">Nama Lengkap <span class="text-red-400">*</span></label>
-                      <input type="text" name="full_name" value="<?= htmlspecialchars($admin['full_name']) ?>" required class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="Masukkan nama lengkap">
+                      <input type="text" name="full_name" value="<?= htmlspecialchars($admin['full_name']) ?>" required pattern="^[^0-9]*$" title="Nama tidak boleh mengandung angka" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="Masukkan nama lengkap">
                   </div>
                   <div>
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email <span class="text-red-400">*</span></label>
@@ -101,7 +101,7 @@
                           <span class="inline-flex items-center px-4 py-2.5 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-sm font-bold text-gray-600 select-none">
                               +62
                           </span>
-                          <input type="tel" name="phone" value="<?= htmlspecialchars(preg_replace('/^\+?62/', '', $admin['phone'] ?? '')) ?>" class="w-full px-3 py-2.5 rounded-r-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="812 xxxx xxxx" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                          <input type="tel" name="phone" value="<?= htmlspecialchars(preg_replace('/^\+?62/', '', $admin['phone'] ?? '')) ?>" required minlength="7" class="w-full px-3 py-2.5 rounded-r-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="812 xxxx xxxx" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                       </div>
                   </div>
               </div>
@@ -114,11 +114,32 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">Password Baru</label>
-                      <input type="password" name="password" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="Min. 8 karakter">
+                      <div class="relative">
+                          <input type="password" id="password" name="password" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition pr-11" placeholder="Min. 8 karakter" oninput="checkPassword(this.value)">
+                          <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                              <svg id="icon-eye" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                              <svg id="icon-eye-off" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                          </button>
+                      </div>
+                      <div class="mt-2 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 hidden" id="password-req-box">
+                        <p class="text-xs font-semibold text-gray-700 mb-2">Password harus mengandung:</p>
+                        <ul class="space-y-1">
+                          <li id="req-len" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> 8–100 karakter</li>
+                          <li id="req-low" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu huruf kecil</li>
+                          <li id="req-up"  class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu huruf besar</li>
+                          <li id="req-num" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu angka</li>
+                        </ul>
+                      </div>
                   </div>
                   <div>
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">Konfirmasi Password</label>
-                      <input type="password" name="password_confirm" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="Ulangi password baru">
+                      <div class="relative">
+                          <input type="password" id="password_confirm" name="password_confirm" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition pr-11" placeholder="Ulangi password baru">
+                          <button type="button" id="toggle-password-confirm" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                              <svg id="icon-eye-conf" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                              <svg id="icon-eye-off-conf" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                          </button>
+                      </div>
                   </div>
               </div>
           </div>
@@ -143,6 +164,52 @@ function previewImage(input, previewId) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+function checkPassword(val) {
+    const reqBox = document.getElementById('password-req-box');
+    if (val.length > 0) {
+        reqBox.classList.remove('hidden');
+    } else {
+        reqBox.classList.add('hidden');
+    }
+
+    const rules = {
+      'req-len': val.length >= 8 && val.length <= 100,
+      'req-low': /[a-z]/.test(val),
+      'req-up':  /[A-Z]/.test(val),
+      'req-num': /[0-9]/.test(val),
+    };
+    for (const [id, ok] of Object.entries(rules)) {
+      const li  = document.getElementById(id);
+      if (!li) continue;
+      const dot = li.querySelector('.req-dot');
+      if (ok) {
+        li.classList.replace('text-gray-400', 'text-green-600');
+        if (dot) dot.classList.replace('bg-gray-300', 'bg-green-500');
+      } else {
+        li.classList.replace('text-green-600', 'text-gray-400');
+        if (dot) dot.classList.replace('bg-green-500', 'bg-gray-300');
+      }
+    }
+}
+
+function attachToggle(btnId, inputId, eyeId, eyeOffId) {
+    const btn = document.getElementById(btnId);
+    const inp = document.getElementById(inputId);
+    const eye = document.getElementById(eyeId);
+    const off = document.getElementById(eyeOffId);
+    if(btn && inp) {
+        btn.addEventListener('click', function() {
+            const isHidden = inp.type === 'password';
+            inp.type = isHidden ? 'text' : 'password';
+            eye.classList.toggle('hidden', isHidden);
+            off.classList.toggle('hidden', !isHidden);
+        });
+    }
+}
+
+attachToggle('toggle-password', 'password', 'icon-eye', 'icon-eye-off');
+attachToggle('toggle-password-confirm', 'password_confirm', 'icon-eye-conf', 'icon-eye-off-conf');
 </script>
 
 <?php require_once __DIR__ . '/../partials/layout_bottom.php'; ?>

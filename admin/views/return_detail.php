@@ -10,7 +10,7 @@
 
   <div class="page-heading">
     <h1>Return Details</h1>
-    <p>Return #<?= $return['id'] ?> — Booking #<?= $return['booking_id'] ?></p>
+    <p>Return <?= $return['id'] ?> — Booking <?= $return['booking_id'] ?></p>
   </div>
 
   <?php if (isset($_GET['created'])): ?>
@@ -40,14 +40,14 @@
         <span class="<?= $condClass ?>"><?= $condLabel ?></span>
       </div>
       <dl class="detail-dl">
-        <div class="detail-row"><dt>Return ID</dt><dd>#<?= $return['id'] ?></dd></div>
-        <div class="detail-row"><dt>Booking ID</dt><dd>#<?= $return['booking_id'] ?></dd></div>
+        <div class="detail-row"><dt>Return ID</dt><dd><?= $return['id'] ?></dd></div>
+        <div class="detail-row"><dt>Booking ID</dt><dd><?= $return['booking_id'] ?></dd></div>
         <div class="detail-row"><dt>Return Date</dt><dd><strong><?= htmlspecialchars($return['return_date']) ?></strong></dd></div>
         <div class="detail-row">
           <dt>Late Status</dt>
           <dd>
             <?php if ((int)$return['late_days'] > 0): ?>
-              <span class="badge badge-unpaid"><?= (int)$return['late_days'] ?> Days Late</span>
+              <span class="badge" style="background:#fef2f2;color:#dc2626;border-color:#fecaca;"><?= (int)$return['late_days'] ?> Days Late</span>
             <?php else: ?>
               <span class="badge badge-paid">On Time</span>
             <?php endif; ?>

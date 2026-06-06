@@ -25,13 +25,19 @@ class ProfileController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fullName = trim($_POST['full_name'] ?? '');
             $email    = trim($_POST['email']     ?? '');
-            $phone    = trim($_POST['phone']     ?? '');
+            $rawPhone = trim($_POST['phone']     ?? '');
+            $phone    = $rawPhone;
             $password = $_POST['password']       ?? '';
             $passConf = $_POST['password_confirm'] ?? '';
 
             if (empty($fullName)) $errors[] = 'Nama lengkap tidak boleh kosong.';
+            elseif (preg_match('/[0-9]/', $fullName)) $errors[] = 'Nama lengkap tidak boleh mengandung angka.';
+            
             if (empty($email))    $errors[] = 'Email tidak boleh kosong.';
             elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Format email tidak valid.';
+            
+            if (empty($rawPhone)) $errors[] = 'Nomor telepon tidak boleh kosong.';
+            elseif (strlen($rawPhone) < 7) $errors[] = 'Nomor telepon minimal 7 karakter.';
 
             if (!empty($email)) {
                 $existing = $this->model->findAdminByEmail($email);
@@ -43,13 +49,19 @@ class ProfileController {
             if (!empty($password)) {
                 if (strlen($password) < 8) {
                     $errors[] = 'Password minimal 8 karakter.';
+                } elseif (!preg_match('/[a-z]/', $password)) {
+                    $errors[] = 'Password harus mengandung minimal satu huruf kecil.';
+                } elseif (!preg_match('/[A-Z]/', $password)) {
+                    $errors[] = 'Password harus mengandung minimal satu huruf besar.';
+                } elseif (!preg_match('/[0-9]/', $password)) {
+                    $errors[] = 'Password harus mengandung minimal satu angka.';
                 } elseif ($password !== $passConf) {
                     $errors[] = 'Konfirmasi password tidak cocok.';
                 }
             }
 
-            if (!empty($phone) && !str_starts_with($phone, '+62')) {
-                $phone = '+62' . ltrim($phone, '0');
+            if (!empty($rawPhone) && !str_starts_with($rawPhone, '+62')) {
+                $phone = '+62' . ltrim($rawPhone, '0');
             }
 
             if (!is_dir($this->uploadDir)) {
@@ -92,6 +104,7 @@ class ProfileController {
             }
         }
 
+        $page = 'edit_profile';
         require_once __DIR__ . '/../views/profile/edit.php';
     }
 

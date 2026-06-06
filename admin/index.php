@@ -8,6 +8,7 @@
     require_once __DIR__ . '/controllers/UserController.php';
     require_once __DIR__ . '/controllers/AdminReturnController.php';
     require_once __DIR__ . '/controllers/AdminBookingController.php';
+    require_once __DIR__ . '/controllers/AdminReviewController.php';
     require_once __DIR__ . '/controllers/ProfileController.php';
 
     $page = $_GET['page'] ?? 'dashboard';
@@ -31,7 +32,7 @@
     }
 
     // Placeholder pages (no CRUD yet)
-    $placeholderPages = ['manage_reviews'];
+    $placeholderPages = [];
     if (in_array($page, $placeholderPages, true)) {
         require_once __DIR__ . '/views/placeholder.php';
         exit;
@@ -44,6 +45,8 @@
         'manage_cars'           => (new DashboardController())->manageCars(),
         'manage_bookings'       => (new AdminBookingController())->manageBookings(),
         'manage_payments'       => (new DashboardController())->managePayments(),
+        'payment_detail'        => (new DashboardController())->paymentDetail(),
+        'edit_payment'          => (new DashboardController())->editPayment(),
         'booking_detail'        => (new AdminBookingController())->bookingDetail(),
         'edit_booking'          => (new AdminBookingController())->editBooking(),
         'delete_booking'        => (new AdminBookingController())->deleteBooking(),
@@ -53,6 +56,9 @@
         'return_detail'         => (new AdminReturnController())->returnDetail(),
         'edit_return'           => (new AdminReturnController())->editReturn(),
         'delete_return'         => (new AdminReturnController())->deleteReturn(),
+        'manage_reviews'        => (new AdminReviewController())->manageReviews(),
+        'edit_review'           => (new AdminReviewController())->editReview(),
+        'delete_review'         => (new AdminReviewController())->deleteReview(),
         'edit_profile'          => (new ProfileController())->editProfile(),
         default                 => (new DashboardController())->dashboard(),
     };

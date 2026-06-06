@@ -13,12 +13,16 @@ class CarModel {
 
 
     public function getFeaturedCars($limit = null) {
+<<<<<<< HEAD
         $sql = "SELECT c.*, 
                        (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
                 FROM {$this->table} c
                 WHERE c.status = 'available'
                   AND c.id IN (SELECT MIN(id) FROM {$this->table} WHERE status = 'available' GROUP BY brand, model)
                 ORDER BY c.id DESC";
+=======
+        $sql  = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table} WHERE status = 'available' ORDER BY id DESC";
+>>>>>>> dcfbf519879d1cb24d4ad5dc88400b53f2157da4
         if ($limit !== null) {
             $sql .= " LIMIT :limit";
         }
@@ -33,10 +37,15 @@ class CarModel {
 
     public function searchCars($query) {
         $keyword = '%' . $query . '%';
+<<<<<<< HEAD
         $sql = "SELECT c.*, 
                        (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
                 FROM {$this->table} c
                 WHERE c.status = 'available'
+=======
+        $sql = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table}
+                WHERE status = 'available'
+>>>>>>> dcfbf519879d1cb24d4ad5dc88400b53f2157da4
                   AND (
                       c.brand        LIKE :kw
                    OR c.model        LIKE :kw2
@@ -58,8 +67,12 @@ class CarModel {
 
 
     public function getCarById($id) {
+<<<<<<< HEAD
         $sql  = "SELECT c.*, v.drivetrain, v.body_style, v.engine, v.transmission AS hl_transmission,
                         (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
+=======
+        $sql  = "SELECT c.*, v.drivetrain, v.body_style, v.engine, v.transmission AS hl_transmission, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') AS stock 
+>>>>>>> dcfbf519879d1cb24d4ad5dc88400b53f2157da4
                  FROM {$this->table} c
                  LEFT JOIN vehicle_highlights v ON c.id = v.car_id
                  WHERE c.id = :id LIMIT 1";
@@ -71,11 +84,15 @@ class CarModel {
 
 
     public function getAllCars() {
+<<<<<<< HEAD
         $sql  = "SELECT c.*, 
                         (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
                  FROM {$this->table} c 
                  WHERE c.id IN (SELECT MIN(id) FROM {$this->table} GROUP BY brand, model)
                  ORDER BY c.id DESC";
+=======
+        $sql  = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table} ORDER BY id DESC";
+>>>>>>> dcfbf519879d1cb24d4ad5dc88400b53f2157da4
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -115,11 +132,16 @@ class CarModel {
 
 
     public function getRelatedCars($excludeId, $limit = 3) {
+<<<<<<< HEAD
         $sql  = "SELECT c.*, 
                         (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
                  FROM {$this->table} c
                  WHERE c.status = 'available' AND c.id != :id
                    AND c.id IN (SELECT MIN(id) FROM {$this->table} WHERE status = 'available' GROUP BY brand, model)
+=======
+        $sql  = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table}
+                 WHERE status = 'available' AND id != :id
+>>>>>>> dcfbf519879d1cb24d4ad5dc88400b53f2157da4
                  ORDER BY RAND() LIMIT :limit";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':id',    $excludeId, PDO::PARAM_INT);
@@ -174,12 +196,16 @@ class CarModel {
         $countStmt->execute();
         $total = (int) $countStmt->fetchColumn();
 
+<<<<<<< HEAD
         $sql  = "SELECT c.*,
                         (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
                  FROM {$this->table} c 
                  WHERE {$where} 
                    AND c.id IN (SELECT MIN(id) FROM {$this->table} WHERE status = 'available' GROUP BY brand, model)
                  ORDER BY c.id DESC LIMIT :limit OFFSET :offset";
+=======
+        $sql  = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table} WHERE {$where} ORDER BY id DESC LIMIT :limit OFFSET :offset";
+>>>>>>> dcfbf519879d1cb24d4ad5dc88400b53f2157da4
         $stmt = $this->conn->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
         $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);

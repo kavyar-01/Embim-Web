@@ -20,6 +20,9 @@ class ReturnModel {
                 r.`return_date`,
                 r.`late_days`,
                 r.`car_condition`,
+                r.`fine_per_day`,
+                r.`fine_amount`,
+                r.`fine_status`,
                 r.`notes`,
                 r.`created_at`,
                 b.`start_date`,
@@ -46,11 +49,15 @@ class ReturnModel {
 
         if ($search !== '') {
             $sql .= " AND (
-                CAST(r.`booking_id` AS CHAR) LIKE :search
-                OR u.`full_name`            LIKE :search
-                OR CONCAT(c.`brand`, ' ', c.`model`) LIKE :search
+                CAST(r.`id` AS CHAR) LIKE :search0
+                OR CAST(r.`booking_id` AS CHAR) LIKE :search1
+                OR u.`full_name`            LIKE :search2
+                OR CONCAT(c.`brand`, ' ', c.`model`) LIKE :search3
             )";
-            $params[':search'] = '%' . $search . '%';
+            $params[':search0'] = '%' . $search . '%';
+            $params[':search1'] = '%' . $search . '%';
+            $params[':search2'] = '%' . $search . '%';
+            $params[':search3'] = '%' . $search . '%';
         }
 
         if ($returnDate !== '') {
@@ -65,6 +72,17 @@ class ReturnModel {
         return $stmt->fetchAll();
     }
 
+    public function getReturnStats(): array {
+        $stmt = $this->pdo->query("
+            SELECT
+                COUNT(*) as total,
+                SUM(IF(car_condition = 'good', 1, 0)) as good_count,
+                SUM(IF(car_condition = 'damaged', 1, 0)) as damaged_count
+            FROM `returns`
+        ");
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Ambil satu return berdasarkan ID, lengkap dengan info booking + user + car.
      */
@@ -76,6 +94,9 @@ class ReturnModel {
                 r.`return_date`,
                 r.`late_days`,
                 r.`car_condition`,
+                r.`fine_per_day`,
+                r.`fine_amount`,
+                r.`fine_status`,
                 r.`notes`,
                 r.`created_at`,
                 b.`start_date`,
@@ -161,6 +182,7 @@ class ReturnModel {
             WHERE b.`id` NOT IN (
                 SELECT `booking_id` FROM `returns`
             )
+            AND b.`status` = 'completed'
             ORDER BY b.`id` DESC
         ");
         $stmt->execute();
@@ -170,7 +192,7 @@ class ReturnModel {
     /**
      * Simpan return baru + update status booking + update status car.
      */
-    public function createReturn(int $bookingId, string $returnDate, string $carCondition, string $notes): int|false {
+    public function createReturn(int $bookingId, string $returnDate, string $carCondition, string $notes, float $damageFine = 0): int|false {
         $booking = $this->getBookingById($bookingId);
         if ($booking === null) {
             return false;
@@ -181,8 +203,8 @@ class ReturnModel {
         $this->pdo->beginTransaction();
         try {
             $finePerDay = 700000;
-            $fineAmount = $lateDays > 0 ? $lateDays * $finePerDay : 0;
-            $fineStatus = $lateDays > 0 ? 'unpaid' : 'none';
+            $fineAmount = ($lateDays > 0 ? $lateDays * $finePerDay : 0) + $damageFine;
+            $fineStatus = $fineAmount > 0 ? 'unpaid' : 'none';
 
             // 1. Insert ke tabel returns
             $stmt = $this->pdo->prepare("
@@ -232,7 +254,7 @@ class ReturnModel {
     /**
      * Update return (return_date, car_condition, notes) + recalc late_days + re-update car status.
      */
-    public function updateReturn(int $id, string $returnDate, string $carCondition, string $notes): bool {
+    public function updateReturn(int $id, string $returnDate, string $carCondition, string $notes, float $damageFine = 0): bool {
         $existing = $this->getReturnById($id);
         if ($existing === null) {
             return false;
@@ -248,15 +270,15 @@ class ReturnModel {
         $this->pdo->beginTransaction();
         try {
             $finePerDay = 700000;
-            $fineAmount = $lateDays > 0 ? $lateDays * $finePerDay : 0;
+            $fineAmount = ($lateDays > 0 ? $lateDays * $finePerDay : 0) + $damageFine;
             
             // Pertahankan status 'paid' jika sudah dibayar, kalau belum set 'unpaid' / 'none'
             // Kita harus ambil fine_status sebelumnya
             $oldFineStatus = $existing['fine_status'] ?? 'none';
-            if ($oldFineStatus === 'paid' && $lateDays > 0) {
+            if ($oldFineStatus === 'paid' && $fineAmount > 0) {
                 $fineStatus = 'paid';
             } else {
-                $fineStatus = $lateDays > 0 ? 'unpaid' : 'none';
+                $fineStatus = $fineAmount > 0 ? 'unpaid' : 'none';
             }
 
             $stmt = $this->pdo->prepare("

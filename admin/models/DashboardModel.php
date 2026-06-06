@@ -71,7 +71,7 @@ class DashboardModel {
         return $stmt->fetchAll();
     }
 
-    public function getPaymentsFiltered(string $status = '', string $search = ''): array {
+    public function getPaymentsFiltered(string $status = '', string $search = '', string $month = ''): array {
         $sql = "
             SELECT
                 b.`id` AS booking_id, b.`user_id`, b.`car_id`,
@@ -104,11 +104,60 @@ class DashboardModel {
             $params[':search4'] = '%' . $search . '%';
         }
 
+        if ($month !== '') {
+            $sql .= " AND DATE_FORMAT(b.`created_at`, '%Y-%m') = :month";
+            $params[':month'] = $month;
+        }
+
         $sql .= " ORDER BY b.`id` DESC";
 
         $stmt = getPDO()->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+
+    public function getPaymentById(int $bookingId): ?array {
+        $sql = "
+            SELECT
+                b.`id` AS booking_id, b.`user_id`, b.`car_id`,
+                b.`total_price`, b.`payment_method`, b.`payment_status`,
+                b.`payment_proof`, b.`paid_at`, b.`created_at`, b.`status` AS booking_status,
+                u.`full_name` AS customer_name,
+                u.`email` AS customer_email,
+                u.`phone` AS customer_phone,
+                u.`photo_profile`,
+                CONCAT(c.`brand`, ' ', c.`model`) AS car_name,
+                c.`license_plate`
+            FROM `bookings` b
+            JOIN `users` u ON u.`id` = b.`user_id`
+            JOIN `cars`  c ON c.`id` = b.`car_id`
+            WHERE b.`id` = :id
+            LIMIT 1
+        ";
+        $stmt = getPDO()->prepare($sql);
+        $stmt->execute([':id' => $bookingId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
+
+    public function updatePaymentStatus(int $bookingId, string $status): bool {
+        $allowed = ['unpaid', 'paid', 'refunded'];
+        if (!in_array($status, $allowed, true)) {
+            return false;
+        }
+        $sql = "UPDATE `bookings` SET `payment_status` = :status, `updated_at` = NOW()";
+        if ($status === 'paid') {
+            $sql .= ", `paid_at` = COALESCE(`paid_at`, NOW())";
+        } elseif ($status === 'unpaid') {
+            $sql .= ", `paid_at` = NULL";
+        }
+        $sql .= " WHERE `id` = :id";
+        
+        $stmt = getPDO()->prepare($sql);
+        return $stmt->execute([
+            ':status' => $status,
+            ':id' => $bookingId
+        ]);
     }
 
     public function getStats(array $cars, array $bookings, string $monthYear = ''): array {
@@ -157,5 +206,33 @@ class DashboardModel {
             'labels' => array_keys($chartData),
             'data'   => array_values($chartData)
         ];
+    }
+
+    public function getTopCar(): ?array {
+        $sql = "
+            SELECT c.*, COUNT(b.id) as booking_count 
+            FROM `cars` c 
+            JOIN `bookings` b ON c.id = b.car_id 
+            GROUP BY c.id 
+            ORDER BY booking_count DESC 
+            LIMIT 1
+        ";
+        $stmt = getPDO()->query($sql);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
+
+    public function getTopUser(): ?array {
+        $sql = "
+            SELECT u.*, COUNT(b.id) as booking_count 
+            FROM `users` u 
+            JOIN `bookings` b ON u.id = b.user_id 
+            GROUP BY u.id 
+            ORDER BY booking_count DESC 
+            LIMIT 1
+        ";
+        $stmt = getPDO()->query($sql);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
     }
 }
