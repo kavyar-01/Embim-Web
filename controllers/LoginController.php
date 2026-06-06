@@ -73,7 +73,7 @@ class LoginController {
             exit;
         }
         if (!preg_match('/^[0-9]+$/', $phone)) {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon hanya boleh berisi angka.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number must contain only numbers.']);
             exit;
         }
         if (strlen($phone) < 7 || strlen($phone) > 13) {
@@ -103,7 +103,7 @@ class LoginController {
                 'redirect' => 'index.php',
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon tidak terdaftar di akun manapun.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number is not registered.']);
         }
         exit;
     }

@@ -37,14 +37,14 @@ class BookingController {
 
         // Cek apakah user masih punya booking aktif (belum completed/cancelled)
         if ($bookingModel->hasActiveBooking($_SESSION['user_id'])) {
-            $_SESSION['booking_error'] = 'Anda masih memiliki booking aktif. Selesaikan terlebih dahulu sebelum melakukan booking baru.';
+            $_SESSION['booking_error'] = 'You still have active bookings. Please complete them first before making a new booking.';
             header('Location: index.php?page=bookings');
             exit;
         }
 
         // Cek apakah user memiliki denda yang belum dibayar
         if ($bookingModel->hasUnpaidFines($_SESSION['user_id'])) {
-            $_SESSION['booking_error'] = 'Anda memiliki denda yang belum dibayar. Harap selesaikan pembayaran denda terlebih dahulu sebelum melakukan booking baru.';
+            $_SESSION['booking_error'] = 'You have unpaid fines. Please settle your fines first before making a new booking.';
             header('Location: index.php?page=bookings');
             exit;
         }
@@ -76,7 +76,7 @@ class BookingController {
                 $end   = new DateTime($endDate);
                 $today = new DateTime('today');
 
-                if ($start < $today)  $errors[] = 'Tanggal pickup tidak boleh di masa lalu.';
+                if ($start < $today)  $errors[] = 'Pickup date cannot be in the past.';
                 if ($end <= $start)   $errors[] = 'Return date must be after pickup date.';
 
                 $totalDays  = $start->diff($end)->days;
@@ -97,13 +97,13 @@ class BookingController {
 
             if (empty($errors)) {
                 if (!$bookingModel->isCarAvailable($carId, $startDate, $endDate)) {
-                    $errors[] = 'Kendaraan tidak tersedia pada tanggal yang dipilih.';
+                    $errors[] = 'The vehicle is not available on the selected date.';
                 }
             }
 
             if (empty($errors)) {
                 if (!$bookingModel->isCarAvailable($carId, $startDate, $endDate)) {
-                    $errors[] = 'Kendaraan tidak tersedia pada tanggal yang dipilih.';
+                    $errors[] = 'The vehicle is not available on the selected date.';
                 }
             }
 

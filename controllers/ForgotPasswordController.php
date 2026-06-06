@@ -21,7 +21,7 @@ class ForgotPasswordController {
         }
 
         if (!preg_match('/^[0-9]+$/', $phone)) {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon hanya boleh berisi angka.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number must contain only numbers.']);
             exit;
         }
 
@@ -36,7 +36,7 @@ class ForgotPasswordController {
                 'message' => 'Identitas terverifikasi.',
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Nama lengkap atau nomor telepon tidak ditemukan.']);
+            echo json_encode(['success' => false, 'message' => 'Full name or phone number not found.']);
         }
         exit;
     }
@@ -59,7 +59,7 @@ class ForgotPasswordController {
         }
 
         if (strlen($password) < 8) {
-            echo json_encode(['success' => false, 'message' => 'Password minimal 8 karakter.']);
+            echo json_encode(['success' => false, 'message' => 'Password must be at least 8 characters long.']);
             exit;
         }
         if (!preg_match('/[a-z]/', $password)) {
@@ -75,7 +75,7 @@ class ForgotPasswordController {
             exit;
         }
         if ($password !== $confirm) {
-            echo json_encode(['success' => false, 'message' => 'Konfirmasi password tidak cocok.']);
+            echo json_encode(['success' => false, 'message' => 'Confirmation password does not match.']);
             exit;
         }
 

@@ -39,7 +39,7 @@ class BookingsController {
 
         $booking = $bookingModel->getBookingById($bookingId);
         if (!$booking || (int)$booking['user_id'] !== $userId || $booking['status'] !== 'confirmed') {
-            $_SESSION['booking_error'] = 'Booking tidak ditemukan atau tidak dapat dibatalkan.';
+            $_SESSION['booking_error'] = 'Booking not found or cannot be cancelled.';
             header('Location: index.php?page=bookings');
             exit;
         }
@@ -69,13 +69,13 @@ class BookingsController {
         if (!$booking
             || (int)$booking['user_id'] !== $userId
             || $booking['status'] !== 'completed') {
-            $_SESSION['review_error'] = 'Ulasan hanya bisa diberikan untuk booking yang sudah selesai.';
+            $_SESSION['review_error'] = 'Review can only be given for completed bookings.';
             header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
         }
 
         if ($bookingModel->hasReview($bookingId)) {
-            $_SESSION['review_error'] = 'Anda sudah memberikan ulasan untuk booking ini.';
+            $_SESSION['review_error'] = 'You have already given a review for this booking.';
             header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
         }

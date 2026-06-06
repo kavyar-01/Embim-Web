@@ -45,7 +45,7 @@ class ReviewController {
         }
 
         if ($bookingModel->hasReview($bookingId)) {
-            echo json_encode(['success' => false, 'message' => 'Booking ini sudah pernah direview.']);
+            echo json_encode(['success' => false, 'message' => 'This booking has already been reviewed.']);
             exit;
         }
 
