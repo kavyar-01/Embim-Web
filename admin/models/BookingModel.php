@@ -65,6 +65,16 @@ class BookingModel
                         `updated_at`     = NOW()
                     WHERE `id` = :id
                 ");
+            } elseif ($status === 'completed' || $status === 'ongoing') {
+                $stmt = $this->pdo->prepare("
+                    UPDATE `bookings`
+                    SET `status`         = :status,
+                        `payment_status` = 'paid',
+                        `paid_at`        = COALESCE(`paid_at`, NOW()),
+                        `notes`          = :notes,
+                        `updated_at`     = NOW()
+                    WHERE `id` = :id
+                ");
             } else {
                 $stmt = $this->pdo->prepare("
                     UPDATE `bookings`

@@ -33,21 +33,20 @@ class LoginController {
                 $userModel = new UserModel();
                 $user      = $userModel->login($email, $password);
 
-                if ($user) {
+                if ($user && $user['role'] === 'user') {
                     session_regenerate_id(true);
-                    if ($user['role'] === 'admin') {
-                        $_SESSION['admin_id']    = $user['id'];
-                        $_SESSION['admin_name']  = $user['full_name'];
-                        $_SESSION['admin_email'] = $user['email'];
-                        $_SESSION['admin_photo'] = $user['photo_profile'] ?? null;
-                        header('Location: admin/index.php?page=dashboard');
-                    } else {
-                        $_SESSION['user_id']    = $user['id'];
-                        $_SESSION['user_name']  = $user['full_name'];
-                        $_SESSION['user_role']  = $user['role'];
-                        $_SESSION['user_photo'] = $user['photo_profile'] ?? null;
-                        header('Location: index.php');
+                    $_SESSION['user_id']    = $user['id'];
+                    $_SESSION['user_name']  = $user['full_name'];
+                    $_SESSION['user_role']  = $user['role'];
+                    $_SESSION['user_photo'] = $user['photo_profile'] ?? null;
+
+                    require_once 'models/BookingModel.php';
+                    $bookingModel = new BookingModel();
+                    if ($bookingModel->hasUnpaidFines($user['id'])) {
+                        $_SESSION['unpaid_fine_warning'] = true;
                     }
+
+                    header('Location: index.php');
                     exit;
 
                 } else {
@@ -85,11 +84,18 @@ class LoginController {
         $userModel = new UserModel();
         $user      = $userModel->findByPhone($phone);
 
-        if ($user) {
+        if ($user && $user['role'] === 'user') {
+            session_regenerate_id(true);
             $_SESSION['user_id']    = $user['id'];
             $_SESSION['user_name']  = $user['full_name'];
             $_SESSION['user_role']  = $user['role'];
             $_SESSION['user_photo'] = $user['photo_profile'] ?? null;
+
+            require_once 'models/BookingModel.php';
+            $bookingModel = new BookingModel();
+            if ($bookingModel->hasUnpaidFines($user['id'])) {
+                $_SESSION['unpaid_fine_warning'] = true;
+            }
 
             echo json_encode([
                 'success'  => true,

@@ -16,12 +16,11 @@ class ReceiptController {
         $booking = $bookingModel->getBookingById($bookingId);
 
         if (!$booking || (int)$booking['user_id'] !== (int)$_SESSION['user_id']) {
-            die("Booking tidak ditemukan atau Anda tidak memiliki akses.");
+            die("Booking not found or you don't have access.");
         }
 
-        // We only allow download if status is confirmed or completed
-        if (!in_array($booking['status'], ['confirmed', 'completed'])) {
-            die("Struk hanya tersedia untuk booking yang sudah dibayar.");
+        if (!in_array($booking['status'], ['confirmed', 'completed','ongoing'])) {
+            die("Receipts are only available for confirmed bookings.");
         }
 
         // Get User details
@@ -137,6 +136,8 @@ class ReceiptController {
         $y += 20;
         $this->drawCenteredText($img, 3, "Struk ini merupakan bukti pembayaran yang sah.", $y, $gray, $width);
         $y += 30;
+        
+        date_default_timezone_set('Asia/Jakarta');
         $this->drawCenteredText($img, 3, "Dicetak: " . date('d/m/Y H:i') . " WIB  .  cs@embim.id", $y, $gray, $width);
 
         // Crop the image height if necessary

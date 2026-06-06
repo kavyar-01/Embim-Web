@@ -32,7 +32,7 @@ class EditProfileController {
             if (empty($fullName)) {
                 $errors[] = 'Full name cannot be empty.';
             } elseif (strlen($fullName) < 4) {
-                $errors[] = 'Nama lengkap minimal 4 karakter.';
+                $errors[] = 'Full name must be at least 4 characters long.';
             }
             if (empty($email))    $errors[] = 'Email cannot be empty.';
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
@@ -44,13 +44,13 @@ class EditProfileController {
             if (!empty($email)) {
                 $existing = $userModel->findByEmail($email);
                 if ($existing && (int)$existing['id'] !== (int)$_SESSION['user_id']) {
-                    $errors[] = 'Email sudah digunakan akun lain.';
+                    $errors[] = 'Email is already used by another account.';
                 }
             }
 
             if (!empty($password)) {
                 if (strlen($password) < 8) {
-                    $errors[] = 'Password minimal 8 karakter.';
+                    $errors[] = 'Password must be at least 8 characters long.';
                 } elseif (!preg_match('/[a-z]/', $password)) {
                     $errors[] = 'Password must contain at least one lowercase letter.';
                 } elseif (!preg_match('/[A-Z]/', $password)) {
@@ -58,7 +58,7 @@ class EditProfileController {
                 } elseif (!preg_match('/[0-9]/', $password)) {
                     $errors[] = 'Password must contain at least one number.';
                 } elseif ($password !== $passConf) {
-                    $errors[] = 'Konfirmasi password tidak cocok.';
+                    $errors[] = 'Password confirmation does not match.';
                 }
             }
 
@@ -82,23 +82,6 @@ class EditProfileController {
                 }
             }
 
-            if (!empty($_FILES['photo_ktp']['name'])) {
-                $result = $this->handleUpload('photo_ktp', 'ktp_' . $_SESSION['user_id'], $allowedTypes, $maxSize);
-                if ($result['error']) {
-                    $errors[] = 'Foto KTP: ' . $result['error'];
-                } else {
-                    $photoKtp = $result['filename'];
-                }
-            }
-
-            if (!empty($_FILES['photo_sim']['name'])) {
-                $result = $this->handleUpload('photo_sim', 'sim_' . $_SESSION['user_id'], $allowedTypes, $maxSize);
-                if ($result['error']) {
-                    $errors[] = 'Foto SIM: ' . $result['error'];
-                } else {
-                    $photoSim = $result['filename'];
-                }
-            }
 
             if (empty($errors)) {
                 $data = [
@@ -135,7 +118,7 @@ class EditProfileController {
             return ['error' => 'Failed to upload file.', 'filename' => null];
         }
         if ($file['size'] > $maxSize) {
-            return ['error' => 'Ukuran file maksimal 2 MB.', 'filename' => null];
+            return ['error' => 'File size must be less than 2 MB.', 'filename' => null];
         }
         $mime = mime_content_type($file['tmp_name']);
         if (!in_array($mime, $allowedTypes)) {

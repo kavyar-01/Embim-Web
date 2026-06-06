@@ -30,10 +30,13 @@ class BookingModel {
                     b.payment_method,
                     b.payment_status,
                     CASE WHEN r.id IS NOT NULL THEN 1 ELSE 0 END AS has_review,
-                    r.rating      AS review_rating
+                    r.rating      AS review_rating,
+                    ret.fine_status,
+                    ret.fine_amount
                 FROM bookings b
                 JOIN cars     c ON b.car_id     = c.id
                 LEFT JOIN reviews  r ON r.booking_id = b.id
+                LEFT JOIN returns  ret ON ret.booking_id = b.id
                 WHERE b.user_id = :user_id";
 
         if ($status !== 'all') {
@@ -228,7 +231,7 @@ class BookingModel {
     public function hasActiveBooking($userId) {
         $sql = "SELECT COUNT(*) FROM bookings 
                 WHERE user_id = :user_id 
-                  AND status NOT IN ('completed', 'cancelled')";
+                  AND status NOT IN ('completed', 'cancelled','ongoing')";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([':user_id' => $userId]);
         

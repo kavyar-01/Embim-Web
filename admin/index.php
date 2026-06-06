@@ -26,7 +26,8 @@
     }
 
     // Guard: redirect to login if not authenticated
-    if (empty($_SESSION['admin_id'])) {
+    if (empty($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+        unset($_SESSION['admin_id'], $_SESSION['admin_name'], $_SESSION['admin_email'], $_SESSION['admin_photo'], $_SESSION['admin_role']);
         header('Location: ?page=login');
         exit;
     }
@@ -46,7 +47,7 @@
         'manage_bookings'       => (new AdminBookingController())->manageBookings(),
         'manage_payments'       => (new DashboardController())->managePayments(),
         'payment_detail'        => (new DashboardController())->paymentDetail(),
-        'edit_payment'          => (new DashboardController())->editPayment(),
+
         'booking_detail'        => (new AdminBookingController())->bookingDetail(),
         'edit_booking'          => (new AdminBookingController())->editBooking(),
         'delete_booking'        => (new AdminBookingController())->deleteBooking(),

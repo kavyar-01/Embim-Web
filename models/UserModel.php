@@ -41,7 +41,7 @@ class UserModel {
 
 
     public function login($email, $password) {
-        $user = $this->findByEmail($email);
+        $user = $this->findUserByEmail($email);
         if (!$user) {
             return false;
         }
@@ -49,6 +49,14 @@ class UserModel {
             return $user;
         }
         return false;
+    }
+
+    public function findUserByEmail($email) {
+        $sql  = "SELECT * FROM {$this->table} WHERE email = :email AND role = 'user' LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 
     public function findByEmail($email) {

@@ -134,6 +134,11 @@
                             <span class="w-1.5 h-1.5 rounded-full <?php echo $st['dot']; ?>"></span>
                             <?php echo $st['label']; ?>
                         </span>
+                        <?php if (($booking['fine_status'] ?? '') === 'unpaid'): ?>
+                        <span class="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border bg-red-50 text-red-600 border-red-200">
+                            Fine: Rp <?php echo number_format($booking['fine_amount'] ?? 0, 0, ',', '.'); ?>
+                        </span>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Details Grid -->
@@ -185,9 +190,15 @@
                             </a>
 
                             <?php elseif ($booking['status'] === 'ongoing'): ?>
-                            <span class="text-xs font-semibold text-violet-600 bg-violet-50 border border-violet-200 px-4 py-2 rounded-xl">
-                                Ongoing
-                            </span>
+                            <div class="flex items-center gap-2">
+                                <a href="index.php?page=receipt&id=<?php echo $booking['id']; ?>" target="_blank"
+                                   class="text-xs font-bold border border-green-200 text-green-600 hover:bg-green-50 px-4 py-2 rounded-xl transition duration-200 shadow-sm">
+                                    Download Receipt
+                                </a>
+                                <span class="text-xs font-semibold text-violet-600 bg-violet-50 border border-violet-200 px-4 py-2 rounded-xl">
+                                    Ongoing
+                                </span>
+                            </div>
 
                             <?php elseif ($booking['status'] === 'completed'): ?>
                             <div class="flex items-center gap-2">

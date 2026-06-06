@@ -51,10 +51,10 @@
       <form action="?page=login" method="POST" class="space-y-5">
 
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
           <input type="email" id="email" name="email"
             value="<?= htmlspecialchars($old['email'] ?? '') ?>"
-            placeholder="Masukkan alamat email Anda"
+            placeholder="Enter your email address"
             class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             required autocomplete="email" />
         </div>
@@ -87,16 +87,16 @@
       </form>
 
       <p class="text-center text-sm text-gray-500 mt-6">
-        Belum punya akun admin?
-        <a href="?page=register" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Daftar Akun Baru</a>
+        Don't have an admin account?
+        <a href="?page=register" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Register New Account</a>
       </p>
 
     </div>
 
     <p class="mt-8 text-gray-300 text-xs text-center relative z-10">
-      Dengan login, Anda menyetujui
-      <a href="#" class="underline hover:text-white transition-colors">Syarat &amp; Ketentuan</a> dan
-      <a href="#" class="underline hover:text-white transition-colors">Kebijakan Privasi</a> EMBIM.
+      By logging in, you agree to EMBIM's
+      <a href="#" class="underline hover:text-white transition-colors">Terms & Conditions</a> and
+      <a href="#" class="underline hover:text-white transition-colors">Privacy Policy</a>.
     </p>
 
 <!-- ══════════════════════════════════════════

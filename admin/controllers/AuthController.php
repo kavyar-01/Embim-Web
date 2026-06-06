@@ -20,12 +20,13 @@
               if (empty($errors)) {
                   $admin = $this->model->findAdminByEmail($email);
                   if (!$admin || !password_verify($pass, $admin['password'])) {
-                      $errors[] = 'Incorrect email or password, or account is not admin.';
+                      $errors[] = 'Incorrect email or password.';
                   } else {
                       session_regenerate_id(true);
                       $_SESSION['admin_id']    = $admin['id'];
                       $_SESSION['admin_name']  = $admin['full_name'];
                       $_SESSION['admin_email'] = $admin['email'];
+                      $_SESSION['admin_role']  = $admin['role'];
                       if (!empty($admin['photo_profile'])) {
                           $_SESSION['admin_photo'] = $admin['photo_profile'];
                       }

@@ -20,19 +20,12 @@ class DashboardController {
     public function addCar(): void {
         $success = ''; $errors = []; $old = []; $page = 'add_car';
 
-        $allCars = (new CarModel())->getAll();
-        $uniqueCars = [];
-        $seen = [];
-        foreach ($allCars as $c) {
-            $key = strtolower($c['brand'] . '|' . $c['model']);
-            if (!isset($seen[$key])) {
-                $seen[$key] = true;
-                $uniqueCars[] = $c;
-            }
-        }
+        $carModel = new CarModel();
+        $uniqueCars = $this->getUniqueCarTemplates($carModel->getAll());
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $old = $_POST;
+            $licensePlate = $this->normalizeLicensePlate($_POST['license_plate'] ?? '');
 
             // Validation
             foreach (['brand','model','year','license_plate','price_per_day','transmission','fuel_type','seats','hl_engine'] as $f) {
@@ -40,6 +33,8 @@ class DashboardController {
                     $errors[] = ucfirst(str_replace('_', ' ', $f)) . ' is required.';
                 }
             }
+            if (!empty(trim($_POST['license_plate'] ?? '')) && $licensePlate === null)
+                $errors[] = 'License plate format must be like D 1234 ABM.';
             if (!empty($_POST['transmission']) && !in_array($_POST['transmission'], ['automatic','manual'], true))
                 $errors[] = 'Invalid transmission value.';
             if (!empty($_POST['fuel_type']) && !in_array($_POST['fuel_type'], ['gasoline','diesel','electric','hybrid'], true))
@@ -70,11 +65,11 @@ class DashboardController {
             }
 
             if (empty($errors)) {
-                $result = (new CarModel())->create([
+                $result = $carModel->create([
                     'brand'         => trim($_POST['brand']),
                     'model'         => trim($_POST['model']),
                     'year'          => (int)$_POST['year'],
-                    'license_plate' => strtoupper(trim($_POST['license_plate'])),
+                    'license_plate' => $licensePlate,
                     'price_per_day' => (float)$_POST['price_per_day'],
                     'transmission'  => $_POST['transmission'],
                     'fuel_type'     => $_POST['fuel_type'],
@@ -84,18 +79,45 @@ class DashboardController {
                     'hl_drivetrain'   => trim($_POST['hl_drivetrain'] ?? 'FWD'),
                     'hl_body_style'   => trim($_POST['hl_body_style'] ?? 'Sedan'),
                     'hl_engine'       => trim($_POST['hl_engine'] ?? ''),
-                    'hl_transmission' => trim($_POST['hl_transmission'] ?? 'Automatic'),
                 ]);
                 if ($result === 'duplicate') {
                     $errors[] = 'License plate already exists. Please use a unique plate number.';
                 } elseif ($result === true) {
                     $success = 'Car listed successfully!'; $old = [];
+                    $uniqueCars = $this->getUniqueCarTemplates($carModel->getAll());
                 } else {
                     $errors[] = 'Failed to save car. Please try again.';
                 }
             }
         }
         require_once __DIR__ . '/../views/add_car.php';
+    }
+
+    private function getUniqueCarTemplates(array $cars): array {
+        $uniqueCars = [];
+        $seen = [];
+
+        foreach ($cars as $car) {
+            $key = strtolower($car['brand'] . '|' . $car['model']);
+            if (isset($seen[$key])) {
+                continue;
+            }
+
+            $seen[$key] = true;
+            $uniqueCars[] = $car;
+        }
+
+        return $uniqueCars;
+    }
+
+    private function normalizeLicensePlate(string $plate): ?string {
+        $plate = strtoupper(preg_replace('/\s+/', '', trim($plate)));
+
+        if ($plate === '' || !preg_match('/^([A-Z]{1,2})([0-9]{1,4})([A-Z]{0,3})$/', $plate, $matches)) {
+            return null;
+        }
+
+        return trim($matches[1] . ' ' . $matches[2] . ' ' . $matches[3]);
     }
 
     public function editCar(): void {
@@ -116,6 +138,7 @@ class DashboardController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $old = array_merge($old, $_POST); // Merge for form repopulation
+            $licensePlate = $this->normalizeLicensePlate($_POST['license_plate'] ?? '');
 
             // Validation
             foreach (['brand','model','year','license_plate','price_per_day','transmission','fuel_type','seats','status','hl_engine'] as $f) {
@@ -123,6 +146,8 @@ class DashboardController {
                     $errors[] = ucfirst(str_replace('_', ' ', $f)) . ' is required.';
                 }
             }
+            if (!empty(trim((string)($_POST['license_plate'] ?? ''))) && $licensePlate === null)
+                $errors[] = 'License plate format must be like D 1234 ABM.';
             if (!empty($_POST['transmission']) && !in_array($_POST['transmission'], ['automatic','manual'], true))
                 $errors[] = 'Invalid transmission value.';
             if (!empty($_POST['fuel_type']) && !in_array($_POST['fuel_type'], ['gasoline','diesel','electric','hybrid'], true))
@@ -162,7 +187,7 @@ class DashboardController {
                     'brand'         => trim($_POST['brand']),
                     'model'         => trim($_POST['model']),
                     'year'          => (int)$_POST['year'],
-                    'license_plate' => strtoupper(trim($_POST['license_plate'])),
+                    'license_plate' => $licensePlate,
                     'price_per_day' => (float)$_POST['price_per_day'],
                     'transmission'  => $_POST['transmission'],
                     'fuel_type'     => $_POST['fuel_type'],

@@ -78,6 +78,17 @@
             <p class="text-xs text-gray-400 mt-1">This amount will be added to the late return fine.</p>
           </div>
 
+          <!-- Fine Status -->
+          <div id="fine_status_wrapper" style="margin-bottom:18px;">
+            <label class="form-label" for="fine_status">Fine Status <span style="color:#ef4444;">*</span></label>
+            <select name="fine_status" id="fine_status" class="form-control" required>
+              <option value="unpaid" <?= (($_POST['fine_status'] ?? $return['fine_status']) === 'unpaid') ? 'selected' : '' ?>>Unpaid</option>
+              <option value="paid" <?= (($_POST['fine_status'] ?? $return['fine_status']) === 'paid') ? 'selected' : '' ?>>Paid</option>
+              <option value="none" <?= (($_POST['fine_status'] ?? $return['fine_status']) === 'none') ? 'selected' : '' ?>>None</option>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">Status will automatically be "None" if there is no fine.</p>
+          </div>
+
           <!-- Notes -->
           <div style="margin-bottom:24px;">
             <label class="form-label" for="notes">Notes</label>

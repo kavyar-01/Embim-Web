@@ -38,7 +38,7 @@ class CarModel {
                 ':drivetrain'      => $data['hl_drivetrain'] ?? 'FWD',
                 ':body_style'      => $data['hl_body_style'] ?? 'Sedan',
                 ':engine'          => $data['hl_engine'] ?? null,
-                ':hl_transmission' => $data['hl_transmission'] ?? 'Automatic',
+                ':hl_transmission' => $this->normalizeHighlightTransmission($data['hl_transmission'] ?? $data['transmission'] ?? 'automatic'),
             ]);
             
             return true;
@@ -137,7 +137,7 @@ class CarModel {
                 ':drivetrain'      => $data['hl_drivetrain'] ?? 'FWD',
                 ':body_style'      => $data['hl_body_style'] ?? 'Sedan',
                 ':engine'          => $data['hl_engine'] ?? null,
-                ':hl_transmission' => $data['hl_transmission'] ?? 'Automatic',
+                ':hl_transmission' => $this->normalizeHighlightTransmission($data['hl_transmission'] ?? $data['transmission'] ?? 'automatic'),
             ]);
 
             return true;
@@ -253,5 +253,9 @@ class CarModel {
         $stmt = getPDO()->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+
+    private function normalizeHighlightTransmission(string $transmission): string {
+        return strtolower($transmission) === 'manual' ? 'Manual' : 'Automatic';
     }
 }

@@ -95,7 +95,7 @@
       </div>
       <div>
         <label for="license_plate" class="block text-sm font-medium text-gray-700 mb-1">License Plate</label>
-        <input type="text" id="license_plate" name="license_plate" value="<?= htmlspecialchars($old['license_plate'] ?? '') ?>" placeholder="e.g. D 1234 ABM"
+        <input type="text" id="license_plate" name="license_plate" value="<?= htmlspecialchars($old['license_plate'] ?? '') ?>" placeholder="e.g. D 1234 ABM" maxlength="12" pattern="[A-Za-z]{1,2}\s*[0-9]{1,4}\s*[A-Za-z]{0,3}" title="Format plat: D 1234 ABM" oninput="this.value = this.value.toUpperCase()"
           class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
       </div>
       <div>

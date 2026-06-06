@@ -120,6 +120,7 @@ class AdminReturnController {
         $carCondition = trim($_POST['car_condition'] ?? '');
         $notes        = trim($_POST['notes']         ?? '');
         $damageFine   = (float) str_replace(['.', ','], '', $_POST['damage_fine'] ?? '0');
+        $fineStatus   = trim($_POST['fine_status']   ?? '');
 
         $errors = $this->validate($return['booking_id'], $returnDate, $carCondition, $id);
 
@@ -129,7 +130,7 @@ class AdminReturnController {
             return;
         }
 
-        $ok = $this->model->updateReturn($id, $returnDate, $carCondition, $notes, $damageFine);
+        $ok = $this->model->updateReturn($id, $returnDate, $carCondition, $notes, $damageFine, $fineStatus);
         if ($ok) {
             header('Location: ?page=return_detail&id=' . $id . '&updated=1');
         } else {

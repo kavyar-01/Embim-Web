@@ -105,15 +105,7 @@
         </dl>
       </div>
 
-      <!-- Actions -->
-      <div class="card">
-        <div class="p-4">
-          <a href="?page=edit_payment&id=<?= (int)$payment['booking_id'] ?>" class="btn w-full bg-blue-600 hover:bg-blue-700 text-white flex justify-center items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-            Edit Payment Status
-          </a>
-        </div>
-      </div>
+
 
     </div>
 

@@ -386,7 +386,6 @@ $baseUrl = 'index.php?page=cars'
                     </svg>
                 </div>
                 <h3 class="text-lg font-bold text-gray-700 mb-2">Vehicle not found</h3>
-                <p class="text-sm text-gray-400 mb-6">Try changing your keywords or search filters.</p>
                 <a href="index.php?page=cars" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition duration-200">
                     View All Vehicles
                 </a>
