@@ -26,6 +26,19 @@
 
   <form action="?page=add_car" method="POST" enctype="multipart/form-data" class="space-y-8">
 
+    <!-- Copy from Existing Car -->
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+      <label for="existing_car_template" class="block text-sm font-bold text-blue-900 mb-2">Use Existing Car Template (Optional)</label>
+      <select id="existing_car_template" name="existing_car_template" class="w-full border border-blue-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <option value="">-- Pilih Kendaraan (Manual Input) --</option>
+        <?php if (!empty($uniqueCars)): ?>
+          <?php foreach ($uniqueCars as $idx => $uc): ?>
+            <option value="<?= $idx ?>" <?= (isset($old['existing_car_template']) && (string)$old['existing_car_template'] === (string)$idx) ? 'selected' : '' ?>><?= htmlspecialchars($uc['brand'] . ' ' . $uc['model'] . ' (' . $uc['year'] . ')') ?></option>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </select>
+    </div>
+
     <!-- Photo Upload -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Car Photo</label>
@@ -149,7 +162,7 @@
         <div>
           <label for="hl_engine" class="block text-sm font-medium text-gray-700 mb-1">Engine Detail</label>
           <input type="text" id="hl_engine" name="hl_engine" value="<?= htmlspecialchars($old['hl_engine'] ?? '') ?>" placeholder="e.g. 2.0L Turbo 4-Cylinder"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
         </div>
         <div>
           <label for="hl_transmission" class="block text-sm font-medium text-gray-700 mb-1">Transmission Detail</label>
@@ -184,4 +197,75 @@
 
   </form>
 </div>
+
+<script>
+  const uniqueCars = <?= json_encode($uniqueCars ?? []) ?>;
+  
+  const templateSelect = document.getElementById('existing_car_template');
+  
+  const readonlyFields = [
+    'brand', 'model', 'price_per_day', 'transmission', 'fuel_type', 'seats',
+    'hl_drivetrain', 'hl_body_style', 'hl_engine', 'hl_transmission'
+  ];
+
+  if (templateSelect) {
+    templateSelect.addEventListener('change', function() {
+      const idx = this.value;
+      
+      if (idx === "") {
+        // Manual input mode
+        // Don't clear fields, but make them editable again
+        readonlyFields.forEach(fieldId => {
+          const el = document.getElementById(fieldId);
+          if (el) {
+            if (el.tagName === 'SELECT') {
+              el.style.pointerEvents = 'auto';
+              el.style.opacity = '1';
+              el.classList.remove('bg-gray-100');
+            } else {
+              el.removeAttribute('readonly');
+              el.classList.remove('bg-gray-100');
+            }
+          }
+        });
+      } else {
+        // Pre-fill mode
+        const car = uniqueCars[idx];
+        
+        // Fill values
+        document.getElementById('brand').value = car.brand;
+        document.getElementById('model').value = car.model;
+        document.getElementById('price_per_day').value = car.price_per_day;
+        document.getElementById('transmission').value = car.transmission;
+        document.getElementById('fuel_type').value = car.fuel_type;
+        document.getElementById('seats').value = car.seats;
+        document.getElementById('hl_drivetrain').value = car.drivetrain || car.hl_drivetrain || 'FWD';
+        document.getElementById('hl_body_style').value = car.body_style || car.hl_body_style || 'Sedan';
+        document.getElementById('hl_engine').value = car.engine || car.hl_engine || '';
+        document.getElementById('hl_transmission').value = car.hl_transmission || car.transmission || 'Automatic';
+        document.getElementById('description').value = car.description || '';
+        
+        // Make them readonly
+        readonlyFields.forEach(fieldId => {
+          const el = document.getElementById(fieldId);
+          if (el) {
+            if (el.tagName === 'SELECT') {
+              el.style.pointerEvents = 'none';
+              el.style.opacity = '0.7';
+              el.classList.add('bg-gray-100');
+            } else {
+              el.setAttribute('readonly', true);
+              el.classList.add('bg-gray-100');
+            }
+          }
+        });
+      }
+    });
+
+    if (templateSelect.value !== "") {
+      templateSelect.dispatchEvent(new Event('change'));
+    }
+  }
+</script>
+
 <?php require_once __DIR__ . '/partials/layout_bottom.php'; ?>

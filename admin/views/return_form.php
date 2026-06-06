@@ -9,8 +9,8 @@
   </div>
 
   <div class="page-heading">
-    <h1>Tambah Pengembalian</h1>
-    <p>Catat pengembalian kendaraan dari pelanggan.</p>
+    <h1>Add Return Data</h1>
+    <p>Record vehicle return from customer.</p>
   </div>
 
   <?php if (!empty($errors)): ?>
@@ -26,7 +26,7 @@
 
   <div class="card" style="max-width:640px;">
     <div class="card-header">
-      <span class="card-title">Form Pengembalian</span>
+      <span class="card-title">Return Form</span>
     </div>
     <div class="card-body">
       <form method="POST" action="?page=add_return">
@@ -36,31 +36,31 @@
           <label class="form-label" for="booking_id">Booking <span style="color:#ef4444;">*</span></label>
           <?php if (empty($bookings)): ?>
             <p class="text-sm text-gray-500 mt-1">
-              Tidak ada booking yang belum memiliki data pengembalian.
+              No bookings without return data found.
             </p>
             <input type="hidden" name="booking_id" value="0" />
           <?php else: ?>
             <select name="booking_id" id="booking_id" class="form-control" required
                     onchange="fillEndDate(this)">
-              <option value="">— Pilih Booking —</option>
+              <option value="">— Select Booking —</option>
               <?php foreach ($bookings as $b): ?>
                 <option value="<?= $b['id'] ?>"
                         data-end="<?= htmlspecialchars($b['end_date']) ?>"
                         <?= (($_POST['booking_id'] ?? '') == $b['id']) ? 'selected' : '' ?>>
                   #<?= $b['id'] ?> — <?= htmlspecialchars($b['customer_name']) ?>
                   (<?= htmlspecialchars($b['car_name']) ?>)
-                  | s/d <?= htmlspecialchars($b['end_date']) ?>
+                  | to <?= htmlspecialchars($b['end_date']) ?>
                   | <?= ucfirst($b['status']) ?>
                 </option>
               <?php endforeach; ?>
             </select>
-            <p class="text-xs text-gray-400 mt-1">Hanya booking yang belum memiliki return yang ditampilkan.</p>
+            <p class="text-xs text-gray-400 mt-1">Only completed bookings without returns are shown.</p>
           <?php endif; ?>
         </div>
 
         <!-- Return Date -->
         <div style="margin-bottom:18px;">
-          <label class="form-label" for="return_date">Tanggal Pengembalian <span style="color:#ef4444;">*</span></label>
+          <label class="form-label" for="return_date">Return Date <span style="color:#ef4444;">*</span></label>
           <input type="date" name="return_date" id="return_date" class="form-control"
                  value="<?= htmlspecialchars($_POST['return_date'] ?? date('Y-m-d')) ?>"
                  required />
@@ -69,27 +69,37 @@
 
         <!-- Car Condition -->
         <div style="margin-bottom:18px;">
-          <label class="form-label" for="car_condition">Kondisi Kendaraan <span style="color:#ef4444;">*</span></label>
-          <select name="car_condition" id="car_condition" class="form-control" required>
-            <option value="">— Pilih Kondisi —</option>
-            <option value="good"    <?= (($_POST['car_condition'] ?? '') === 'good')    ? 'selected' : '' ?>>Baik (Good) — Mobil kembali ke available</option>
-            <option value="damaged" <?= (($_POST['car_condition'] ?? '') === 'damaged') ? 'selected' : '' ?>>Rusak (Damaged) — Mobil masuk maintenance</option>
+          <label class="form-label" for="car_condition">Car Condition <span style="color:#ef4444;">*</span></label>
+          <select name="car_condition" id="car_condition" class="form-control" required
+                  onchange="toggleDamageFine()">
+            <option value="">— Select Condition —</option>
+            <option value="good"    <?= (($_POST['car_condition'] ?? '') === 'good')    ? 'selected' : '' ?>>Good — Car becomes available</option>
+            <option value="damaged" <?= (($_POST['car_condition'] ?? '') === 'damaged') ? 'selected' : '' ?>>Damaged — Car goes to maintenance</option>
           </select>
+        </div>
+
+        <!-- Damage Fine -->
+        <div id="damage_fine_wrapper" style="margin-bottom:18px; display: <?= (($_POST['car_condition'] ?? '') === 'damaged') ? 'block' : 'none' ?>;">
+          <label class="form-label" for="damage_fine">Damage Fine (Rp)</label>
+          <input type="text" name="damage_fine" id="damage_fine" class="form-control"
+                 placeholder="Enter fine amount for damage"
+                 value="<?= htmlspecialchars($_POST['damage_fine'] ?? '') ?>" />
+          <p class="text-xs text-gray-400 mt-1">This amount will be added to the late return fine.</p>
         </div>
 
         <!-- Notes -->
         <div style="margin-bottom:24px;">
-          <label class="form-label" for="notes">Notes / Catatan</label>
+          <label class="form-label" for="notes">Notes</label>
           <textarea name="notes" id="notes" class="form-control" rows="3"
-                    placeholder="Catatan kondisi kendaraan, kerusakan, dsb. (opsional)"><?= htmlspecialchars($_POST['notes'] ?? '') ?></textarea>
+                    placeholder="Notes on car condition, damages, etc. (optional)"><?= htmlspecialchars($_POST['notes'] ?? '') ?></textarea>
         </div>
 
         <div style="display:flex;gap:10px;">
           <button type="submit" class="btn btn-primary">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            Simpan Pengembalian
+            Save Return
           </button>
-          <a href="?page=manage_returns" class="btn btn-ghost">Batal</a>
+          <a href="?page=manage_returns" class="btn btn-ghost">Cancel</a>
         </div>
 
       </form>
@@ -118,11 +128,21 @@
     var end = new Date(endDate);
     if (ret > end) {
       var diff = Math.round((ret - end) / 86400000);
-      hint.textContent = '⚠ Terlambat ' + diff + ' hari dari tanggal akhir sewa (' + endDate + '). late_days akan dihitung otomatis.';
+      hint.textContent = '⚠ Late by ' + diff + ' days from rental end date (' + endDate + '). late_days will be calculated automatically.';
       hint.style.color = '#ef4444';
     } else {
-      hint.textContent = '✓ Tepat waktu atau lebih awal dari tanggal akhir sewa (' + endDate + ').';
+      hint.textContent = '✓ On time or earlier than rental end date (' + endDate + ').';
       hint.style.color = '#22c55e';
+    }
+  }
+
+  function toggleDamageFine() {
+    var cc = document.getElementById('car_condition').value;
+    var wrapper = document.getElementById('damage_fine_wrapper');
+    if (cc === 'damaged') {
+      wrapper.style.display = 'block';
+    } else {
+      wrapper.style.display = 'none';
     }
   }
 
@@ -133,6 +153,7 @@
       var end = endDateMap[sel.value] || '';
       updateLateHint(end);
     }
+    toggleDamageFine();
   })();
 
   document.getElementById('return_date').addEventListener('change', function() {

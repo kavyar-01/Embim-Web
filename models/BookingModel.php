@@ -104,6 +104,11 @@ class BookingModel {
 
         if ($success) {
             $bookingId = $this->conn->lastInsertId();
+            
+            // Kurangi stok kendaraan
+            $stmtStock = $this->conn->prepare("UPDATE cars SET stock = stock - 1 WHERE id = :car_id");
+            $stmtStock->execute([':car_id' => $data['car_id']]);
+
             $this->updateCarStatus($data['car_id'], $bookingStatus);
             return $bookingId;
         }
@@ -119,17 +124,11 @@ class BookingModel {
 
 
     public function isCarAvailable($carId, $startDate, $endDate) {
-        $sql = "SELECT COUNT(*) FROM bookings
-                WHERE car_id     = :car_id
-                  AND status NOT IN ('cancelled')
-                  AND NOT (end_date < :start OR start_date > :end)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-            ':car_id' => $carId,
-            ':start'  => $startDate,
-            ':end'    => $endDate,
-        ]);
-        return (int)$stmt->fetchColumn() === 0;
+        $stmt = $this->conn->prepare("SELECT stock FROM cars WHERE id = :id");
+        $stmt->execute([':id' => $carId]);
+        $stock = (int)$stmt->fetchColumn();
+
+        return $stock > 0;
     }
 
 
@@ -178,13 +177,11 @@ class BookingModel {
     }
 
     public function updateCarStatus($carId, $bookingStatus) {
-        if (in_array($bookingStatus, ['confirmed', 'ongoing'])) {
-            $carStatus = 'booked';
-        } elseif (in_array($bookingStatus, ['completed', 'cancelled'])) {
-            $carStatus = 'available';
-        } else {
-            return false;
-        }
+        $stmt = $this->conn->prepare("SELECT stock FROM cars WHERE id = :id");
+        $stmt->execute([':id' => $carId]);
+        $stock = (int)$stmt->fetchColumn();
+
+        $carStatus = ($stock <= 0) ? 'booked' : 'available';
 
         $sql = "UPDATE cars SET status = :status WHERE id = :car_id";
         $stmt = $this->conn->prepare($sql);
@@ -199,6 +196,8 @@ class BookingModel {
         $booking = $this->getBookingById($bookingId);
         if (!$booking) return false;
 
+        $oldStatus = $booking['status'];
+
         $sql = "UPDATE bookings SET status = :status WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
         $success = $stmt->execute([
@@ -207,6 +206,17 @@ class BookingModel {
         ]);
 
         if ($success) {
+            $isOldTerminal = in_array($oldStatus, ['completed', 'cancelled']);
+            $isNewTerminal = in_array($newStatus, ['completed', 'cancelled']);
+            
+            if (!$isOldTerminal && $isNewTerminal) {
+                // Booking selesai atau batal, kembalikan stok
+                $this->conn->prepare("UPDATE cars SET stock = stock + 1 WHERE id = ?")->execute([$booking['car_id']]);
+            } elseif ($isOldTerminal && !$isNewTerminal) {
+                // Jika status diubah kembali menjadi aktif dari selesai/batal
+                $this->conn->prepare("UPDATE cars SET stock = stock - 1 WHERE id = ?")->execute([$booking['car_id']]);
+            }
+
             $this->updateCarStatus($booking['car_id'], $newStatus);
             return true;
         }
@@ -239,10 +249,10 @@ class BookingModel {
      * Cek apakah user memiliki denda yang belum dibayar.
      */
     public function hasUnpaidFines($userId) {
-        $sql = "SELECT COUNT(*) FROM fines f
-                JOIN bookings b ON b.id = f.booking_id
+        $sql = "SELECT COUNT(*) FROM returns r
+                JOIN bookings b ON b.id = r.booking_id
                 WHERE b.user_id = :user_id
-                  AND f.status = 'unpaid'";
+                  AND r.fine_status = 'unpaid'";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([':user_id' => $userId]);
 

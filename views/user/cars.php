@@ -304,6 +304,12 @@ $baseUrl = 'index.php?page=cars'
                                 </svg>
                                 <?php echo ucfirst($car['transmission']); ?>
                             </span>
+                            <span class="flex items-center gap-1.5 font-medium text-xs">
+                                <svg class="h-3.5 w-3.5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                                Stock: <?php echo $car['stock'] ?? 0; ?> Unit
+                            </span>
                         </div>
 
                         <!-- Harga + Tombol -->

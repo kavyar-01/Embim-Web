@@ -10,7 +10,7 @@
 
   <div class="page-heading">
     <h1>Booking Details</h1>
-    <p>Booking #<?= (int)$booking['id'] ?> — <?= htmlspecialchars($booking['customer_name']) ?></p>
+    <p>Booking <?= (int)$booking['id'] ?> — <?= htmlspecialchars($booking['customer_name']) ?></p>
   </div>
 
   <?php if (isset($_GET['updated'])): ?>
@@ -41,7 +41,7 @@
         <span class="<?= $badgeClass ?>"<?= $badgeStyle ?>><?= ucfirst(htmlspecialchars($booking['status'])) ?></span>
       </div>
       <dl class="detail-dl">
-        <div class="detail-row"><dt>Booking ID</dt><dd><strong>#<?= (int)$booking['id'] ?></strong></dd></div>
+        <div class="detail-row"><dt>Booking ID</dt><dd><strong><?= (int)$booking['id'] ?></strong></dd></div>
         <div class="detail-row">
           <dt>Rental Period</dt>
           <dd><?= htmlspecialchars($booking['start_date']) ?> → <?= htmlspecialchars($booking['end_date']) ?></dd>
@@ -65,7 +65,17 @@
     <div class="card">
       <div class="card-header"><span class="card-title">Customer &amp; Vehicle</span></div>
       <dl class="detail-dl">
-        <div class="detail-row"><dt>Customer Name</dt><dd><strong><?= htmlspecialchars($booking['customer_name']) ?></strong></dd></div>
+        <div class="detail-row" style="align-items: flex-end;">
+          <dt style="padding-bottom: 4px;">Customer Name</dt>
+          <dd>
+            <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px;padding-bottom:4px;">
+              <div class="w-14 h-14 shrink-0 rounded-full overflow-hidden bg-gray-100 border border-gray-200 shadow-sm">
+                <img src="../assets/images/user/<?= htmlspecialchars($booking['photo_profile'] ?? 'default.png') ?>" alt="Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($booking['customer_name']) ?>&background=eff6ff&color=1d4ed8'" />
+              </div>
+              <strong><?= htmlspecialchars($booking['customer_name']) ?></strong>
+            </div>
+          </dd>
+        </div>
         <div class="detail-row"><dt>Email</dt><dd><?= htmlspecialchars($booking['customer_email']) ?></dd></div>
         <div class="detail-row"><dt>Phone</dt><dd><?= !empty($booking['customer_phone']) ? htmlspecialchars($booking['customer_phone']) : '<span class="td-muted">—</span>' ?></dd></div>
         <div class="detail-row"><dt>Vehicle</dt><dd><strong><?= htmlspecialchars($booking['car_name']) ?></strong></dd></div>
@@ -103,22 +113,19 @@
 <!-- Modal Konfirmasi Hapus -->
 <div id="modal-delete"
      style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:12px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-      <div style="background:#fef2f2;border-radius:50%;padding:10px;flex-shrink:0;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;color:#dc2626;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-      </div>
-      <div>
-        <p style="font-weight:700;font-size:1rem;color:#111827;margin:0;">Delete Booking?</p>
-        <p style="font-size:0.825rem;color:#6b7280;margin:4px 0 0;">Booking #<?= (int)$booking['id'] ?> will be permanently deleted along with its related return and fine data.</p>
-      </div>
+  <div style="background:#fff;border-radius:16px;padding:32px;max-width:400px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);text-align:center;">
+    <!-- Large Exclamation Icon -->
+    <div style="margin: 0 auto 16px auto; width: 64px; height: 64px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+      <svg xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px;color:#dc2626;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
     </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
-      <button type="button" class="btn btn-ghost"
+    <h3 style="font-weight:800;font-size:1.25rem;color:#111827;margin:0 0 8px 0;">Are you sure?</h3>
+    <p style="font-size:0.875rem;color:#6b7280;margin:0 0 24px 0;line-height:1.5;">Are you sure you want to delete this data? This action cannot be undone.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button type="button" class="btn btn-ghost" style="flex:1;"
               onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
-      <form method="POST" action="?page=delete_booking" style="margin:0;">
+      <form method="POST" action="?page=delete_booking" style="margin:0;flex:1;display:flex;">
         <input type="hidden" name="id" value="<?= (int)$booking['id'] ?>" />
-        <button type="submit" class="btn" style="background:#dc2626;color:#fff;border:1px solid #dc2626;">
+        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;">
           Yes, Delete
         </button>
       </form>

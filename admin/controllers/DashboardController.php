@@ -20,11 +20,22 @@ class DashboardController {
     public function addCar(): void {
         $success = ''; $errors = []; $old = []; $page = 'add_car';
 
+        $allCars = (new CarModel())->getAll();
+        $uniqueCars = [];
+        $seen = [];
+        foreach ($allCars as $c) {
+            $key = strtolower($c['brand'] . '|' . $c['model']);
+            if (!isset($seen[$key])) {
+                $seen[$key] = true;
+                $uniqueCars[] = $c;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $old = $_POST;
 
             // Validation
-            foreach (['brand','model','year','license_plate','price_per_day','transmission','fuel_type','seats'] as $f) {
+            foreach (['brand','model','year','license_plate','price_per_day','transmission','fuel_type','seats','hl_engine'] as $f) {
                 if (empty(trim($_POST[$f] ?? ''))) {
                     $errors[] = ucfirst(str_replace('_', ' ', $f)) . ' is required.';
                 }
@@ -48,9 +59,8 @@ class DashboardController {
                 } elseif ($_FILES['photo']['size'] > 5 * 1024 * 1024) {
                     $errors[] = 'Photo must be smaller than 5MB.';
                 } else {
-                    $ext           = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
-                    $photoFilename = 'car_' . bin2hex(random_bytes(8)) . '_' . time() . '.' . $ext;
-                    $uploadDir     = __DIR__ . '/../assets/images/';
+                    $photoFilename = basename($_FILES['photo']['name']);
+                    $uploadDir     = __DIR__ . '/../../assets/images/';
                     if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
                     if (!move_uploaded_file($_FILES['photo']['tmp_name'], $uploadDir . $photoFilename)) {
                         $errors[] = 'Failed to save photo. Check folder permissions.';
@@ -108,7 +118,7 @@ class DashboardController {
             $old = array_merge($old, $_POST); // Merge for form repopulation
 
             // Validation
-            foreach (['brand','model','year','license_plate','price_per_day','transmission','fuel_type','seats','status'] as $f) {
+            foreach (['brand','model','year','license_plate','price_per_day','transmission','fuel_type','seats','status','hl_engine'] as $f) {
                 if (empty(trim((string)($_POST[$f] ?? '')))) {
                     $errors[] = ucfirst(str_replace('_', ' ', $f)) . ' is required.';
                 }
@@ -135,9 +145,8 @@ class DashboardController {
                 } elseif ($_FILES['photo']['size'] > 5 * 1024 * 1024) {
                     $errors[] = 'Photo must be smaller than 5MB.';
                 } else {
-                    $ext           = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
-                    $photoFilename = 'car_' . bin2hex(random_bytes(8)) . '_' . time() . '.' . $ext;
-                    $uploadDir     = __DIR__ . '/../assets/images/';
+                    $photoFilename = basename($_FILES['photo']['name']);
+                    $uploadDir     = __DIR__ . '/../../assets/images/';
                     if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
                     if (!move_uploaded_file($_FILES['photo']['tmp_name'], $uploadDir . $photoFilename)) {
                         $errors[] = 'Failed to save photo. Check folder permissions.';
@@ -290,13 +299,25 @@ class DashboardController {
     public function managePayments(): void {
         $status = trim($_GET['status'] ?? '');
         $search = trim($_GET['search'] ?? '');
+        $month  = trim($_GET['month'] ?? '');
 
         $validStatuses = ['', 'unpaid', 'paid', 'refunded'];
         if (!in_array($status, $validStatuses, true)) {
             $status = '';
         }
 
-        $all         = $this->model->getPaymentsFiltered($status, $search);
+        $all         = $this->model->getPaymentsFiltered($status, $search, $month);
+        
+        // Calculate stats using only the month filter (ignoring status/search so cards reflect the selected month)
+        $allForStats = $this->model->getPaymentsFiltered('', '', $month);
+        $stats = ['total' => count($allForStats), 'paid' => 0, 'unpaid' => 0, 'refunded' => 0];
+        foreach ($allForStats as $p) {
+            $st = $p['payment_status'] ?? 'unpaid';
+            if (isset($stats[$st])) {
+                $stats[$st]++;
+            }
+        }
+
         $total       = count($all);
         $totalPages  = max(1, (int) ceil($total / $this->perPage));
         $currentPage = max(1, min($totalPages, (int) ($_GET['p'] ?? 1)));
@@ -304,5 +325,49 @@ class DashboardController {
         $payments    = array_slice($all, $offset, $this->perPage);
         $page        = 'manage_payments';
         require_once __DIR__ . '/../views/manage_payments.php';
+    }
+
+    public function paymentDetail(): void {
+        $id = (int) ($_GET['id'] ?? 0);
+        if ($id <= 0) {
+            header('Location: ?page=manage_payments');
+            exit;
+        }
+
+        $payment = $this->model->getPaymentById($id);
+        if ($payment === null) {
+            header('Location: ?page=manage_payments&error=not_found');
+            exit;
+        }
+
+        $page = 'manage_payments';
+        require_once __DIR__ . '/../views/payment_detail.php';
+    }
+
+    public function editPayment(): void {
+        $id = (int) ($_GET['id'] ?? 0);
+        if ($id <= 0) {
+            header('Location: ?page=manage_payments');
+            exit;
+        }
+
+        $payment = $this->model->getPaymentById($id);
+        if ($payment === null) {
+            header('Location: ?page=manage_payments&error=not_found');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $status = trim($_POST['payment_status'] ?? '');
+            
+            if ($this->model->updatePaymentStatus($id, $status)) {
+                header('Location: ?page=payment_detail&id=' . $id . '&updated=1');
+                exit;
+            }
+            $error = "Failed to update payment status. Invalid status selected.";
+        }
+
+        $page = 'manage_payments';
+        require_once __DIR__ . '/../views/payment_edit_form.php';
     }
 }

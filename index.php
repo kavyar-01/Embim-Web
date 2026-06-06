@@ -54,6 +54,12 @@ switch ($page) {
         $controller->index();
         break;
 
+    case 'receipt':
+        require_once 'controllers/ReceiptController.php';
+        $controller = new ReceiptController();
+        $controller->download();
+        break;
+
     case 'booking':
         require_once 'controllers/BookingController.php';
         $controller = new BookingController();

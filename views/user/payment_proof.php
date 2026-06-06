@@ -17,8 +17,8 @@ $methodLabels = [
 $methodLabel = $methodLabels[$booking['payment_method']] ?? ucfirst($booking['payment_method']);
 $isBank      = strpos($booking['payment_method'], 'transfer_bank') === 0;
 
-$imgSrc = !empty($booking['photo'])
-    ? 'assets/images/' . htmlspecialchars($booking['photo'])
+$imgSrc = !empty($booking['car']['photo'])
+    ? 'assets/images/' . htmlspecialchars($booking['car']['photo'])
     : 'assets/images/hrv-car.png';
 ?>
 
@@ -84,15 +84,15 @@ $imgSrc = !empty($booking['photo'])
                  onerror="this.src='assets/images/hrv-car.png'">
             <div>
                 <p class="text-sm font-extrabold text-gray-900">
-                    <?php echo htmlspecialchars($booking['brand'] . ' ' . $booking['model']); ?>
+                    <?php echo htmlspecialchars($booking['car']['brand'] . ' ' . $booking['car']['model']); ?>
                 </p>
-                <p class="text-xs text-gray-400"><?php echo $booking['year']; ?></p>
+                <p class="text-xs text-gray-400"><?php echo $booking['car']['year']; ?></p>
             </div>
         </div>
         <div class="space-y-2 text-sm">
             <div class="flex justify-between">
                 <span class="text-gray-400">No. Booking</span>
-                <span class="font-bold text-gray-800">#<?php echo str_pad($booking['id'], 4, '0', STR_PAD_LEFT); ?></span>
+                <span class="font-bold text-gray-400 italic">Dibuat setelah bayar</span>
             </div>
             <div class="flex justify-between">
                 <span class="text-gray-400">Periode Sewa</span>
@@ -149,7 +149,7 @@ $imgSrc = !empty($booking['photo'])
             <p>Lakukan pembayaran via <strong><?php echo $methodLabel; ?></strong> ke:</p>
             <div class="bg-white rounded-xl border border-blue-200 p-3 space-y-1.5">
                 <div class="flex justify-between">
-                    <span class="text-gray-400">ID / Nomor</span>
+                    <span class="text-gray-400">Nomor Telepon</span>
                     <span class="font-bold tracking-widest">0812-2144-7689</span>
                 </div>
                 <div class="flex justify-between">
@@ -166,7 +166,7 @@ $imgSrc = !empty($booking['photo'])
     </div>
 
     <!-- Form Upload Bukti -->
-    <form action="index.php?page=booking&step=upload-proof&id=<?php echo $booking['id']; ?>"
+    <form action="index.php?page=booking&step=upload-proof"
           method="POST"
           enctype="multipart/form-data"
           id="proof-form">

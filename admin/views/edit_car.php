@@ -165,7 +165,7 @@
         <div>
           <label for="hl_engine" class="block text-sm font-medium text-gray-700 mb-1">Engine Detail</label>
           <input type="text" id="hl_engine" name="hl_engine" value="<?= htmlspecialchars($old['engine'] ?? '') ?>" placeholder="e.g. 2.0L Turbo 4-Cylinder"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
         </div>
         <div>
           <label for="hl_transmission" class="block text-sm font-medium text-gray-700 mb-1">Transmission Detail</label>

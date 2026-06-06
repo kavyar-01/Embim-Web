@@ -7,17 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style/style.css" />
   </head>
-  <body class="min-h-screen bg-blue-700 flex flex-col items-center justify-center px-4 py-12">
+  <body class="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative bg-cover bg-center bg-no-repeat" style="background-image: url('../assets/images/admin_bg.jpg');">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/65 backdrop-blur-[4px] z-0"></div>
 
     <!-- Brand -->
-    <div class="mb-8 text-center">
+    <div class="mb-8 text-center relative z-10">
       <div class="flex items-center justify-center gap-2 mb-1">
         <a href="../index.php" class="text-2xl font-extrabold text-white tracking-tight">EMBIM ADMIN</a>
       </div>
     </div>
 
     <!-- Card -->
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl px-8 py-10">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl px-8 py-10 relative z-10">
 
       <h1 class="text-2xl font-bold text-gray-900 text-center mb-7">Login</h1>
 
@@ -91,7 +93,7 @@
 
     </div>
 
-    <p class="mt-8 text-blue-200 text-xs text-center">
+    <p class="mt-8 text-gray-300 text-xs text-center relative z-10">
       Dengan login, Anda menyetujui
       <a href="#" class="underline hover:text-white transition-colors">Syarat &amp; Ketentuan</a> dan
       <a href="#" class="underline hover:text-white transition-colors">Kebijakan Privasi</a> EMBIM.

@@ -51,6 +51,9 @@ class AdminBookingController
         $offset      = ($currentPage - 1) * $this->perPage;
         $bookings    = array_slice($all, $offset, $this->perPage);
 
+        $topCar  = $this->dashModel->getTopCar();
+        $topUser = $this->dashModel->getTopUser();
+
         $page = 'manage_bookings';
         require_once __DIR__ . '/../views/manage_bookings.php';
     }

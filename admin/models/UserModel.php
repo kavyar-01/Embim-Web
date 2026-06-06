@@ -13,4 +13,8 @@ class UserModel {
             'admins'   => count(array_filter($users, fn($u) => $u['role'] === 'admin')),
         ];
     }
+    public function deleteUser(int $id): bool {
+        $stmt = getPDO()->prepare("DELETE FROM `users` WHERE `id` = :id AND `role` != 'admin'");
+        return $stmt->execute([':id' => $id]);
+    }
 }

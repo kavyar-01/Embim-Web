@@ -1,16 +1,32 @@
 <footer class="bg-white border-t border-gray-200">
   <div class="max-w-7xl mx-auto px-6 py-12">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-      <div class="space-y-4">
+      <div class="space-y-5">
         <div class="flex items-center gap-2">
-          <span class="text-base font-bold text-gray-900 tracking-tight">EMBIM</span>
+          <span class="text-2xl font-extrabold text-gray-900 tracking-tighter">EMBIM</span>
         </div>
-        <p class="text-sm text-gray-500 leading-relaxed">The smart way to rent cars. Discover a wide fleet of vehicles available for every journey and budget.</p>
-        <div class="flex items-center gap-3 pt-1">
-          <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-          <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg></a>
-          <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-          <a href="mailto:hello@embim.com" class="text-gray-400 hover:text-blue-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></a>
+        <p class="text-sm text-gray-500 leading-relaxed">Easy Mobility Booking In Minutes. Premium car rental service with a wide selection of luxury and everyday vehicles for all your driving needs.</p>
+        <div class="flex items-center gap-4 pt-1">
+          <a href="#" aria-label="Facebook" class="group inline-block">
+            <div class="h-5 w-5 bg-gray-400 group-hover:bg-blue-600 transition-colors duration-200" 
+                 style="-webkit-mask: url('../assets/images/facebook_logo.svg') no-repeat center / contain; mask: url('../assets/images/facebook_logo.svg') no-repeat center / contain;">
+            </div>
+          </a>
+          <a href="https://www.instagram.com/aksanrentcar_bdg?igsh=a2cydmJzYnYybnpx" aria-label="Instagram" class="group inline-block">
+            <div class="h-5 w-5 bg-gray-400 group-hover:bg-pink-600 transition-colors duration-200" 
+                 style="-webkit-mask: url('../assets/images/instagram_logo.svg') no-repeat center / contain; mask: url('../assets/images/instagram_logo.svg') no-repeat center / contain;">
+            </div>
+          </a>
+          <a href="#" aria-label="Twitter" class="text-gray-400 hover:text-blue-500 transition duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18" fill="currentColor">
+                <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="Email" class="text-gray-400 hover:text-red-800 transition duration-200">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </a>
         </div>
       </div>
       <div class="space-y-4">

@@ -1,11 +1,11 @@
 
 function confirmCancel(bookingId) {
     const overlay  = document.getElementById('cancel-overlay');
-    const yesBtn   = document.getElementById('cancel-yes');
+    const input    = document.getElementById('cancel-booking-id');
     const noBtn    = document.getElementById('cancel-no');
     const backdrop = document.getElementById('cancel-backdrop');
 
-    yesBtn.href = 'index.php?page=cancel-booking&id=' + bookingId;
+    input.value = bookingId;
     overlay.classList.remove('hidden');
 
     function close() { overlay.classList.add('hidden'); }

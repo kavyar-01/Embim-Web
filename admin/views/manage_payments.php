@@ -8,13 +8,58 @@
   <?php
     $fStatus = $status ?? '';
     $fSearch = $search ?? '';
+    $fMonth  = $month ?? '';
     
     $baseUrl = '?page=manage_payments'
         . (!empty($fStatus) ? '&status=' . urlencode($fStatus) : '')
-        . (!empty($fSearch) ? '&search=' . urlencode($fSearch) : '');
+        . (!empty($fSearch) ? '&search=' . urlencode($fSearch) : '')
+        . (!empty($fMonth)  ? '&month=' . urlencode($fMonth)   : '');
     $from = $total > 0 ? min($total, ($currentPage - 1) * 10 + 1) : 0;
     $to   = min($total, $currentPage * 10);
   ?>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+      <div>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Payments</p>
+        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['total'] ?? 0 ?></p>
+      </div>
+      <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+      </div>
+    </div>
+    
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-green-300 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+      <div>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Paid</p>
+        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['paid'] ?? 0 ?></p>
+      </div>
+      <div class="p-3 bg-green-50 text-green-600 rounded-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+      </div>
+    </div>
+    
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-yellow-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+      <div>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Unpaid</p>
+        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['unpaid'] ?? 0 ?></p>
+      </div>
+      <div class="p-3 bg-yellow-50 text-yellow-600 rounded-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-[0_0_20px_rgba(156,163,175,0.3)]">
+      <div>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Refunded</p>
+        <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['refunded'] ?? 0 ?></p>
+      </div>
+      <div class="p-3 bg-gray-50 text-gray-500 rounded-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+      </div>
+    </div>
+  </div>
 
   <!-- FILTER FORM -->
   <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-6">
@@ -24,13 +69,18 @@
       <div class="flex-1 w-full">
         <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Search</label>
         <div class="relative">
-          <input type="text" name="search" value="<?= htmlspecialchars($fSearch) ?>" placeholder="Booking ID, Customer, Car, or Payment Method"
+          <input type="text" name="search" value="<?= htmlspecialchars($fSearch) ?>" placeholder="Booking ID, Customer, Car, or Method"
             class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
           <svg class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         </div>
       </div>
+      
+      <div class="w-full md:w-48">
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Month</label>
+        <input type="month" name="month" value="<?= htmlspecialchars($fMonth) ?>" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+      </div>
 
-      <div class="w-full md:w-56">
+      <div class="w-full md:w-48">
         <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Status</label>
         <select name="status" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
           <option value="">All Statuses</option>
@@ -86,7 +136,7 @@
             <?php foreach ($payments as $p): ?>
               <tr class="hover:bg-blue-50/30 transition-colors group">
                 <td class="px-5 py-4 font-medium text-gray-900">
-                  #<?= str_pad((string)$p['booking_id'], 4, '0', STR_PAD_LEFT) ?>
+                  <?= (int)$p['booking_id'] ?>
                 </td>
                 <td class="px-5 py-4 font-medium text-gray-800">
                   <?= htmlspecialchars($p['customer_name']) ?>
@@ -124,10 +174,10 @@
                 </td>
                 <td class="px-5 py-4 text-center">
                   <div class="flex items-center justify-center gap-2">
-                    <a href="?page=booking_detail&id=<?= $p['booking_id'] ?>" class="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors" title="View Details">
+                    <a href="?page=payment_detail&id=<?= $p['booking_id'] ?>" class="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors" title="View Details">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                     </a>
-                    <a href="?page=edit_booking&id=<?= $p['booking_id'] ?>" class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition-colors border border-blue-100" title="Edit">
+                    <a href="?page=edit_payment&id=<?= $p['booking_id'] ?>" class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition-colors border border-blue-100" title="Edit Payment Status">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </a>
                   </div>

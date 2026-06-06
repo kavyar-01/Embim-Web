@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2026 at 09:46 PM
+-- Generation Time: Jun 05, 2026 at 04:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -68,7 +68,6 @@ CREATE TABLE `cars` (
   `brand` varchar(80) NOT NULL,
   `model` varchar(100) NOT NULL,
   `year` year(4) NOT NULL,
-  `stock` int(11) NOT NULL,
   `license_plate` varchar(20) NOT NULL,
   `price_per_day` decimal(12,2) NOT NULL,
   `status` enum('available','booked','maintenance') NOT NULL DEFAULT 'available',
@@ -85,11 +84,11 @@ CREATE TABLE `cars` (
 -- Dumping data for table `cars`
 --
 
-INSERT INTO `cars` (`id`, `brand`, `model`, `year`, `stock`, `license_plate`, `price_per_day`, `status`, `transmission`, `fuel_type`, `seats`, `description`, `photo`, `created_at`, `updated_at`) VALUES
-(1, 'Nissan', 'Nissan GTR R34', '2024', 1, 'D 1234 ABM', 3500000.00, 'available', 'automatic', 'electric', 5, 'Sedan listrik ultra-premium dengan akselerasi 0-100 km/h dalam 2,1 detik. Dilengkapi layar sentuh 17 inci, Autopilot, dan interior mewah vegan leather.', 'nissan_gtr_r34.jpg', '2026-05-25 18:55:06', '2026-06-05 00:26:59'),
-(2, 'Mercedes-Benz', 'S-Class S500 4MATIC', '2023', 2, 'D 5678 EMB', 4200000.00, 'available', 'automatic', 'gasoline', 5, 'Sedan flagship Mercedes dengan suspensi air AIRMATIC, ambient lighting 64 warna, sistem audio Burmester 4D, dan fitur MBUX Hyperscreen.', 'Mercedes-Benz S-Class_S500_4MATIC.jpeg', '2026-05-25 18:55:06', '2026-06-05 01:07:53'),
-(3, 'BMW', 'M4 Competition', '2023', 1, 'D 9101 IME', 3800000.00, 'booked', 'manual', 'gasoline', 4, 'Sports coupe bertenaga 510 hp dengan M xDrive AWD, rem karbon-keramik opsional, dan teknologi M Servotronic steering untuk pengalaman berkendara kelas dunia.', 'bmw-m4.jpg', '2026-05-25 18:55:06', '2026-06-05 00:27:04'),
-(4, 'Porsche', '911 Carrera S', '2024', 1, 'D 1121 BIM', 5600000.00, 'available', 'manual', 'gasoline', 4, 'Ikon otomotif legendaris dengan mesin flat-six 450 hp, PDK 8-speed, PASM active suspension, dan desain timeless yang diakui dunia.', 'porsche_carreraS.jpg', '2026-05-25 18:55:06', '2026-06-05 01:09:02');
+INSERT INTO `cars` (`id`, `brand`, `model`, `year`, `license_plate`, `price_per_day`, `status`, `transmission`, `fuel_type`, `seats`, `description`, `photo`, `created_at`, `updated_at`) VALUES
+(1, 'Nissan', 'Nissan GTR R34', '2024', 'D 1234 ABM', 3500000.00, 'available', 'automatic', 'electric', 5, 'Sedan listrik ultra-premium dengan akselerasi 0-100 km/h dalam 2,1 detik. Dilengkapi layar sentuh 17 inci, Autopilot, dan interior mewah vegan leather.', 'nissan_gtr_r34.jpg', '2026-05-25 18:55:06', '2026-06-05 00:26:59'),
+(2, 'Mercedes-Benz', 'S-Class S500 4MATIC', '2023', 'D 5678 EMB', 4200000.00, 'available', 'automatic', 'gasoline', 5, 'Sedan flagship Mercedes dengan suspensi air AIRMATIC, ambient lighting 64 warna, sistem audio Burmester 4D, dan fitur MBUX Hyperscreen.', 'Mercedes-Benz S-Class_S500_4MATIC.jpeg', '2026-05-25 18:55:06', '2026-06-05 01:07:53'),
+(3, 'BMW', 'M4 Competition', '2023', 'D 9101 IME', 3800000.00, 'booked', 'manual', 'gasoline', 4, 'Sports coupe bertenaga 510 hp dengan M xDrive AWD, rem karbon-keramik opsional, dan teknologi M Servotronic steering untuk pengalaman berkendara kelas dunia.', 'bmw-m4.jpg', '2026-05-25 18:55:06', '2026-06-05 00:27:04'),
+(4, 'Porsche', '911 Carrera S', '2024', 'D 1121 BIM', 5600000.00, 'available', 'manual', 'gasoline', 4, 'Ikon otomotif legendaris dengan mesin flat-six 450 hp, PDK 8-speed, PASM active suspension, dan desain timeless yang diakui dunia.', 'porsche_carreraS.jpg', '2026-05-25 18:55:06', '2026-06-05 01:09:02');
 
 -- --------------------------------------------------------
 
@@ -169,11 +168,12 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `phone`, `address`, `role`, `photo_profile`, `photo_ktp`, `photo_sim`, `created_at`, `updated_at`) VALUES
 (1, 'Admin EMBIM', 'admin@embim.com', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '+6282144845847', 'Jl. Cikutra No.1, Bandung, Jawa Barat 40124', 'admin', NULL, NULL, NULL, '2026-05-25 18:55:06', '2026-05-25 18:55:06'),
 (2, 'Budi Santoso', 'budi@gmail.com', 'Budi123', '+6281234567890', 'Jl. Dago Asri No.45, Bandung, Jawa Barat 40135', 'user', NULL, NULL, NULL, '2026-05-25 18:55:06', '2026-06-01 15:52:30'),
-(9, 'Fajar Perdana', 'fajar@gmail.com', '$2y$12$unyuucHZoDAm8IbXVfhsi.l.ZmF6/20nPcoZtbABiyPVaF149ojjm', '+62 812 2144 7689', 'Cangkuang', 'user', 'profile_9_1780372082.jpg', 'ktp_9_1780372040.png', 'sim_9_1780372040.png', '2026-06-02 10:45:00', '2026-06-02 10:48:02'),
+(9, 'Fajar Perdana', 'fajar@gmail.com', '$2y$12$ody18viOOVTCtteuVrr68OU5Psjqx24euqy4XC4DDGYBuYHVZz4yq', '+6281221447689', 'Cangkuang', 'user', 'profile_9_1780372082.jpg', 'ktp_9_1780372040.png', 'sim_9_1780372040.png', '2026-06-02 10:45:00', '2026-06-05 03:35:08'),
 (10, 'Fara', 'fara@gmai.com', '$2y$12$jbdNe84fKRBHXZ/NTHYDmuRbP7Ei2C7U5maco2GgwvwkNvPNDKqJC', '+62 812 22398921', NULL, 'user', NULL, NULL, NULL, '2026-06-03 14:56:16', '2026-06-04 11:04:15'),
 (12, 'Jafarian', 'jafar@gmail.com', '$2y$12$8U1pA/W5GACyyilISvmzi.rfFJdRhy/8LPJiiFFTYisLr2X9I30zS', '+6281221568765', '', 'user', 'profile_12_1780552048.jpeg', NULL, NULL, '2026-06-04 11:05:14', '2026-06-04 14:41:02'),
-(13, 'Fatur', 'fatur@gmail.com', '$2y$12$0K4D/Bbg5kxW/QDdcreFr.SdnJDRNGvOZKnUWjp6oVZbBqeMA00mq', '+6281221445845', 'TAI', 'user', NULL, NULL, NULL, '2026-06-04 15:24:23', '2026-06-05 01:36:55'),
-(14, 'admin', 'admin@gmail.com', '$2y$12$s.jmDo2RyUQeUEjExu/K2OEKSUFsaCKZZhEMtBXcVgWRf5EicKgvm', '+62 812 2144 7689', NULL, 'admin', NULL, NULL, NULL, '2026-06-04 17:19:12', '2026-06-04 17:19:12');
+(13, '9877', 'fatur@gmail.com', '$2y$12$kWwhw1l6ibC1C19x0oo9TOdYfm8yetIVK0a6OwyFvHrqSxcvpz7kq', '+6281231231', 'TAI', 'user', NULL, NULL, NULL, '2026-06-04 15:24:23', '2026-06-05 03:25:47'),
+(14, 'admin', 'admin@gmail.com', '$2y$12$s.jmDo2RyUQeUEjExu/K2OEKSUFsaCKZZhEMtBXcVgWRf5EicKgvm', '+62 812 2144 7689', NULL, 'admin', NULL, NULL, NULL, '2026-06-04 17:19:12', '2026-06-04 17:19:12'),
+(15, '12312312', 'fani@gmail.com', '$2y$12$VRhZ4OhD1iDBvoP/2ZSlHOqQUm9dyqaAiT4ydDxkGgsP15Xsz1Dr2', '+62812738127', '', 'user', NULL, NULL, NULL, '2026-06-05 03:31:59', '2026-06-05 04:34:12');
 
 -- --------------------------------------------------------
 
@@ -309,7 +309,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `vehicle_highlights`

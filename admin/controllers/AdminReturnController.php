@@ -28,6 +28,8 @@ class AdminReturnController {
         $offset     = ($currentPage - 1) * $this->perPage;
         $returns    = array_slice($all, $offset, $this->perPage);
 
+        $stats      = $this->model->getReturnStats();
+
         $page = 'manage_returns';
         require_once __DIR__ . '/../views/manage_returns.php';
     }
@@ -67,6 +69,7 @@ class AdminReturnController {
         $returnDate   =         trim($_POST['return_date']   ?? '');
         $carCondition =         trim($_POST['car_condition'] ?? '');
         $notes        =         trim($_POST['notes']         ?? '');
+        $damageFine   = (float) str_replace(['.', ','], '', $_POST['damage_fine'] ?? '0');
 
         // Validasi
         $errors = $this->validate($bookingId, $returnDate, $carCondition, 0);
@@ -78,7 +81,7 @@ class AdminReturnController {
             return;
         }
 
-        $newId = $this->model->createReturn($bookingId, $returnDate, $carCondition, $notes);
+        $newId = $this->model->createReturn($bookingId, $returnDate, $carCondition, $notes, $damageFine);
         if ($newId !== false) {
             header('Location: ?page=return_detail&id=' . $newId . '&created=1');
         } else {
@@ -116,6 +119,7 @@ class AdminReturnController {
         $returnDate   = trim($_POST['return_date']   ?? '');
         $carCondition = trim($_POST['car_condition'] ?? '');
         $notes        = trim($_POST['notes']         ?? '');
+        $damageFine   = (float) str_replace(['.', ','], '', $_POST['damage_fine'] ?? '0');
 
         $errors = $this->validate($return['booking_id'], $returnDate, $carCondition, $id);
 
@@ -125,7 +129,7 @@ class AdminReturnController {
             return;
         }
 
-        $ok = $this->model->updateReturn($id, $returnDate, $carCondition, $notes);
+        $ok = $this->model->updateReturn($id, $returnDate, $carCondition, $notes, $damageFine);
         if ($ok) {
             header('Location: ?page=return_detail&id=' . $id . '&updated=1');
         } else {
@@ -170,6 +174,8 @@ class AdminReturnController {
             $booking = $this->model->getBookingById($bookingId);
             if ($booking === null) {
                 $errors[] = 'Booking ID tidak ditemukan.';
+            } elseif ($booking['status'] !== 'completed') {
+                $errors[] = 'Hanya booking dengan status "completed" yang dapat ditambahkan data return-nya.';
             } elseif ($this->model->existsByBookingId($bookingId, $excludeId)) {
                 $errors[] = 'Booking #' . $bookingId . ' sudah memiliki data pengembalian.';
             }

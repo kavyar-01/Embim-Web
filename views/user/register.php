@@ -102,6 +102,7 @@
                             maxlength="13"
                             inputmode="numeric"
                             pattern="[0-9]*"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
                         >
                     </div>
                     <p id="phone-error" class="hidden mt-1.5 text-xs text-red-500 font-semibold">⚠ Nomor telepon hanya boleh berisi angka.</p>

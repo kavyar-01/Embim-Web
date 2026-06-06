@@ -14,14 +14,44 @@ class BookingsController {
         $filterStatus = isset($_GET['status']) ? $_GET['status'] : 'all';
         $bookingModel = new BookingModel();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'submit_review') {
-            $this->handleReview($userId, $bookingModel);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+            if ($_POST['action'] === 'submit_review') {
+                $this->handleReview($userId, $bookingModel);
+            } elseif ($_POST['action'] === 'cancel_booking') {
+                $this->handleCancelBooking($userId, $bookingModel);
+            }
         }
 
         $bookings = $bookingModel->getByUserId($userId, $filterStatus);
         $counts   = $bookingModel->getCountsByUserId($userId);
 
         require_once 'views/user/my_bookings.php';
+    }
+
+    private function handleCancelBooking($userId, $bookingModel) {
+        $bookingId = (int)($_POST['booking_id'] ?? 0);
+        
+        if (!$bookingId) {
+            $_SESSION['booking_error'] = 'Booking ID tidak valid.';
+            header('Location: index.php?page=bookings');
+            exit;
+        }
+
+        $booking = $bookingModel->getBookingById($bookingId);
+        if (!$booking || (int)$booking['user_id'] !== $userId || $booking['status'] !== 'confirmed') {
+            $_SESSION['booking_error'] = 'Booking tidak ditemukan atau tidak dapat dibatalkan.';
+            header('Location: index.php?page=bookings');
+            exit;
+        }
+
+        if ($bookingModel->updateBookingStatus($bookingId, 'cancelled')) {
+            $_SESSION['review_success'] = 'Booking berhasil dibatalkan. Refund 80% akan segera diproses.';
+        } else {
+            $_SESSION['booking_error'] = 'Gagal membatalkan booking.';
+        }
+
+        header('Location: index.php?page=bookings');
+        exit;
     }
 
     private function handleReview($userId, $bookingModel) {

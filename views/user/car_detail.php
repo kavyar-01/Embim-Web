@@ -99,25 +99,25 @@
                         'icon_type' => 'img',
                         'icon_src'  => 'assets/images/drivetrain-icon.png',
                         'label' => 'DRIVETRAIN',
-                        'value' => 'AWD',
+                        'value' => !empty($car['drivetrain']) ? htmlspecialchars($car['drivetrain']) : '-',
                     ],
                     [
                         'icon_type' => 'img',
                         'icon_src'  => 'assets/images/car-style-icon.png',
                         'label' => 'BODY STYLE',
-                        'value' => ucfirst($car['category'] ?? 'Sedan'),
+                        'value' => !empty($car['body_style']) ? htmlspecialchars($car['body_style']) : ucfirst(htmlspecialchars($car['category'] ?? 'Sedan')),
                     ],
                     [
                         'icon_type' => 'img',
                         'icon_src'  => 'assets/images/engine-icon.png',
                         'label' => 'ENGINE',
-                        'value' => '3.0L Twin Turbo I6 503hp',
+                        'value' => !empty($car['engine']) ? htmlspecialchars($car['engine']) : '-',
                     ],
                     [
                         'icon_type' => 'img',
                         'icon_src'  => 'assets/images/transmission-icon.png',
                         'label' => 'TRANSMISSION',
-                        'value' => ucfirst($car['transmission']),
+                        'value' => !empty($car['hl_transmission']) ? ucfirst(htmlspecialchars($car['hl_transmission'])) : ucfirst(htmlspecialchars($car['transmission'] ?? '')),
                     ],
                 ];
                 ?>
@@ -180,6 +180,29 @@
                 </div>
             </div>
 
+            <!-- Dokumen Persyaratan -->
+            <div class="bg-white rounded-2xl px-6 py-5 shadow-sm">
+                <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Dokumen Persyaratan</h2>
+                
+                <div class="flex items-start gap-3 bg-blue-49 border border-blue-100 rounded-xl p-4">
+                    <div class="w-8 h-8 rounded-lg bg-blue-49 flex items-center justify-center flex-shrink-0">
+                        <svg class="h-4 w-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-blue-700 mb-1">Wajib Ditunjukkan Saat Pengambilan</p>
+                        <p class="text-xs text-blue-600 leading-relaxed mb-2">
+                            Penyewa diwajibkan untuk menunjukkan dokumen asli berikut saat pengambilan kendaraan:
+                        </p>
+                        <ul class="list-disc list-inside text-xs text-blue-700 font-semibold space-y-1">
+                            <li>KTP Asli</li>
+                            <li>SIM A (Masih Berlaku/Aktif)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <!-- Kendaraan Lainnya -->
             <?php if (!empty($relatedCars)): ?>
             <div class="bg-white rounded-2xl px-6 py-5 shadow-sm">
@@ -230,6 +253,12 @@
                     <div class="flex items-end gap-1 mb-5">
                         <span class="text-2xl font-black text-blue-600">Rp <?php echo number_format($car['price_per_day'], 0, ',', '.'); ?></span>
                         <span class="text-sm text-gray-400 font-medium pb-0.5">/ hari</span>
+                    </div>
+
+                    <!-- Stock Info -->
+                    <div class="mb-5 p-3 bg-blue-50/50 rounded-xl border border-blue-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Stock</span>
+                        <span class="text-sm font-black text-blue-600"><?php echo $car['stock'] ?? 0; ?> Unit</span>
                     </div>
 
                     <?php if ($car['status'] === 'available'): ?>

@@ -26,6 +26,7 @@ class BookingModel
                 u.`full_name`  AS customer_name,
                 u.`email`      AS customer_email,
                 u.`phone`      AS customer_phone,
+                u.`photo_profile`,
                 CONCAT(c.`brand`, ' ', c.`model`) AS car_name,
                 c.`license_plate`,
                 c.`price_per_day`
@@ -50,13 +51,25 @@ class BookingModel
             return false;
         }
 
-        $stmt = $this->pdo->prepare("
-            UPDATE `bookings`
-            SET `status`     = :status,
-                `notes`      = :notes,
-                `updated_at` = NOW()
-            WHERE `id` = :id
-        ");
+        if ($status === 'cancelled') {
+            $stmt = $this->pdo->prepare("
+                UPDATE `bookings`
+                SET `status`         = :status,
+                    `payment_status` = 'refunded',
+                    `notes`          = :notes,
+                    `updated_at`     = NOW()
+                WHERE `id` = :id
+            ");
+        } else {
+            $stmt = $this->pdo->prepare("
+                UPDATE `bookings`
+                SET `status`     = :status,
+                    `notes`      = :notes,
+                    `updated_at` = NOW()
+                WHERE `id` = :id
+            ");
+        }
+
         return $stmt->execute([
             ':status' => $status,
             ':notes'  => $notes !== '' ? $notes : null,
@@ -66,7 +79,7 @@ class BookingModel
 
     /**
      * Hapus booking. Jika ada return terkait, ON DELETE CASCADE akan
-     * menghapus returns + fines otomatis (sesuai FK di schema).
+     * menghapus returns otomatis (beserta data denda di dalamnya).
      * Kembalikan status car ke available jika belum ada booking aktif lain.
      */
     public function deleteBooking(int $id): bool

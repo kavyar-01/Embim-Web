@@ -13,7 +13,7 @@ class CarModel {
 
 
     public function getFeaturedCars($limit = null) {
-        $sql  = "SELECT * FROM {$this->table} WHERE status = 'available' ORDER BY id DESC";
+        $sql  = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table} WHERE status = 'available' ORDER BY id DESC";
         if ($limit !== null) {
             $sql .= " LIMIT :limit";
         }
@@ -28,7 +28,7 @@ class CarModel {
 
     public function searchCars($query) {
         $keyword = '%' . $query . '%';
-        $sql = "SELECT * FROM {$this->table}
+        $sql = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table}
                 WHERE status = 'available'
                   AND (
                       brand        LIKE :kw
@@ -50,7 +50,10 @@ class CarModel {
 
 
     public function getCarById($id) {
-        $sql  = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1";
+        $sql  = "SELECT c.*, v.drivetrain, v.body_style, v.engine, v.transmission AS hl_transmission, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') AS stock 
+                 FROM {$this->table} c
+                 LEFT JOIN vehicle_highlights v ON c.id = v.car_id
+                 WHERE c.id = :id LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -59,7 +62,7 @@ class CarModel {
 
 
     public function getAllCars() {
-        $sql  = "SELECT * FROM {$this->table} ORDER BY id DESC";
+        $sql  = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table} ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -90,9 +93,16 @@ class CarModel {
         return $stmt->fetchAll();
     }
 
+    public function getTotalReviews() {
+        $sql = "SELECT COUNT(*) FROM reviews";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
 
     public function getRelatedCars($excludeId, $limit = 3) {
-        $sql  = "SELECT * FROM {$this->table}
+        $sql  = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table}
                  WHERE status = 'available' AND id != :id
                  ORDER BY RAND() LIMIT :limit";
         $stmt = $this->conn->prepare($sql);
@@ -148,7 +158,7 @@ class CarModel {
         $countStmt->execute();
         $total = (int) $countStmt->fetchColumn();
 
-        $sql  = "SELECT * FROM {$this->table} WHERE {$where} ORDER BY id DESC LIMIT :limit OFFSET :offset";
+        $sql  = "SELECT *, (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = {$this->table}.brand AND c2.model = {$this->table}.model AND c2.status = 'available') AS stock FROM {$this->table} WHERE {$where} ORDER BY id DESC LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
         $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);

@@ -8,7 +8,7 @@
 
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-green-300 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Available</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['available'] ?? 0 ?></p>
@@ -18,7 +18,7 @@
       </div>
     </div>
     
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Booked</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['booked'] ?? 0 ?></p>
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Maintenance</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['maintenance'] ?? 0 ?></p>
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-300 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Automatic</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['automatic'] ?? 0 ?></p>
@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-300 hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Manual</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= $stats['manual'] ?? 0 ?></p>
@@ -288,6 +288,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a2 2 0 11-4 0 2 2 0 014 0zM5 16a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             <?= $c['seats'] ?> Seats
           </div>
+          <div class="flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            Stock: <?= $c['stock'] ?? 0 ?> Unit
+          </div>
         </div>
 
         <!-- Price & Actions -->
@@ -407,7 +411,7 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid grid-cols-4 gap-2">
             <div class="bg-blue-50/50 rounded-lg p-2.5 text-center border border-blue-100/50">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
               <p id="modalTrans" class="text-xs font-medium text-gray-700 capitalize"></p>
@@ -419,6 +423,10 @@
             <div class="bg-blue-50/50 rounded-lg p-2.5 text-center border border-blue-100/50">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a2 2 0 11-4 0 2 2 0 014 0zM5 16a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
               <p id="modalSeats" class="text-xs font-medium text-gray-700"><span id="modalSeatsNum"></span> Seats</p>
+            </div>
+            <div class="bg-blue-50/50 rounded-lg p-2.5 text-center border border-blue-100/50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+              <p id="modalStock" class="text-xs font-medium text-gray-700"><span id="modalStockNum"></span> Unit</p>
             </div>
           </div>
 
@@ -484,6 +492,7 @@
     document.getElementById('modalTrans').textContent = car.transmission;
     document.getElementById('modalFuel').textContent = car.fuel_type;
     document.getElementById('modalSeatsNum').textContent = car.seats;
+    document.getElementById('modalStockNum').textContent = car.stock || 0;
     document.getElementById('modalDesc').textContent = car.description || 'No description provided.';
     
     document.getElementById('modalDrivetrain').textContent = car.drivetrain || '-';
@@ -535,23 +544,32 @@
 
   // Delete Validation Logic
   function confirmDelete(id) {
-    Swal.fire({
-      title: 'Hapus Mobil?',
-      text: "Anda yakin ingin menghapus data mobil ini? Tindakan ini tidak dapat dibatalkan.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#dc2626',
-      cancelButtonColor: '#6b7280',
-      confirmButtonText: 'Ya, hapus!',
-      cancelButtonText: 'Batal',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        document.getElementById('deleteId').value = id;
-        document.getElementById('deleteForm').submit();
-      }
-    })
+    document.getElementById('delete-id').value = id;
+    document.getElementById('modal-delete').style.display = 'flex';
   }
 </script>
+
+<!-- Delete Confirmation Modal -->
+<div id="modal-delete"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:32px;max-width:400px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);text-align:center;">
+    <!-- Large Exclamation Icon -->
+    <div style="margin: 0 auto 16px auto; width: 64px; height: 64px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+      <svg xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px;color:#dc2626;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+    </div>
+    <h3 style="font-weight:800;font-size:1.25rem;color:#111827;margin:0 0 8px 0;">Are you sure?</h3>
+    <p style="font-size:0.875rem;color:#6b7280;margin:0 0 24px 0;line-height:1.5;">Are you sure you want to delete this data? This action cannot be undone.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button type="button" class="btn btn-ghost" style="flex:1;"
+              onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
+      <form id="form-delete" method="POST" action="?page=delete_car" style="margin:0;flex:1;display:flex;">
+        <input type="hidden" id="delete-id" name="id" value="" />
+        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;">
+          Yes, Delete
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 
 <?php require_once __DIR__ . '/partials/layout_bottom.php'; ?>

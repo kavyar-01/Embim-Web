@@ -102,7 +102,13 @@ class BookingController {
             }
 
             if (empty($errors)) {
-                $bookingId = $bookingModel->createBooking([
+                if (!$bookingModel->isCarAvailable($carId, $startDate, $endDate)) {
+                    $errors[] = 'Kendaraan tidak tersedia pada tanggal yang dipilih.';
+                }
+            }
+
+            if (empty($errors)) {
+                $_SESSION['pending_booking'] = [
                     'user_id'        => $_SESSION['user_id'],
                     'car_id'         => $carId,
                     'start_date'     => $startDate,
@@ -111,20 +117,12 @@ class BookingController {
                     'total_price'    => $totalPrice,
                     'notes'          => $notes,
                     'payment_method' => $method,
-                ]);
+                    'selfie_filename'=> $selfieFilename,
+                    'car'            => $car // To display car details on payment_proof page
+                ];
 
-                if ($bookingId) {
-
-                    if ($selfieFilename) {
-                        $bookingModel->saveIdentityPhoto($bookingId, $selfieFilename);
-                    }
-
-
-                    header('Location: index.php?page=booking&step=upload-proof&id=' . $bookingId);
-                    exit;
-                } else {
-                    $errors[] = 'Gagal menyimpan booking. Silakan coba lagi.';
-                }
+                header('Location: index.php?page=booking&step=upload-proof');
+                exit;
             }
         }
 
@@ -138,16 +136,13 @@ class BookingController {
             exit;
         }
 
-        $bookingId    = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-        $bookingModel = new BookingModel();
-        $booking      = $bookingModel->getBookingById($bookingId);
-
-        if (!$booking || (int)$booking['user_id'] !== (int)$_SESSION['user_id']) {
+        if (!isset($_SESSION['pending_booking'])) {
             header('Location: index.php?page=bookings');
             exit;
         }
 
-
+        $booking = $_SESSION['pending_booking'];
+        
         $errors  = [];
         $success = false;
 
@@ -159,9 +154,37 @@ class BookingController {
                 if ($upload['error']) {
                     $errors[] = $upload['error'];
                 } else {
-                    $bookingModel->uploadPaymentProof($bookingId, $upload['filename']);
-                    header('Location: index.php?page=booking-success&id=' . $bookingId);
-                    exit;
+                    $bookingModel = new BookingModel();
+
+                    // Check availability one last time
+                    if (!$bookingModel->isCarAvailable($booking['car_id'], $booking['start_date'], $booking['end_date'])) {
+                        $errors[] = 'Maaf, kendaraan sudah tidak tersedia pada tanggal tersebut.';
+                    } else {
+                        // Create Booking
+                        $bookingId = $bookingModel->createBooking([
+                            'user_id'        => $booking['user_id'],
+                            'car_id'         => $booking['car_id'],
+                            'start_date'     => $booking['start_date'],
+                            'end_date'       => $booking['end_date'],
+                            'total_days'     => $booking['total_days'],
+                            'total_price'    => $booking['total_price'],
+                            'notes'          => $booking['notes'],
+                            'payment_method' => $booking['payment_method'],
+                        ]);
+
+                        if ($bookingId) {
+                            if (!empty($booking['selfie_filename'])) {
+                                $bookingModel->saveIdentityPhoto($bookingId, $booking['selfie_filename']);
+                            }
+                            $bookingModel->uploadPaymentProof($bookingId, $upload['filename']);
+                            
+                            unset($_SESSION['pending_booking']);
+                            header('Location: index.php?page=booking-success&id=' . $bookingId);
+                            exit;
+                        } else {
+                            $errors[] = 'Gagal menyimpan booking. Silakan coba lagi.';
+                        }
+                    }
                 }
             }
         }
