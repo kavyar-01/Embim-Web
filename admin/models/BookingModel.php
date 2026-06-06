@@ -41,9 +41,7 @@ class BookingModel
         return $row ?: null;
     }
 
-    /**
-     * Update status dan notes booking.
-     */
+
     public function updateBooking(int $id, string $status, string $notes): bool
     {
         $allowed = ['confirmed', 'ongoing', 'completed', 'cancelled'];
@@ -51,30 +49,74 @@ class BookingModel
             return false;
         }
 
-        if ($status === 'cancelled') {
-            $stmt = $this->pdo->prepare("
-                UPDATE `bookings`
-                SET `status`         = :status,
-                    `payment_status` = 'refunded',
-                    `notes`          = :notes,
-                    `updated_at`     = NOW()
-                WHERE `id` = :id
-            ");
-        } else {
-            $stmt = $this->pdo->prepare("
-                UPDATE `bookings`
-                SET `status`     = :status,
-                    `notes`      = :notes,
-                    `updated_at` = NOW()
-                WHERE `id` = :id
-            ");
+        $booking = $this->getBookingById($id);
+        if ($booking === null) {
+            return false;
         }
 
-        return $stmt->execute([
-            ':status' => $status,
-            ':notes'  => $notes !== '' ? $notes : null,
-            ':id'     => $id,
-        ]);
+        $this->pdo->beginTransaction();
+        try {
+            if ($status === 'cancelled') {
+                $stmt = $this->pdo->prepare("
+                    UPDATE `bookings`
+                    SET `status`         = :status,
+                        `payment_status` = 'refunded',
+                        `notes`          = :notes,
+                        `updated_at`     = NOW()
+                    WHERE `id` = :id
+                ");
+            } else {
+                $stmt = $this->pdo->prepare("
+                    UPDATE `bookings`
+                    SET `status`     = :status,
+                        `notes`      = :notes,
+                        `updated_at` = NOW()
+                    WHERE `id` = :id
+                ");
+            }
+
+            $stmt->execute([
+                ':status' => $status,
+                ':notes'  => $notes !== '' ? $notes : null,
+                ':id'     => $id,
+            ]);
+
+            $carStatus = $this->getCarStatusForBookingStatus($id, $status);
+            $this->pdo->prepare("
+                UPDATE `cars`
+                SET `status` = :status, `updated_at` = NOW()
+                WHERE `id` = :id
+            ")->execute([
+                ':status' => $carStatus,
+                ':id'     => $booking['car_id'],
+            ]);
+
+            $this->pdo->commit();
+            return true;
+        } catch (Throwable $e) {
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
+    private function getCarStatusForBookingStatus(int $bookingId, string $bookingStatus): string
+    {
+        if (in_array($bookingStatus, ['confirmed', 'ongoing'], true)) {
+            return 'booked';
+        }
+
+        if ($bookingStatus === 'completed') {
+            $stmt = $this->pdo->prepare("
+                SELECT `car_condition`
+                FROM `returns`
+                WHERE `booking_id` = :booking_id
+                LIMIT 1
+            ");
+            $stmt->execute([':booking_id' => $bookingId]);
+            return $stmt->fetchColumn() === 'damaged' ? 'maintenance' : 'available';
+        }
+
+        return 'available';
     }
 
     /**

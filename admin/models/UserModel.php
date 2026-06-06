@@ -14,7 +14,12 @@ class UserModel {
         ];
     }
     public function deleteUser(int $id): bool {
-        $stmt = getPDO()->prepare("DELETE FROM `users` WHERE `id` = :id AND `role` != 'admin'");
-        return $stmt->execute([':id' => $id]);
+        try {
+            $stmt = getPDO()->prepare("DELETE FROM `users` WHERE `id` = :id AND `role` != 'admin'");
+            $stmt->execute([':id' => $id]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 }

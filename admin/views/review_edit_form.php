@@ -46,7 +46,7 @@
         <!-- Rating -->
         <div style="margin-bottom:18px;">
           <label class="form-label" for="rating">Rating (1-5 Stars) <span style="color:#ef4444;">*</span></label>
-          <?php $currentRating = (int)($_POST['rating'] ?? $review['rating'] ?? 5); ?>
+          <?php $currentRating = max(1, min(5, (int)($_POST['rating'] ?? $review['rating'] ?? 5))); ?>
           <input type="hidden" name="rating" id="review-rating-val" value="<?= $currentRating ?>">
           
           <div class="flex items-center gap-2" id="star-container">
@@ -70,6 +70,7 @@
         <div style="margin-bottom:24px;">
           <label class="form-label" for="comment">Comment</label>
           <textarea name="comment" id="comment" class="form-control" rows="4"
+                    maxlength="500"
                     placeholder="Enter review comment..."><?= htmlspecialchars($_POST['comment'] ?? $review['comment'] ?? '') ?></textarea>
         </div>
 

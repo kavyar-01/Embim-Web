@@ -34,14 +34,18 @@ class LoginController {
                 $user      = $userModel->login($email, $password);
 
                 if ($user) {
-                    $_SESSION['user_id']    = $user['id'];
-                    $_SESSION['user_name']  = $user['full_name'];
-                    $_SESSION['user_role']  = $user['role'];
-                    $_SESSION['user_photo'] = $user['photo_profile'] ?? null;
-
+                    session_regenerate_id(true);
                     if ($user['role'] === 'admin') {
-                        header('Location: index.php?page=admin-dashboard');
+                        $_SESSION['admin_id']    = $user['id'];
+                        $_SESSION['admin_name']  = $user['full_name'];
+                        $_SESSION['admin_email'] = $user['email'];
+                        $_SESSION['admin_photo'] = $user['photo_profile'] ?? null;
+                        header('Location: admin/index.php?page=dashboard');
                     } else {
+                        $_SESSION['user_id']    = $user['id'];
+                        $_SESSION['user_name']  = $user['full_name'];
+                        $_SESSION['user_role']  = $user['role'];
+                        $_SESSION['user_photo'] = $user['photo_profile'] ?? null;
                         header('Location: index.php');
                     }
                     exit;

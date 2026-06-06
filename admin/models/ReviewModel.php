@@ -56,23 +56,32 @@ class ReviewModel {
      * Update review details.
      */
     public function updateReview(int $id, int $rating, string $comment): bool {
-        $stmt = $this->pdo->prepare("
-            UPDATE `reviews`
-            SET `rating` = :rating, `comment` = :comment
-            WHERE `id` = :id
-        ");
-        return $stmt->execute([
-            ':id' => $id,
-            ':rating' => $rating,
-            ':comment' => $comment
-        ]);
+        try {
+            $stmt = $this->pdo->prepare("
+                UPDATE `reviews`
+                SET `rating` = :rating, `comment` = :comment
+                WHERE `id` = :id
+            ");
+            return $stmt->execute([
+                ':id' => $id,
+                ':rating' => $rating,
+                ':comment' => $comment
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     /**
      * Delete a review.
      */
     public function deleteReview(int $id): bool {
-        $stmt = $this->pdo->prepare("DELETE FROM `reviews` WHERE `id` = :id");
-        return $stmt->execute([':id' => $id]);
+        try {
+            $stmt = $this->pdo->prepare("DELETE FROM `reviews` WHERE `id` = :id");
+            $stmt->execute([':id' => $id]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 }

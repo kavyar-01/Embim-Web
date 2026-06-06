@@ -42,6 +42,14 @@
         <?php echo htmlspecialchars($_SESSION['review_success']); unset($_SESSION['review_success']); ?>
     </div>
     <?php endif; ?>
+    <?php if (!empty($_SESSION['booking_success'])): ?>
+    <div id="toast-booking-success" class="fixed top-6 right-4 z-[9999] flex items-center gap-3 bg-emerald-600 text-white text-sm font-semibold px-5 py-3.5 rounded-2xl shadow-xl animate-fade-in">
+        <svg class="h-5 w-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+        <?php echo htmlspecialchars($_SESSION['booking_success']); unset($_SESSION['booking_success']); ?>
+    </div>
+    <?php endif; ?>
     <?php if (!empty($_SESSION['review_error'])): ?>
     <div id="toast-error" class="fixed top-6 right-4 z-[9999] flex items-center gap-3 bg-red-500 text-white text-sm font-semibold px-5 py-3.5 rounded-2xl shadow-xl animate-fade-in">
         <svg class="h-5 w-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

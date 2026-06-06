@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    ['toast-success', 'toast-error'].forEach(function (id) {
+    ['toast-success', 'toast-error', 'toast-booking-success', 'toast-booking-error'].forEach(function (id) {
         const el = document.getElementById(id);
         if (el) {
             setTimeout(function () {

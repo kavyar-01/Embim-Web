@@ -44,7 +44,8 @@
       <?php if(empty($users)): ?><tr><td colspan="7" class="text-center py-10 text-gray-400">No users found.</td></tr>
       <?php else: foreach($users as $u):
         $rb = $u['role'] === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-700';
-        $initials = strtoupper(substr($u['full_name'],0,1).substr(strrchr($u['full_name'],' '),1,1));
+        $nameParts = preg_split('/\s+/', trim($u['full_name']));
+        $initials = strtoupper(substr($nameParts[0] ?? '', 0, 1) . substr(end($nameParts) ?: '', 0, 1));
       ?>
       <tr class="hover:bg-gray-50">
         <td class="px-4 py-3 text-gray-500"><?= $u['id'] ?></td>

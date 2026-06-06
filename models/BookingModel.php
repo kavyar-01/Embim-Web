@@ -155,14 +155,18 @@ class BookingModel {
     public function createReview($data) {
         $sql = "INSERT INTO reviews (user_id, car_id, booking_id, rating, comment)
                 VALUES (:user_id, :car_id, :booking_id, :rating, :comment)";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([
-            ':user_id'    => $data['user_id'],
-            ':car_id'     => $data['car_id'],
-            ':booking_id' => $data['booking_id'],
-            ':rating'     => $data['rating'],
-            ':comment'    => $data['comment'],
-        ]);
+        try {
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([
+                ':user_id'    => $data['user_id'],
+                ':car_id'     => $data['car_id'],
+                ':booking_id' => $data['booking_id'],
+                ':rating'     => $data['rating'],
+                ':comment'    => $data['comment'],
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
 

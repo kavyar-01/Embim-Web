@@ -61,6 +61,9 @@ class AdminReviewController {
         if ($rating < 1 || $rating > 5) {
             $errors[] = 'Rating must be between 1 and 5.';
         }
+        if (mb_strlen($comment) > 500) {
+            $errors[] = 'Comment cannot exceed 500 characters.';
+        }
 
         if (empty($errors)) {
             $ok = $this->model->updateReview($id, $rating, $comment);

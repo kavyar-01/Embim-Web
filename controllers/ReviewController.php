@@ -18,11 +18,10 @@ class ReviewController {
         }
 
         $bookingId = (int)($_POST['booking_id'] ?? 0);
-        $carId     = (int)($_POST['car_id']     ?? 0);
         $rating    = (int)($_POST['rating']     ?? 0);
         $comment   = trim($_POST['comment']     ?? '');
 
-        if (!$bookingId || !$carId) {
+        if (!$bookingId) {
             echo json_encode(['success' => false, 'message' => 'Invalid booking data.']);
             exit;
         }
@@ -30,29 +29,33 @@ class ReviewController {
             echo json_encode(['success' => false, 'message' => 'Rating must be between 1 and 5.']);
             exit;
         }
-        if (empty($comment)) {
-            echo json_encode(['success' => false, 'message' => 'Review cannot be empty.']);
-            exit;
-        }
-        if (mb_strlen($comment) < 10) {
-            echo json_encode(['success' => false, 'message' => 'Ulasan minimal 10 karakter.']);
+        if (mb_strlen($comment) > 500) {
+            echo json_encode(['success' => false, 'message' => 'Review cannot exceed 500 characters.']);
             exit;
         }
 
         $bookingModel = new BookingModel();
+        $booking = $bookingModel->getBookingById($bookingId);
+
+        if (!$booking
+            || (int)$booking['user_id'] !== (int)$_SESSION['user_id']
+            || $booking['status'] !== 'completed') {
+            echo json_encode(['success' => false, 'message' => 'Reviews can only be submitted for your completed bookings.']);
+            exit;
+        }
 
         if ($bookingModel->hasReview($bookingId)) {
             echo json_encode(['success' => false, 'message' => 'Booking ini sudah pernah direview.']);
             exit;
         }
 
-        $result = $bookingModel->createReview(
-            $_SESSION['user_id'],
-            $carId,
-            $bookingId,
-            $rating,
-            $comment
-        );
+        $result = $bookingModel->createReview([
+            'user_id'    => (int)$_SESSION['user_id'],
+            'car_id'     => $booking['car_id'],
+            'booking_id' => $bookingId,
+            'rating'     => $rating,
+            'comment'    => $comment,
+        ]);
 
         if ($result) {
             echo json_encode(['success' => true, 'message' => 'Review submitted successfully. Thank you!']);

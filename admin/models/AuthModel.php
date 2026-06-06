@@ -62,31 +62,34 @@
 
       /** Update admin profile */
       public function updateProfile(int $id, array $data): bool {
-          $fields = [
-              'full_name = :full_name',
-              'email     = :email',
-              'phone     = :phone'
-          ];
-          $params = [
-              ':full_name' => $data['full_name'],
-              ':email'     => $data['email'],
-              ':phone'     => $data['phone'] ?: null,
-              ':id'        => $id
-          ];
+          try {
+              $fields = [
+                  'full_name = :full_name',
+                  'email     = :email',
+                  'phone     = :phone'
+              ];
+              $params = [
+                  ':full_name' => $data['full_name'],
+                  ':email'     => $data['email'],
+                  ':phone'     => $data['phone'] ?: null,
+                  ':id'        => $id
+              ];
 
-          if (!empty($data['password'])) {
-              $fields[] = 'password = :password';
-              $params[':password'] = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+              if (!empty($data['password'])) {
+                  $fields[] = 'password = :password';
+                  $params[':password'] = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+              }
+
+              if (!empty($data['photo_profile'])) {
+                  $fields[] = 'photo_profile = :photo_profile';
+                  $params[':photo_profile'] = $data['photo_profile'];
+              }
+
+              $sql = "UPDATE `users` SET " . implode(', ', $fields) . " WHERE `id` = :id AND `role` = 'admin'";
+              $stmt = getPDO()->prepare($sql);
+              return $stmt->execute($params);
+          } catch (PDOException $e) {
+              return false;
           }
-
-          if (!empty($data['photo_profile'])) {
-              $fields[] = 'photo_profile = :photo_profile';
-              $params[':photo_profile'] = $data['photo_profile'];
-          }
-
-          $sql = "UPDATE `users` SET " . implode(', ', $fields) . " WHERE `id` = :id AND `role` = 'admin'";
-          $stmt = getPDO()->prepare($sql);
-          return $stmt->execute($params);
       }
   }
-  

@@ -45,7 +45,7 @@ class BookingsController {
         }
 
         if ($bookingModel->updateBookingStatus($bookingId, 'cancelled')) {
-            $_SESSION['review_success'] = 'Booking cancelled successfully. 80% refund will be processed shortly.';
+            $_SESSION['booking_success'] = 'Booking cancelled successfully. 80% refund will be processed shortly.';
         } else {
             $_SESSION['booking_error'] = 'Failed to cancel booking.';
         }
@@ -59,7 +59,7 @@ class BookingsController {
         $rating    = (int)($_POST['rating']     ?? 0);
         $comment   = trim($_POST['comment']     ?? '');
 
-        if (!$bookingId || $rating < 1 || $rating > 5) {
+        if (!$bookingId || $rating < 1 || $rating > 5 || mb_strlen($comment) > 500) {
             $_SESSION['review_error'] = 'Invalid review data.';
             header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
@@ -80,7 +80,7 @@ class BookingsController {
             exit;
         }
 
-        $bookingModel->createReview([
+        $created = $bookingModel->createReview([
             'user_id'    => $userId,
             'car_id'     => $booking['car_id'],
             'booking_id' => $bookingId,
@@ -88,7 +88,12 @@ class BookingsController {
             'comment'    => $comment,
         ]);
 
-        $_SESSION['review_success'] = 'Review submitted successfully. Thank you!';
+        if ($created) {
+            $_SESSION['review_success'] = 'Review submitted successfully. Thank you!';
+        } else {
+            $_SESSION['review_error'] = 'Failed to save review. Please try again.';
+        }
+
         header('Location: ' . $_SERVER['REQUEST_URI']);
         exit;
     }
