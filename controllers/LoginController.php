@@ -24,10 +24,10 @@ class LoginController {
             $password =      $_POST['password'] ?? '';
 
             if (empty($email) || empty($password)) {
-                $error = 'Email dan password wajib diisi.';
+                $error = 'Email and password are required.';
 
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = 'Format email tidak valid.';
+                $error = 'Invalid email format.';
 
             } else {
                 $userModel = new UserModel();
@@ -47,7 +47,7 @@ class LoginController {
                     exit;
 
                 } else {
-                    $error = 'Email atau password yang Anda masukkan salah.';
+                    $error = 'The email or password you entered is incorrect.';
                 }
             }
         }
@@ -59,22 +59,22 @@ class LoginController {
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'message' => 'Method tidak valid.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid method.']);
             exit;
         }
 
         $phone = trim($_POST['phone'] ?? '');
 
         if (empty($phone)) {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon wajib diisi.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number is required.']);
             exit;
         }
         if (!preg_match('/^[0-9]+$/', $phone)) {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon hanya boleh berisi angka.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number must only contain numbers.']);
             exit;
         }
         if (strlen($phone) < 7 || strlen($phone) > 13) {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon tidak valid (7–13 digit).']);
+            echo json_encode(['success' => false, 'message' => 'Invalid phone number (7-13 digits).']);
             exit;
         }
 
@@ -89,11 +89,11 @@ class LoginController {
 
             echo json_encode([
                 'success'  => true,
-                'message'  => 'Login berhasil!',
+                'message'  => 'Login successful!',
                 'redirect' => 'index.php',
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon tidak terdaftar di akun manapun.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number is not registered to any account.']);
         }
         exit;
     }

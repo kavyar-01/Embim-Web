@@ -90,7 +90,7 @@ if (!defined('BASE_URL')) {
                 </div>
             </div>
 
-            <!-- Card 3: Harga Transparan -->
+            <!-- Card 3: Price Transparan -->
             <div class="reveal reveal-scale reveal-delay-2 group relative bg-white rounded-2xl p-8 border border-gray-100 hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-100/50 transition-all duration-500">
                 <div class="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-blue-50/60 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500 pointer-events-none"></div>
                 <div class="relative">

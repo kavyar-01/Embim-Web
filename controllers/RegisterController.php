@@ -29,7 +29,7 @@ class RegisterController {
                 $error = 'Full name must not contain numbers.';
 
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = 'Format email tidak valid.';
+                $error = 'Invalid email format.';
 
             } elseif (!empty($phoneRaw) && !preg_match('/^[0-9]+$/', $phoneRaw)) {
                 $error = 'Phone numbers must consist only of numbers.';

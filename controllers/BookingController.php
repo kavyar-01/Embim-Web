@@ -66,9 +66,9 @@ class BookingController {
             $notes  = trim($_POST['notes']          ?? '');
             $method = trim($_POST['payment_method'] ?? '');
 
-            if (!$carId)           $errors[] = 'Data kendaraan tidak valid.';
-            if (empty($startDate)) $errors[] = 'Tanggal pickup wajib diisi.';
-            if (empty($endDate))   $errors[] = 'Tanggal kembali wajib diisi.';
+            if (!$carId)           $errors[] = 'Invalid vehicle data.';
+            if (empty($startDate)) $errors[] = 'Date pickup wajib diisi.';
+            if (empty($endDate))   $errors[] = 'Date kembali wajib diisi.';
             if (empty($method))    $errors[] = 'Metode pembayaran wajib dipilih.';
 
             if ($startDate && $endDate) {
@@ -76,8 +76,8 @@ class BookingController {
                 $end   = new DateTime($endDate);
                 $today = new DateTime('today');
 
-                if ($start < $today)  $errors[] = 'Tanggal pickup tidak boleh di masa lalu.';
-                if ($end <= $start)   $errors[] = 'Tanggal kembali harus setelah tanggal pickup.';
+                if ($start < $today)  $errors[] = 'Pickup date cannot be in the past.';
+                if ($end <= $start)   $errors[] = 'Date kembali harus setelah tanggal pickup.';
 
                 $totalDays  = $start->diff($end)->days;
                 $totalPrice = $totalDays * (int)$car['price_per_day'];
@@ -97,13 +97,13 @@ class BookingController {
 
             if (empty($errors)) {
                 if (!$bookingModel->isCarAvailable($carId, $startDate, $endDate)) {
-                    $errors[] = 'Kendaraan tidak tersedia pada tanggal yang dipilih.';
+                    $errors[] = 'Vehicle is not available on the selected dates.';
                 }
             }
 
             if (empty($errors)) {
                 if (!$bookingModel->isCarAvailable($carId, $startDate, $endDate)) {
-                    $errors[] = 'Kendaraan tidak tersedia pada tanggal yang dipilih.';
+                    $errors[] = 'Vehicle is not available on the selected dates.';
                 }
             }
 
@@ -158,7 +158,7 @@ class BookingController {
 
                     // Check availability one last time
                     if (!$bookingModel->isCarAvailable($booking['car_id'], $booking['start_date'], $booking['end_date'])) {
-                        $errors[] = 'Maaf, kendaraan sudah tidak tersedia pada tanggal tersebut.';
+                        $errors[] = 'Sorry, the vehicle is no longer available on those dates.';
                     } else {
                         // Create Booking
                         $bookingId = $bookingModel->createBooking([
@@ -182,7 +182,7 @@ class BookingController {
                             header('Location: index.php?page=booking-success&id=' . $bookingId);
                             exit;
                         } else {
-                            $errors[] = 'Gagal menyimpan booking. Silakan coba lagi.';
+                            $errors[] = 'Failed to save booking. Please try again.';
                         }
                     }
                 }
@@ -222,7 +222,7 @@ class BookingController {
         $maxSize      = 5 * 1024 * 1024; // 5 MB
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            return ['error' => 'Gagal mengupload foto.', 'filename' => null];
+            return ['error' => 'Failed to upload photo.', 'filename' => null];
         }
         if ($file['size'] > $maxSize) {
             return ['error' => 'Ukuran foto maksimal 5 MB.', 'filename' => null];
@@ -238,7 +238,7 @@ class BookingController {
         $dest     = $dir . $filename;
 
         if (!move_uploaded_file($file['tmp_name'], $dest)) {
-            return ['error' => 'Gagal menyimpan foto ke server.', 'filename' => null];
+            return ['error' => 'Failed to save photo to server.', 'filename' => null];
         }
 
         return ['error' => null, 'filename' => $filename];

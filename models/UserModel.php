@@ -14,7 +14,7 @@ class UserModel {
 
     public function register($fullName, $email, $phone, $password) {
         if ($this->findByEmail($email)) {
-            return ['success' => false, 'message' => 'Email sudah terdaftar. Silakan gunakan email lain atau login.'];
+            return ['success' => false, 'message' => 'Email is already registered. Silakan gunakan email lain atau login.'];
         }
 
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
@@ -28,9 +28,9 @@ class UserModel {
         $stmt->bindParam(':password',  $hashedPassword);
 
         if ($stmt->execute()) {
-            return ['success' => true, 'message' => 'Akun berhasil dibuat! Silakan login.'];
+            return ['success' => true, 'message' => 'Account successfully created! Please login.'];
         }
-        return ['success' => false, 'message' => 'Terjadi kesalahan. Silakan coba lagi.'];
+        return ['success' => false, 'message' => 'An error occurred. Please try again.'];
     }
 
 

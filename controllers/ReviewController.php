@@ -13,7 +13,7 @@ class ReviewController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'message' => 'Method tidak valid.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid method.']);
             exit;
         }
 
@@ -23,7 +23,7 @@ class ReviewController {
         $comment   = trim($_POST['comment']     ?? '');
 
         if (!$bookingId || !$carId) {
-            echo json_encode(['success' => false, 'message' => 'Data booking tidak valid.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid booking data.']);
             exit;
         }
         if ($rating < 1 || $rating > 5) {
@@ -31,11 +31,11 @@ class ReviewController {
             exit;
         }
         if (empty($comment)) {
-            echo json_encode(['success' => false, 'message' => 'Ulasan tidak boleh kosong.']);
+            echo json_encode(['success' => false, 'message' => 'Review cannot be empty.']);
             exit;
         }
         if (mb_strlen($comment) < 10) {
-            echo json_encode(['success' => false, 'message' => 'Ulasan minimal 10 karakter.']);
+            echo json_encode(['success' => false, 'message' => 'Review must be at least 10 characters.']);
             exit;
         }
 
@@ -55,9 +55,9 @@ class ReviewController {
         );
 
         if ($result) {
-            echo json_encode(['success' => true, 'message' => 'Ulasan berhasil dikirim. Terima kasih!']);
+            echo json_encode(['success' => true, 'message' => 'Review sent successfully. Thank you!']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Gagal menyimpan ulasan. Pastikan booking berstatus Completed.']);
+            echo json_encode(['success' => false, 'message' => 'Failed to save review. Make sure booking status is Completed.']);
         }
         exit;
     }

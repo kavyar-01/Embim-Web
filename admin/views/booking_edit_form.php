@@ -28,7 +28,7 @@
 
     <!-- Form Edit -->
     <div class="card">
-      <div class="card-header"><span class="card-title">Ubah Data Booking</span></div>
+      <div class="card-header"><span class="card-title">Edit Booking Data</span></div>
       <div class="card-body">
         <form method="POST" action="?page=edit_booking&id=<?= (int)$booking['id'] ?>">
 
@@ -38,7 +38,7 @@
             <input type="text" class="form-control"
                    value="<?= htmlspecialchars($booking['customer_name']) ?> (<?= htmlspecialchars($booking['customer_email']) ?>)"
                    disabled style="background:#f9fafb;color:#6b7280;" />
-            <p class="text-xs text-gray-400 mt-1">Data pelanggan tidak dapat diubah.</p>
+            <p class="text-xs text-gray-400 mt-1">Customer data cannot be changed.</p>
           </div>
 
           <!-- Kendaraan (readonly) -->
@@ -65,7 +65,7 @@
 
           <!-- Notes -->
           <div style="margin-bottom:24px;">
-            <label class="form-label" for="notes">Catatan / Notes</label>
+            <label class="form-label" for="notes">Notes / Notes</label>
             <textarea name="notes" id="notes" class="form-control" rows="3"
                       placeholder="Opsional"><?= htmlspecialchars($_POST['notes'] ?? $booking['notes'] ?? '') ?></textarea>
           </div>
@@ -73,9 +73,9 @@
           <div style="display:flex;gap:10px;">
             <button type="submit" class="btn btn-primary">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              Simpan Perubahan
+              Save Changes
             </button>
-            <a href="?page=booking_detail&id=<?= (int)$booking['id'] ?>" class="btn btn-ghost">Batal</a>
+            <a href="?page=booking_detail&id=<?= (int)$booking['id'] ?>" class="btn btn-ghost">Cancel</a>
           </div>
 
         </form>
@@ -87,17 +87,17 @@
       <div class="card-header"><span class="card-title">Informasi Booking</span></div>
       <dl class="detail-dl">
         <div class="detail-row"><dt>Booking ID</dt><dd>#<?= (int)$booking['id'] ?></dd></div>
-        <div class="detail-row"><dt>Tanggal Mulai</dt><dd><?= htmlspecialchars($booking['start_date']) ?></dd></div>
-        <div class="detail-row"><dt>Tanggal Selesai</dt><dd><?= htmlspecialchars($booking['end_date']) ?></dd></div>
+        <div class="detail-row"><dt>Date Mulai</dt><dd><?= htmlspecialchars($booking['start_date']) ?></dd></div>
+        <div class="detail-row"><dt>Date Selesai</dt><dd><?= htmlspecialchars($booking['end_date']) ?></dd></div>
         <div class="detail-row"><dt>Total Hari</dt><dd><?= (int)$booking['total_days'] ?> hari</dd></div>
         <div class="detail-row">
-          <dt>Total Harga</dt>
+          <dt>Total Price</dt>
           <dd><strong>Rp <?= number_format((float)$booking['total_price'], 0, ',', '.') ?></strong></dd>
         </div>
-        <div class="detail-row"><dt>Harga/Hari</dt><dd>Rp <?= number_format((float)$booking['price_per_day'], 0, ',', '.') ?></dd></div>
+        <div class="detail-row"><dt>Price/Hari</dt><dd>Rp <?= number_format((float)$booking['price_per_day'], 0, ',', '.') ?></dd></div>
       </dl>
       <div style="padding:12px 16px 0;border-top:1px solid #f3f4f6;margin-top:8px;">
-        <p class="text-xs text-gray-400">Tanggal dan harga tidak dapat diubah di sini karena berhubungan dengan data pembayaran.</p>
+        <p class="text-xs text-gray-400">Date and price cannot be changed here as they relate to payment data.</p>
       </div>
     </div>
 
