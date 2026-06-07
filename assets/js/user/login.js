@@ -28,7 +28,7 @@
             const emailVal = emailInput.value.trim();
             const emailRe  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailVal || !emailRe.test(emailVal)) {
-                setError(emailInput, 'Masukkan alamat email yang valid.');
+                setError(emailInput, 'Please enter a valid email address.');
                 valid = false;
             } else {
                 clearError(emailInput);
@@ -44,7 +44,7 @@
             if (!valid) { e.preventDefault(); return; }
 
             submitBtn.disabled    = true;
-            submitBtn.textContent = 'Memproses...';
+            submitBtn.textContent = 'Processing...';
         });
     }
 
@@ -161,7 +161,7 @@ function submitWhatsappLogin() {
     }
 
     btn.disabled    = true;
-    btn.textContent = 'Memverifikasi...';
+    btn.textContent = 'Verifying...';
     setWaAlert('', '');
 
     const formData = new FormData();
@@ -262,7 +262,7 @@ function verifyIdentity() {
     }
 
     btn.disabled    = true;
-    btn.textContent = 'Memverifikasi...';
+    btn.textContent = 'Verifying...';
     setAlert('verify-alert', '', '');
 
     const formData = new FormData();
@@ -273,7 +273,7 @@ function verifyIdentity() {
         .then(r => r.json())
         .then(data => {
             btn.disabled    = false;
-            btn.textContent = 'Verifikasi Akun';
+            btn.textContent = 'Verify Account';
 
             if (data.success) {
                 document.getElementById('reset-user-id').value = data.user_id;
@@ -288,7 +288,7 @@ function verifyIdentity() {
         })
         .catch(() => {
             btn.disabled    = false;
-            btn.textContent = 'Verifikasi Akun';
+            btn.textContent = 'Verify Account';
             setAlert('verify-alert', 'error', 'An error occurred. Please try again.');
         });
 }
@@ -301,12 +301,12 @@ function submitReset() {
 
     const valid = checkRules(password, confirm);
     if (!valid) {
-        setAlert('reset-alert', 'error', 'Pastikan semua persyaratan password terpenuhi.');
+        setAlert('reset-alert', 'error', 'Please make sure all password requirements are met.');
         return;
     }
 
     btn.disabled    = true;
-    btn.textContent = 'Menyimpan...';
+    btn.textContent = 'Saving...';
     setAlert('reset-alert', '', '');
 
     const formData = new FormData();
@@ -320,7 +320,7 @@ function submitReset() {
             if (data.success) {
                 setAlert('reset-alert', 'success', '✓ ' + data.message);
                 btn.disabled    = true;
-                btn.textContent = 'Password Tersimpan';
+                btn.textContent = 'Password Saved';
                 setTimeout(closeForgotModal, 2000);
             } else {
                 setAlert('reset-alert', 'error', data.message);
@@ -330,13 +330,8 @@ function submitReset() {
         })
         .catch(() => {
             btn.disabled    = false;
-<<<<<<< HEAD
-            btn.textContent = 'Simpan Password Baru';
-            setAlert('reset-alert', 'error', 'An error occurred. Please try again.');
-=======
             btn.textContent = 'Save New Password';
-            setAlert('reset-alert', 'error', 'Terjadi kesalahan. Silakan coba lagi.');
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
+            setAlert('reset-alert', 'error', 'An error occurred. Please try again.');
         });
 }
 

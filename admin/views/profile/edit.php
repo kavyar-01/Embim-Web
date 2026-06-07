@@ -109,13 +109,8 @@
 
           <!-- ── Ganti Password ── -->
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
-<<<<<<< HEAD
-              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-1">Ganti Password</h2>
-              <p class="text-xs text-gray-400 mb-5">Leave empty if you do not want to change password.</p>
-=======
               <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-1">Change Password</h2>
               <p class="text-xs text-gray-400 mb-5">Leave blank if you do not want to change your password.</p>
->>>>>>> 8d493b6ff0358e335b45b2c55d71163b3f357789
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">New Password</label>

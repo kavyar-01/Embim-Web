@@ -75,13 +75,8 @@ function confirmLogout(e) {
                 </svg>
             </div>
             <!-- Teks -->
-<<<<<<< HEAD
             <h3 class="text-lg font-bold text-gray-900 mb-1">Confirm Logout</h3>
-            <p class="text-sm text-gray-500 mb-7">Are you sure you want to logout of your EMBIM account?</p>
-=======
-            <h3 class="text-lg font-bold text-gray-900 mb-1">Logout Confirmation</h3>
             <p class="text-sm text-gray-500 mb-7">Are you sure you want to log out of your EMBIM account?</p>
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             <!-- Tombol -->
             <div class="flex gap-3">
                 <button id="logout-cancel"

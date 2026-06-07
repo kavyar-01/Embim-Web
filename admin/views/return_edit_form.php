@@ -79,16 +79,6 @@
           </div>
 
           <!-- Fine Status -->
-<<<<<<< HEAD
-          <div id="fine_status_wrapper" style="margin-bottom:18px;">
-            <label class="form-label" for="fine_status">Fine Status <span style="color:#ef4444;">*</span></label>
-            <select name="fine_status" id="fine_status" class="form-control" required>
-              <option value="unpaid" <?= (($_POST['fine_status'] ?? $return['fine_status']) === 'unpaid') ? 'selected' : '' ?>>Unpaid</option>
-              <option value="paid" <?= (($_POST['fine_status'] ?? $return['fine_status']) === 'paid') ? 'selected' : '' ?>>Paid</option>
-              <option value="none" <?= (($_POST['fine_status'] ?? $return['fine_status']) === 'none') ? 'selected' : '' ?>>None</option>
-            </select>
-            <p class="text-xs text-gray-400 mt-1">Status will automatically be "None" if there is no fine.</p>
-=======
           <div id="fine_status_wrapper" style="margin-bottom:18px; display: <?= (($_POST['car_condition'] ?? $return['car_condition']) === 'damaged') ? 'block' : 'none' ?>;">
             <label class="form-label" for="fine_status">Fine Status</label>
             <select name="fine_status" id="fine_status" class="form-control">
@@ -96,7 +86,6 @@
               <option value="unpaid" <?= (($_POST['fine_status'] ?? $return['fine_status'] ?? '') === 'unpaid') ? 'selected' : '' ?>>Unpaid</option>
               <option value="paid"   <?= (($_POST['fine_status'] ?? $return['fine_status'] ?? '') === 'paid')   ? 'selected' : '' ?>>Paid</option>
             </select>
->>>>>>> 8d493b6ff0358e335b45b2c55d71163b3f357789
           </div>
 
           <!-- Notes -->

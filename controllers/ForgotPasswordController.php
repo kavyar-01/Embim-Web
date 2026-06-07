@@ -21,11 +21,7 @@ class ForgotPasswordController {
         }
 
         if (!preg_match('/^[0-9]+$/', $phone)) {
-<<<<<<< HEAD
             echo json_encode(['success' => false, 'message' => 'Phone number must contain only numbers.']);
-=======
-            echo json_encode(['success' => false, 'message' => 'Phone number must only contain numbers.']);
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             exit;
         }
 
@@ -37,7 +33,7 @@ class ForgotPasswordController {
             echo json_encode([
                 'success' => true,
                 'user_id' => $user['id'],
-                'message' => 'Identitas terverifikasi.',
+                'message' => 'Identity verified successfully.',
             ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Full name or phone number not found.']);
