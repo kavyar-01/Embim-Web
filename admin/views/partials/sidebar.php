@@ -22,8 +22,8 @@
   ?>
   <aside class="w-64 bg-white border-r border-gray-200 flex flex-col h-full shrink-0 shadow-sm relative">
     <!-- Gradasi biru tebal di pojok kiri bawah -->
-    <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-[80px] opacity-70 pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-tr from-blue-300/80 via-transparent to-transparent pointer-events-none"></div>
+    <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-blue-400 rounded-full mix-blend-multiply filter blur-[50px] opacity-60 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-tr from-blue-300/60 via-transparent to-transparent pointer-events-none"></div>
 
     <div class="p-6 pb-2 relative z-10">
       <?php

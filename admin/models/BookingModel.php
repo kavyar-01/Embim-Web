@@ -27,6 +27,7 @@ class BookingModel
                 u.`email`      AS customer_email,
                 u.`phone`      AS customer_phone,
                 u.`photo_profile`,
+                b.`identity_photo`,
                 CONCAT(c.`brand`, ' ', c.`model`) AS car_name,
                 c.`license_plate`,
                 c.`price_per_day`
@@ -170,5 +171,22 @@ class BookingModel
             $this->pdo->rollBack();
             return false;
         }
+    }
+
+    /**
+     * Ambil data booking baru sejak ID tertentu.
+     */
+    public function getNewBookingsSince(int $lastId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT b.id, b.status, u.full_name, c.brand, c.model 
+            FROM bookings b
+            JOIN users u ON u.id = b.user_id
+            JOIN cars c ON c.id = b.car_id
+            WHERE b.id > :lastId
+            ORDER BY b.id ASC
+        ");
+        $stmt->execute([':lastId' => $lastId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

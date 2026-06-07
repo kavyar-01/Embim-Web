@@ -30,7 +30,7 @@
     <div class="card">
       <div class="card-header"><span class="card-title">Edit Return Data</span></div>
       <div class="card-body">
-        <form method="POST" action="?page=edit_return&id=<?= $return['id'] ?>">
+        <form method="POST" action="?page=edit_return&id=<?= $return['id'] ?>" onsubmit="event.preventDefault(); showConfirmModal(this);">
 
           <!-- Booking (readonly) -->
           <div style="margin-bottom:18px;">
@@ -72,13 +72,14 @@
           <!-- Damage Fine -->
           <div id="damage_fine_wrapper" style="margin-bottom:18px; display: <?= (($_POST['car_condition'] ?? $return['car_condition']) === 'damaged') ? 'block' : 'none' ?>;">
             <label class="form-label" for="damage_fine">Damage Fine (Rp)</label>
-            <input type="text" name="damage_fine" id="damage_fine" class="form-control"
-                   placeholder="Enter fine amount for damage"
+            <input type="number" name="damage_fine" id="damage_fine" class="form-control"
+                   placeholder="Enter fine amount for damage" min="0" step="any"
                    value="<?= htmlspecialchars((string)$damageFineValue) ?>" />
             <p class="text-xs text-gray-400 mt-1">This amount will be added to the late return fine.</p>
           </div>
 
           <!-- Fine Status -->
+<<<<<<< HEAD
           <div id="fine_status_wrapper" style="margin-bottom:18px;">
             <label class="form-label" for="fine_status">Fine Status <span style="color:#ef4444;">*</span></label>
             <select name="fine_status" id="fine_status" class="form-control" required>
@@ -87,6 +88,15 @@
               <option value="none" <?= (($_POST['fine_status'] ?? $return['fine_status']) === 'none') ? 'selected' : '' ?>>None</option>
             </select>
             <p class="text-xs text-gray-400 mt-1">Status will automatically be "None" if there is no fine.</p>
+=======
+          <div id="fine_status_wrapper" style="margin-bottom:18px; display: <?= (($_POST['car_condition'] ?? $return['car_condition']) === 'damaged') ? 'block' : 'none' ?>;">
+            <label class="form-label" for="fine_status">Fine Status</label>
+            <select name="fine_status" id="fine_status" class="form-control">
+              <option value="none"   <?= (($_POST['fine_status'] ?? $return['fine_status'] ?? '') === 'none')   ? 'selected' : '' ?>>None</option>
+              <option value="unpaid" <?= (($_POST['fine_status'] ?? $return['fine_status'] ?? '') === 'unpaid') ? 'selected' : '' ?>>Unpaid</option>
+              <option value="paid"   <?= (($_POST['fine_status'] ?? $return['fine_status'] ?? '') === 'paid')   ? 'selected' : '' ?>>Paid</option>
+            </select>
+>>>>>>> 8d493b6ff0358e335b45b2c55d71163b3f357789
           </div>
 
           <!-- Notes -->
@@ -123,9 +133,9 @@
           <dt>Current Late Days</dt>
           <dd>
             <?php if ((int)$return['late_days'] > 0): ?>
-              <span class="badge" style="background:#fef2f2;color:#dc2626;border-color:#fecaca;"><?= $return['late_days'] ?> days</span>
+              <span class="px-2 py-1 border rounded-md text-xs font-bold uppercase tracking-wider bg-red-100 text-red-700 border-red-200"><?= $return['late_days'] ?> days</span>
             <?php else: ?>
-              <span class="badge badge-paid">On time</span>
+              <span class="px-2 py-1 border rounded-md text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 border-emerald-200">On time</span>
             <?php endif; ?>
           </dd>
         </div>
@@ -161,10 +171,13 @@
   function toggleDamageFine() {
     var cc = document.getElementById('car_condition').value;
     var wrapper = document.getElementById('damage_fine_wrapper');
+    var statusWrapper = document.getElementById('fine_status_wrapper');
     if (cc === 'damaged') {
       wrapper.style.display = 'block';
+      statusWrapper.style.display = 'block';
     } else {
       wrapper.style.display = 'none';
+      statusWrapper.style.display = 'none';
     }
   }
 

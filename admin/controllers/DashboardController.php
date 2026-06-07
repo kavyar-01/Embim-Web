@@ -43,10 +43,14 @@ class DashboardController {
                 $errors[] = 'Year must be between 1990 and 2099.';
             if (!empty($_POST['price_per_day']) && (float)$_POST['price_per_day'] < 0)
                 $errors[] = 'Price per day must be a positive number.';
+            if (!empty($_POST['license_plate']) && !preg_match('/[0-9]/', $_POST['license_plate']))
+                $errors[] = 'License plate must contain at least one number.';
 
             // Photo upload
             $photoFilename = null;
-            if (!empty($_FILES['photo']['name'])) {
+            if (empty($_FILES['photo']['name'])) {
+                $errors[] = 'Car photo is required. Please upload a photo.';
+            } else {
                 $allowed = ['image/jpeg','image/png','image/webp'];
                 $mime    = mime_content_type($_FILES['photo']['tmp_name']);
                 if (!in_array($mime, $allowed, true)) {
@@ -350,6 +354,81 @@ class DashboardController {
         $payments    = array_slice($all, $offset, $this->perPage);
         $page        = 'manage_payments';
         require_once __DIR__ . '/../views/manage_payments.php';
+    }
+
+    public function exportPayments(): void {
+        $status = trim($_GET['status'] ?? '');
+        $search = trim($_GET['search'] ?? '');
+        $month  = trim($_GET['month'] ?? '');
+
+        $validStatuses = ['', 'unpaid', 'paid', 'refunded'];
+        if (!in_array($status, $validStatuses, true)) {
+            $status = '';
+        }
+
+        $all = $this->model->getPaymentsFiltered($status, $search, $month);
+
+        header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+        header("Content-Disposition: attachment; filename=Payments_Report_" . date('Ymd_His') . ".xls");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        echo '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
+        echo '<head><meta charset="UTF-8">';
+        echo '<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Payments Report</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->';
+        echo '</head><body>';
+        
+        echo '<h2 style="font-family: Arial, sans-serif; color: #1f2937;">Payments Report</h2>';
+        echo '<p style="font-family: Arial, sans-serif; color: #6b7280; font-size: 12px;">Generated at: ' . date('d M Y H:i:s') . '</p>';
+
+        echo '<table border="1" cellpadding="5" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 13px; border-collapse: collapse; width: 100%; border: 1px solid #e5e7eb;">';
+        echo '<thead style="background-color: #3b82f6; color: #ffffff;">';
+        echo '<tr>';
+        echo '<th style="text-align: center; padding: 10px; border: 1px solid #d1d5db;">Booking ID</th>';
+        echo '<th style="text-align: left; padding: 10px; border: 1px solid #d1d5db;">Customer</th>';
+        echo '<th style="text-align: left; padding: 10px; border: 1px solid #d1d5db;">Car</th>';
+        echo '<th style="text-align: right; padding: 10px; border: 1px solid #d1d5db;">Total Price (Rp)</th>';
+        echo '<th style="text-align: center; padding: 10px; border: 1px solid #d1d5db;">Payment Method</th>';
+        echo '<th style="text-align: center; padding: 10px; border: 1px solid #d1d5db;">Status</th>';
+        echo '<th style="text-align: center; padding: 10px; border: 1px solid #d1d5db;">Paid At</th>';
+        echo '<th style="text-align: center; padding: 10px; border: 1px solid #d1d5db;">Created At</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+
+        foreach ($all as $index => $p) {
+            $bg = ($index % 2 === 0) ? '#f9fafb' : '#ffffff';
+            echo '<tr style="background-color: ' . $bg . ';">';
+            echo '<td style="text-align: center; border: 1px solid #d1d5db;">' . $p['booking_id'] . '</td>';
+            echo '<td style="border: 1px solid #d1d5db;">' . htmlspecialchars($p['customer_name']) . '</td>';
+            echo '<td style="border: 1px solid #d1d5db;">' . htmlspecialchars($p['car_name']) . '</td>';
+            echo '<td style="text-align: right; border: 1px solid #d1d5db; font-weight: bold;">' . number_format($p['total_price'], 0, ',', '.') . '</td>';
+            
+            $method = $p['payment_method'] ? ucwords(str_replace('_', ' ', $p['payment_method'])) : '-';
+            echo '<td style="text-align: center; border: 1px solid #d1d5db;">' . htmlspecialchars($method) . '</td>';
+            
+            $statusColor = match($p['payment_status']) {
+                'paid' => '#166534',
+                'unpaid' => '#b45309',
+                'refunded' => '#374151',
+                default => '#374151'
+            };
+            $statusBg = match($p['payment_status']) {
+                'paid' => '#dcfce7',
+                'unpaid' => '#fef3c7',
+                'refunded' => '#f3f4f6',
+                default => '#f3f4f6'
+            };
+            echo '<td style="text-align: center; border: 1px solid #d1d5db;"><span style="color: '.$statusColor.'; background-color: '.$statusBg.'; padding: 4px 10px; border-radius: 4px; font-weight: bold; text-transform: uppercase; font-size: 11px;">' . htmlspecialchars($p['payment_status']) . '</span></td>';
+            
+            $paidAt = $p['paid_at'] ? date('d M Y H:i', strtotime($p['paid_at'])) : '-';
+            echo '<td style="text-align: center; border: 1px solid #d1d5db;">' . $paidAt . '</td>';
+            echo '<td style="text-align: center; border: 1px solid #d1d5db;">' . date('d M Y H:i', strtotime($p['created_at'])) . '</td>';
+            echo '</tr>';
+        }
+
+        echo '</tbody></table></body></html>';
+        exit;
     }
 
     public function paymentDetail(): void {

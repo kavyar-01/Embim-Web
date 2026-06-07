@@ -30,7 +30,11 @@
     <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
       <label for="existing_car_template" class="block text-sm font-bold text-blue-900 mb-2">Use Existing Car Template (Optional)</label>
       <select id="existing_car_template" name="existing_car_template" class="w-full border border-blue-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+<<<<<<< HEAD
         <option value="">-- Select Vehicle --</option>
+=======
+        <option value="">-- Select Vehicle Template (Manual Input) --</option>
+>>>>>>> 8d493b6ff0358e335b45b2c55d71163b3f357789
         <?php if (!empty($uniqueCars)): ?>
           <?php foreach ($uniqueCars as $idx => $uc): ?>
             <option value="<?= $idx ?>" <?= (isset($old['existing_car_template']) && (string)$old['existing_car_template'] === (string)$idx) ? 'selected' : '' ?>><?= htmlspecialchars($uc['brand'] . ' ' . $uc['model'] . ' (' . $uc['year'] . ')') ?></option>

@@ -14,11 +14,12 @@ class UserController {
             $all = array_values(array_filter($all, function($u) use ($search, $roleF) {
                 $matchSearch = true;
                 if ($search !== '') {
-                    $matchSearch = stripos($u['full_name'], $search) !== false 
+                    $matchSearch = stripos((string)$u['id'], $search) !== false
+                                || stripos($u['full_name'], $search) !== false 
                                 || stripos($u['email'], $search) !== false;
                 }
                 $matchRole = true;
-                if ($roleF !== '') {
+                if ($roleF !== '' && $roleF !== 'all' && $roleF !== 'active') {
                     $matchRole = ($u['role'] === $roleF);
                 }
                 return $matchSearch && $matchRole;

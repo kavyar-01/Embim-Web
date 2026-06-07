@@ -254,7 +254,7 @@ class ReturnModel {
     /**
      * Update return (return_date, car_condition, notes) + recalc late_days + re-update car status.
      */
-    public function updateReturn(int $id, string $returnDate, string $carCondition, string $notes, float $damageFine = 0, string $newFineStatus = ''): bool {
+    public function updateReturn(int $id, string $returnDate, string $carCondition, string $notes, float $damageFine = 0, string $fineStatusStr = ''): bool {
         $existing = $this->getReturnById($id);
         if ($existing === null) {
             return false;
@@ -272,9 +272,10 @@ class ReturnModel {
             $finePerDay = 700000;
             $fineAmount = ($lateDays > 0 ? $lateDays * $finePerDay : 0) + $damageFine;
             
-            if ($newFineStatus !== '') {
-                $fineStatus = $newFineStatus;
-                if ($fineAmount == 0) $fineStatus = 'none';
+            // Pertahankan status 'paid' jika sudah dibayar, kalau belum set 'unpaid' / 'none'
+            // atau gunakan dari form jika dikirim
+            if ($fineStatusStr !== '') {
+                $fineStatus = $fineStatusStr;
             } else {
                 $oldFineStatus = $existing['fine_status'] ?? 'none';
                 if ($oldFineStatus === 'paid' && $fineAmount > 0) {

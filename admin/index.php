@@ -46,6 +46,7 @@
         'manage_cars'           => (new DashboardController())->manageCars(),
         'manage_bookings'       => (new AdminBookingController())->manageBookings(),
         'manage_payments'       => (new DashboardController())->managePayments(),
+        'export_payments'       => (new DashboardController())->exportPayments(),
         'payment_detail'        => (new DashboardController())->paymentDetail(),
 
         'booking_detail'        => (new AdminBookingController())->bookingDetail(),
@@ -61,5 +62,6 @@
         'edit_review'           => (new AdminReviewController())->editReview(),
         'delete_review'         => (new AdminReviewController())->deleteReview(),
         'edit_profile'          => (new ProfileController())->editProfile(),
+        'api_check_bookings'    => (new AdminBookingController())->checkNewBookings(),
         default                 => (new DashboardController())->dashboard(),
     };
