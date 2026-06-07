@@ -32,11 +32,7 @@ class EditProfileController {
             if (empty($fullName)) {
                 $errors[] = 'Full name cannot be empty.';
             } elseif (strlen($fullName) < 4) {
-<<<<<<< HEAD
                 $errors[] = 'Full name must be at least 4 characters long.';
-=======
-                $errors[] = 'Full name must be at least 4 characters.';
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             }
             if (empty($email))    $errors[] = 'Email cannot be empty.';
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
@@ -54,11 +50,7 @@ class EditProfileController {
 
             if (!empty($password)) {
                 if (strlen($password) < 8) {
-<<<<<<< HEAD
                     $errors[] = 'Password must be at least 8 characters long.';
-=======
-                    $errors[] = 'Password must be at least 8 characters.';
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
                 } elseif (!preg_match('/[a-z]/', $password)) {
                     $errors[] = 'Password must contain at least one lowercase letter.';
                 } elseif (!preg_match('/[A-Z]/', $password)) {

@@ -37,11 +37,7 @@
       <?php if (!empty($_GET['registered'])): ?>
       <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg px-4 py-3 mb-5 text-sm flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-<<<<<<< HEAD
-        Admin account created successfully! Please login.
-=======
         Admin account successfully created! Please login.
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
       </div>
       <?php endif; ?>
 
@@ -98,15 +94,9 @@
     </div>
 
     <p class="mt-8 text-gray-300 text-xs text-center relative z-10">
-<<<<<<< HEAD
-      By logging in, you agree to EMBIM's
-      <a href="#" class="underline hover:text-white transition-colors">Terms & Conditions</a> and
-      <a href="#" class="underline hover:text-white transition-colors">Privacy Policy</a>.
-=======
       By logging in, you agree to
       <a href="#" class="underline hover:text-white transition-colors">Terms &amp; Conditions</a> dan
       <a href="#" class="underline hover:text-white transition-colors">Privacy Policy</a> EMBIM.
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
     </p>
 
 <!-- ══════════════════════════════════════════
@@ -141,13 +131,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
                     </svg>
                 </div>
-<<<<<<< HEAD
-                <h3 class="text-lg font-extrabold text-gray-900">Lupa Password Admin?</h3>
-                <p class="text-sm text-gray-400 mt-1">Enter registered full name and phone number to verify your account.</p>
-=======
                 <h3 class="text-lg font-extrabold text-gray-900">Forgot Admin Password?</h3>
                 <p class="text-sm text-gray-400 mt-1">Enter your registered full name and phone number to verify your account.</p>
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             </div>
 
             <div id="verify-alert" class="hidden mb-4 px-4 py-3 rounded-xl text-sm font-semibold border"></div>
@@ -388,11 +373,7 @@
               })
               .catch(() => {
                   btn.disabled    = false;
-<<<<<<< HEAD
-                  btn.textContent = 'Verifikasi Akun';
-=======
                   btn.textContent = 'Verify Account';
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
                   setAlert('verify-alert', 'error', 'An error occurred. Please try again.');
               });
       }
@@ -434,11 +415,7 @@
               })
               .catch(() => {
                   btn.disabled    = false;
-<<<<<<< HEAD
-                  btn.textContent = 'Simpan Password Baru';
-=======
                   btn.textContent = 'Save New Password';
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
                   setAlert('reset-alert', 'error', 'An error occurred. Please try again.');
               });
       }

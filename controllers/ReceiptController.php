@@ -19,14 +19,8 @@ class ReceiptController {
             die("Booking not found or you don't have access.");
         }
 
-<<<<<<< HEAD
         if (!in_array($booking['status'], ['confirmed', 'completed','ongoing'])) {
             die("Receipts are only available for confirmed bookings.");
-=======
-        // We only allow download if status is confirmed or completed
-        if (!in_array($booking['status'], ['confirmed', 'completed'])) {
-            die("Receipt is only available for paid bookings.");
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         }
 
         // Get User details

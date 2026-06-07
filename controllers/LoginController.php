@@ -50,11 +50,7 @@ class LoginController {
                     exit;
 
                 } else {
-<<<<<<< HEAD
                     $error = 'Incorrect email or password.';
-=======
-                    $error = 'The email or password you entered is incorrect.';
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
                 }
             }
         }
@@ -77,11 +73,7 @@ class LoginController {
             exit;
         }
         if (!preg_match('/^[0-9]+$/', $phone)) {
-<<<<<<< HEAD
             echo json_encode(['success' => false, 'message' => 'Phone number must contain only numbers.']);
-=======
-            echo json_encode(['success' => false, 'message' => 'Phone number must only contain numbers.']);
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             exit;
         }
         if (strlen($phone) < 7 || strlen($phone) > 13) {
@@ -111,11 +103,7 @@ class LoginController {
                 'redirect' => 'index.php',
             ]);
         } else {
-<<<<<<< HEAD
             echo json_encode(['success' => false, 'message' => 'Phone number is not registered.']);
-=======
-            echo json_encode(['success' => false, 'message' => 'Phone number is not registered to any account.']);
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         }
         exit;
     }

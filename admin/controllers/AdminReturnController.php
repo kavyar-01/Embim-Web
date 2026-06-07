@@ -170,11 +170,7 @@ class AdminReturnController {
         $errors = [];
 
         if ($bookingId <= 0) {
-<<<<<<< HEAD
             $errors[] = 'Booking ID must be selected.';
-=======
-            $errors[] = 'Booking ID is required.';
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         } else {
             $booking = $this->model->getBookingById($bookingId);
             if ($booking === null) {

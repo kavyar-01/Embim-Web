@@ -21,11 +21,7 @@ class ReviewController {
         $rating    = (int)($_POST['rating']     ?? 0);
         $comment   = trim($_POST['comment']     ?? '');
 
-<<<<<<< HEAD
         if (!$bookingId) {
-=======
-        if (!$bookingId || !$carId) {
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             echo json_encode(['success' => false, 'message' => 'Invalid booking data.']);
             exit;
         }
@@ -33,17 +29,8 @@ class ReviewController {
             echo json_encode(['success' => false, 'message' => 'Rating must be between 1 and 5.']);
             exit;
         }
-<<<<<<< HEAD
         if (mb_strlen($comment) > 500) {
             echo json_encode(['success' => false, 'message' => 'Review cannot exceed 500 characters.']);
-=======
-        if (empty($comment)) {
-            echo json_encode(['success' => false, 'message' => 'Review cannot be empty.']);
-            exit;
-        }
-        if (mb_strlen($comment) < 10) {
-            echo json_encode(['success' => false, 'message' => 'Review must be at least 10 characters.']);
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             exit;
         }
 
@@ -71,15 +58,9 @@ class ReviewController {
         ]);
 
         if ($result) {
-<<<<<<< HEAD
             echo json_encode(['success' => true, 'message' => 'Review submitted successfully. Thank you!']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to save review. Ensure the booking status is Completed.']);
-=======
-            echo json_encode(['success' => true, 'message' => 'Review sent successfully. Thank you!']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to save review. Make sure booking status is Completed.']);
->>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         }
         exit;
     }
