@@ -43,6 +43,7 @@ CREATE TABLE `bookings` (
   `payment_proof` varchar(255) DEFAULT NULL,
   `paid_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
+  `refund_notified_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

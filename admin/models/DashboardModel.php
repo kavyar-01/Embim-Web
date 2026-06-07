@@ -147,9 +147,11 @@ class DashboardModel {
         }
         $sql = "UPDATE `bookings` SET `payment_status` = :status, `updated_at` = NOW()";
         if ($status === 'paid') {
-            $sql .= ", `paid_at` = COALESCE(`paid_at`, NOW())";
+            $sql .= ", `paid_at` = COALESCE(`paid_at`, NOW()), `refund_notified_at` = NULL";
         } elseif ($status === 'unpaid') {
-            $sql .= ", `paid_at` = NULL";
+            $sql .= ", `paid_at` = NULL, `refund_notified_at` = NULL";
+        } elseif ($status === 'refunded') {
+            $sql .= ", `refund_notified_at` = NULL";
         }
         $sql .= " WHERE `id` = :id";
         

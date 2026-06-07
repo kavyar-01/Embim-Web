@@ -7,6 +7,17 @@ class BookingController {
 
     private $uploadDir        = 'assets/images/booking/';
     private $proofUploadDir   = 'assets/images/payment_proof/';
+    private $allowedPaymentMethods = [
+        'gopay',
+        'ovo',
+        'dana',
+        'shopeepay',
+        'transfer_bank_bca',
+        'transfer_bank_mandiri',
+        'transfer_bank_bni',
+        'transfer_bank_bri',
+        'transfer_bank_seabank',
+    ];
 
 
     public function index() {
@@ -49,11 +60,12 @@ class BookingController {
 
         $totalDays  = 0;
         $totalPrice = 0;
+        $start      = $this->parseBookingDate($startDate);
+        $end        = $this->parseBookingDate($endDate);
+
         if ($startDate && $endDate) {
-            $start = new DateTime($startDate);
-            $end   = new DateTime($endDate);
-            $diff  = $start->diff($end)->days;
-            if ($diff > 0) {
+            if ($start && $end && $end > $start) {
+                $diff = $start->diff($end)->days;
                 $totalDays  = $diff;
                 $totalPrice = $diff * (int)$car['price_per_day'];
             }
@@ -68,40 +80,43 @@ class BookingController {
             if (empty($startDate)) $errors[] = 'Pickup date is required.';
             if (empty($endDate))   $errors[] = 'Return date is required.';
             if (empty($method))    $errors[] = 'Payment method must be selected.';
+            if ($method !== '' && !in_array($method, $this->allowedPaymentMethods, true)) {
+                $errors[] = 'Invalid payment method selected.';
+            }
 
             if ($startDate && $endDate) {
-                $start = new DateTime($startDate);
-                $end   = new DateTime($endDate);
-                $today = new DateTime('today');
+                if (!$start || !$end) {
+                    $errors[] = 'Invalid rental date format.';
+                } else {
+                    $today = new DateTime('today');
 
-                if ($start < $today)  $errors[] = 'Pickup date cannot be in the past.';
-                if ($end <= $start)   $errors[] = 'Return date must be after pickup date.';
+                    if ($start < $today)  $errors[] = 'Pickup date cannot be in the past.';
+                    if ($end <= $start)   $errors[] = 'Return date must be after pickup date.';
 
-                $totalDays  = $start->diff($end)->days;
-                $totalPrice = $totalDays * (int)$car['price_per_day'];
+                    if ($end > $start) {
+                        $totalDays  = $start->diff($end)->days;
+                        $totalPrice = $totalDays * (int)$car['price_per_day'];
+                    }
+                }
             }
 
             $selfieFilename = null;
-            if (empty($_FILES['selfie_ktp']['name'])) {
-                $errors[] = 'Selfie with ID card must be uploaded.';
-            } else {
-                $upload = $this->handleUpload('selfie_ktp', $this->uploadDir);
-                if ($upload['error']) {
-                    $errors[] = $upload['error'];
+            if (empty($errors)) {
+                if (!$bookingModel->isCarAvailable($carId, $startDate, $endDate)) {
+                    $errors[] = 'The vehicle is not available on the selected date.';
+                }
+            }
+
+            if (empty($errors)) {
+                if (empty($_FILES['selfie_ktp']['name'])) {
+                    $errors[] = 'Selfie with ID card must be uploaded.';
                 } else {
-                    $selfieFilename = $upload['filename'];
-                }
-            }
-
-            if (empty($errors)) {
-                if (!$bookingModel->isCarAvailable($carId, $startDate, $endDate)) {
-                    $errors[] = 'The vehicle is not available on the selected date.';
-                }
-            }
-
-            if (empty($errors)) {
-                if (!$bookingModel->isCarAvailable($carId, $startDate, $endDate)) {
-                    $errors[] = 'The vehicle is not available on the selected date.';
+                    $upload = $this->handleUpload('selfie_ktp', $this->uploadDir);
+                    if ($upload['error']) {
+                        $errors[] = $upload['error'];
+                    } else {
+                        $selfieFilename = $upload['filename'];
+                    }
                 }
             }
 
@@ -145,43 +160,63 @@ class BookingController {
         $success = false;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (empty($_FILES['payment_proof']['name'])) {
+            $bookingModel = new BookingModel();
+            if ((int)$booking['user_id'] !== (int)$_SESSION['user_id']) {
+                unset($_SESSION['pending_booking']);
+                header('Location: index.php?page=bookings');
+                exit;
+            }
+
+            $start = $this->parseBookingDate($booking['start_date'] ?? '');
+            $end   = $this->parseBookingDate($booking['end_date'] ?? '');
+            if (!$start || !$end || $end <= $start) {
+                $errors[] = 'Invalid rental date data. Please start the booking again.';
+            }
+
+            $hasActiveBooking = $bookingModel->hasActiveBooking($_SESSION['user_id']);
+            $hasUnpaidFines   = $bookingModel->hasUnpaidFines($_SESSION['user_id']);
+
+            if ($hasActiveBooking) {
+                $errors[] = 'You still have active bookings. Please complete them first before making a new booking.';
+            }
+            if ($hasUnpaidFines) {
+                $errors[] = 'You have unpaid fines. Please settle your fines first before making a new booking.';
+            }
+            if (!$hasActiveBooking
+                && !$hasUnpaidFines
+                && !$bookingModel->isCarAvailable($booking['car_id'], $booking['start_date'], $booking['end_date'])) {
+                $errors[] = 'The vehicle is not available on the selected date.';
+            }
+
+            if (empty($errors) && empty($_FILES['payment_proof']['name'])) {
                 $errors[] = 'Payment proof must be uploaded.';
-            } else {
+            } elseif (empty($errors)) {
                 $upload = $this->handleUpload('payment_proof', $this->proofUploadDir);
                 if ($upload['error']) {
                     $errors[] = $upload['error'];
                 } else {
-                    $bookingModel = new BookingModel();
+                    $bookingId = $bookingModel->createBooking([
+                        'user_id'        => $booking['user_id'],
+                        'car_id'         => $booking['car_id'],
+                        'start_date'     => $booking['start_date'],
+                        'end_date'       => $booking['end_date'],
+                        'total_days'     => $booking['total_days'],
+                        'total_price'    => $booking['total_price'],
+                        'notes'          => $booking['notes'],
+                        'payment_method' => $booking['payment_method'],
+                    ]);
 
-                    // Check availability one last time
-                    if (!$bookingModel->isCarAvailable($booking['car_id'], $booking['start_date'], $booking['end_date'])) {
-                        $errors[] = 'The vehicle is not available on the selected date.';
-                    } else {
-                        // Create Booking
-                        $bookingId = $bookingModel->createBooking([
-                            'user_id'        => $booking['user_id'],
-                            'car_id'         => $booking['car_id'],
-                            'start_date'     => $booking['start_date'],
-                            'end_date'       => $booking['end_date'],
-                            'total_days'     => $booking['total_days'],
-                            'total_price'    => $booking['total_price'],
-                            'notes'          => $booking['notes'],
-                            'payment_method' => $booking['payment_method'],
-                        ]);
-
-                        if ($bookingId) {
-                            if (!empty($booking['selfie_filename'])) {
-                                $bookingModel->saveIdentityPhoto($bookingId, $booking['selfie_filename']);
-                            }
-                            $bookingModel->uploadPaymentProof($bookingId, $upload['filename']);
-                            
-                            unset($_SESSION['pending_booking']);
-                            header('Location: index.php?page=booking-success&id=' . $bookingId);
-                            exit;
-                        } else {
-                            $errors[] = 'Failed to save booking. Please try again.';
+                    if ($bookingId) {
+                        if (!empty($booking['selfie_filename'])) {
+                            $bookingModel->saveIdentityPhoto($bookingId, $booking['selfie_filename']);
                         }
+                        $bookingModel->uploadPaymentProof($bookingId, $upload['filename']);
+
+                        unset($_SESSION['pending_booking']);
+                        header('Location: index.php?page=booking-success&id=' . $bookingId);
+                        exit;
+                    } else {
+                        $errors[] = 'Failed to save booking. Please try again.';
                     }
                 }
             }
@@ -240,6 +275,19 @@ class BookingController {
         }
 
         return ['error' => null, 'filename' => $filename];
+    }
+
+    private function parseBookingDate($date) {
+        if (!is_string($date) || $date === '') {
+            return null;
+        }
+
+        $parsed = DateTime::createFromFormat('!Y-m-d', $date);
+        if (!$parsed || $parsed->format('Y-m-d') !== $date) {
+            return null;
+        }
+
+        return $parsed;
     }
 }
 ?>

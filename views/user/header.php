@@ -169,14 +169,9 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
         require_once 'models/BookingModel.php';
         $bm = new BookingModel();
         $recentRefunds = $bm->getRecentRefunds($_SESSION['user_id']);
-        if (!isset($_SESSION['notified_refunds'])) {
-            $_SESSION['notified_refunds'] = [];
-        }
-        foreach ($recentRefunds as $rId) {
-            if (!in_array($rId, $_SESSION['notified_refunds'])) {
-                $_SESSION['refund_warning'] = true;
-                $_SESSION['notified_refunds'][] = $rId;
-            }
+        if (!empty($recentRefunds)) {
+            $_SESSION['refund_warning'] = true;
+            $bm->markRefundsNotified($_SESSION['user_id'], $recentRefunds);
         }
     }
     ?>

@@ -50,46 +50,34 @@ class BookingModel
             return false;
         }
 
-        if ($status === 'pending') {
-            $stmt = $this->pdo->prepare("
-                UPDATE `bookings`
-                SET `status`         = :status,
-                    `payment_status` = 'unpaid',
-                    `notes`          = :notes,
-                    `updated_at`     = NOW()
-                WHERE `id` = :id
-            ");
-        } elseif (in_array($status, ['confirmed', 'ongoing', 'completed'], true)) {
-            $stmt = $this->pdo->prepare("
-                UPDATE `bookings`
-                SET `status`         = :status,
-                    `payment_status` = 'paid',
-                    `notes`          = :notes,
-                    `updated_at`     = NOW()
-                WHERE `id` = :id
-            ");
-        } else {
-            $stmt = $this->pdo->prepare("
-                UPDATE `bookings`
-                SET `status`     = :status,
-                    `notes`      = :notes,
-                    `updated_at` = NOW()
-                WHERE `id` = :id
-            ");
+        $booking = $this->getBookingById($id);
+        if ($booking === null) {
+            return false;
         }
 
         $this->pdo->beginTransaction();
         try {
-            if ($status === 'cancelled') {
+            if ($status === 'pending') {
                 $stmt = $this->pdo->prepare("
                     UPDATE `bookings`
                     SET `status`         = :status,
-                        `payment_status` = 'refunded',
+                        `payment_status` = 'unpaid',
+                        `paid_at`        = NULL,
                         `notes`          = :notes,
                         `updated_at`     = NOW()
                     WHERE `id` = :id
                 ");
-            } elseif ($status === 'completed' || $status === 'ongoing') {
+            } elseif ($status === 'cancelled') {
+                $stmt = $this->pdo->prepare("
+                    UPDATE `bookings`
+                    SET `status`         = :status,
+                        `payment_status` = 'refunded',
+                        `refund_notified_at` = NULL,
+                        `notes`          = :notes,
+                        `updated_at`     = NOW()
+                    WHERE `id` = :id
+                ");
+            } elseif (in_array($status, ['confirmed', 'ongoing', 'completed'], true)) {
                 $stmt = $this->pdo->prepare("
                     UPDATE `bookings`
                     SET `status`         = :status,
@@ -97,14 +85,6 @@ class BookingModel
                         `paid_at`        = COALESCE(`paid_at`, NOW()),
                         `notes`          = :notes,
                         `updated_at`     = NOW()
-                    WHERE `id` = :id
-                ");
-            } else {
-                $stmt = $this->pdo->prepare("
-                    UPDATE `bookings`
-                    SET `status`     = :status,
-                        `notes`      = :notes,
-                        `updated_at` = NOW()
                     WHERE `id` = :id
                 ");
             }
