@@ -48,6 +48,7 @@
         'manage_payments'       => (new DashboardController())->managePayments(),
         'export_payments'       => (new DashboardController())->exportPayments(),
         'payment_detail'        => (new DashboardController())->paymentDetail(),
+        'edit_payment'          => (new DashboardController())->editPayment(),
 
         'booking_detail'        => (new AdminBookingController())->bookingDetail(),
         'edit_booking'          => (new AdminBookingController())->editBooking(),
