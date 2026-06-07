@@ -129,9 +129,9 @@
         <div class="p-6 flex-1 flex items-center justify-center bg-gray-50/50">
           <?php if (!empty($payment['payment_proof'])): ?>
             <div class="max-w-md w-full bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
-              <img src="../assets/images/<?= htmlspecialchars($payment['payment_proof']) ?>" alt="Payment Proof" class="w-full h-auto rounded-lg object-contain max-h-[600px]" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x800?text=Image+Not+Found';" />
+              <img src="../assets/images/payment_proof/<?= htmlspecialchars($payment['payment_proof']) ?>" alt="Payment Proof" class="w-full h-auto rounded-lg object-contain max-h-[600px]" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x800?text=Image+Not+Found';" />
               <div class="mt-3 text-center pb-2">
-                <a href="../assets/images/<?= htmlspecialchars($payment['payment_proof']) ?>" target="_blank" class="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+                <a href="../assets/images/payment_proof/<?= htmlspecialchars($payment['payment_proof']) ?>" target="_blank" class="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
                   Open Original Image ↗
                 </a>
               </div>

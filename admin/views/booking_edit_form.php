@@ -4,7 +4,7 @@
   <div>
     <a href="?page=booking_detail&id=<?= (int)$booking['id'] ?>" class="back-link">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-      Kembali ke Detail
+      Back to Details
     </a>
   </div>
 
@@ -30,11 +30,11 @@
     <div class="card">
       <div class="card-header"><span class="card-title">Edit Booking Data</span></div>
       <div class="card-body">
-        <form method="POST" action="?page=edit_booking&id=<?= (int)$booking['id'] ?>">
+        <form method="POST" action="?page=edit_booking&id=<?= (int)$booking['id'] ?>" onsubmit="event.preventDefault(); showConfirmModal(this);">
 
           <!-- Pelanggan (readonly) -->
           <div style="margin-bottom:18px;">
-            <label class="form-label">Pelanggan</label>
+            <label class="form-label">Customer</label>
             <input type="text" class="form-control"
                    value="<?= htmlspecialchars($booking['customer_name']) ?> (<?= htmlspecialchars($booking['customer_email']) ?>)"
                    disabled style="background:#f9fafb;color:#6b7280;" />
@@ -43,7 +43,7 @@
 
           <!-- Kendaraan (readonly) -->
           <div style="margin-bottom:18px;">
-            <label class="form-label">Kendaraan</label>
+            <label class="form-label">Vehicle</label>
             <input type="text" class="form-control"
                    value="<?= htmlspecialchars($booking['car_name']) ?> — <?= htmlspecialchars($booking['license_plate']) ?>"
                    disabled style="background:#f9fafb;color:#6b7280;" />
@@ -65,9 +65,9 @@
 
           <!-- Notes -->
           <div style="margin-bottom:24px;">
-            <label class="form-label" for="notes">Notes / Notes</label>
+            <label class="form-label" for="notes">Notes</label>
             <textarea name="notes" id="notes" class="form-control" rows="3"
-                      placeholder="Opsional"><?= htmlspecialchars($_POST['notes'] ?? $booking['notes'] ?? '') ?></textarea>
+                      placeholder="Optional"><?= htmlspecialchars($_POST['notes'] ?? $booking['notes'] ?? '') ?></textarea>
           </div>
 
           <div style="display:flex;gap:10px;">
@@ -84,17 +84,17 @@
 
     <!-- Info Booking (readonly) -->
     <div class="card">
-      <div class="card-header"><span class="card-title">Informasi Booking</span></div>
+      <div class="card-header"><span class="card-title">Booking Information</span></div>
       <dl class="detail-dl">
         <div class="detail-row"><dt>Booking ID</dt><dd>#<?= (int)$booking['id'] ?></dd></div>
-        <div class="detail-row"><dt>Date Mulai</dt><dd><?= htmlspecialchars($booking['start_date']) ?></dd></div>
-        <div class="detail-row"><dt>Date Selesai</dt><dd><?= htmlspecialchars($booking['end_date']) ?></dd></div>
-        <div class="detail-row"><dt>Total Hari</dt><dd><?= (int)$booking['total_days'] ?> hari</dd></div>
+        <div class="detail-row"><dt>Start Date</dt><dd><?= htmlspecialchars($booking['start_date']) ?></dd></div>
+        <div class="detail-row"><dt>End Date</dt><dd><?= htmlspecialchars($booking['end_date']) ?></dd></div>
+        <div class="detail-row"><dt>Total Days</dt><dd><?= (int)$booking['total_days'] ?> days</dd></div>
         <div class="detail-row">
           <dt>Total Price</dt>
           <dd><strong>Rp <?= number_format((float)$booking['total_price'], 0, ',', '.') ?></strong></dd>
         </div>
-        <div class="detail-row"><dt>Price/Hari</dt><dd>Rp <?= number_format((float)$booking['price_per_day'], 0, ',', '.') ?></dd></div>
+        <div class="detail-row"><dt>Price/Day</dt><dd>Rp <?= number_format((float)$booking['price_per_day'], 0, ',', '.') ?></dd></div>
       </dl>
       <div style="padding:12px 16px 0;border-top:1px solid #f3f4f6;margin-top:8px;">
         <p class="text-xs text-gray-400">Date and price cannot be changed here as they relate to payment data.</p>

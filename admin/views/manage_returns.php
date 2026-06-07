@@ -23,7 +23,7 @@
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <!-- Total Returns -->
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+    <a href="?page=manage_returns" class="block bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]">
       <div>
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Returns</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= number_format((int)($stats['total'] ?? 0)) ?></p>
@@ -31,10 +31,10 @@
       <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
       </div>
-    </div>
+    </a>
     
     <!-- Good Condition -->
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+    <a href="?page=manage_returns<?= $condition === 'good' ? '' : '&condition=good' ?>" class="block bg-white rounded-xl border <?= $condition === 'good' ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'border-gray-200' ?> p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]">
       <div>
         <p class="text-xs font-medium text-emerald-600 uppercase tracking-wide">Good Condition</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= number_format((int)($stats['good_count'] ?? 0)) ?></p>
@@ -42,10 +42,10 @@
       <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
       </div>
-    </div>
+    </a>
     
     <!-- Damaged Condition -->
-    <div class="bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+    <a href="?page=manage_returns<?= $condition === 'damaged' ? '' : '&condition=damaged' ?>" class="block bg-white rounded-xl border <?= $condition === 'damaged' ? 'border-red-500 ring-2 ring-red-500/20' : 'border-gray-200' ?> p-4 flex items-center justify-between shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]">
       <div>
         <p class="text-xs font-medium text-red-600 uppercase tracking-wide">Damaged</p>
         <p class="text-2xl font-bold text-gray-900 mt-1"><?= number_format((int)($stats['damaged_count'] ?? 0)) ?></p>
@@ -53,39 +53,47 @@
       <div class="p-3 bg-red-50 text-red-600 rounded-lg">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
       </div>
-    </div>
+    </a>
   </div>
 
   <!-- Filter Bar -->
-  <form method="GET" action="" class="filter-bar">
-    <input type="hidden" name="page" value="manage_returns" />
+  <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-6">
+    <form method="GET" action="" class="flex flex-col md:flex-row gap-4 items-end">
+      <input type="hidden" name="page" value="manage_returns" />
+      <?php if ($condition !== ''): ?>
+        <input type="hidden" name="condition" value="<?= htmlspecialchars($condition) ?>" />
+      <?php endif; ?>
 
-    <div class="search-wrap">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
-      <input type="search" name="search"
-             value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-             placeholder="Return ID, Booking ID, customer, or car..."
-             class="form-control w-64" />
-    </div>
+      <div class="flex-1 w-full">
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Search</label>
+        <div class="relative">
+          <input type="text" name="search"
+                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                 placeholder="Return ID, Booking ID, customer, or car..."
+                 class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+          <svg class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
+        </div>
+      </div>
 
-    <select name="condition" class="form-control" style="width:auto;">
-      <option value=""       <?= (($_GET['condition'] ?? '') === '')        ? 'selected' : '' ?>>All Conditions</option>
-      <option value="good"   <?= (($_GET['condition'] ?? '') === 'good')   ? 'selected' : '' ?>>Good</option>
-      <option value="damaged"<?= (($_GET['condition'] ?? '') === 'damaged') ? 'selected' : '' ?>>Damaged</option>
-    </select>
+      <div class="w-full md:w-48">
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Return Date</label>
+        <input type="date" name="return_date" value="<?= htmlspecialchars($_GET['return_date'] ?? '') ?>" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+      </div>
 
-    <input type="date" name="return_date"
-           value="<?= htmlspecialchars($_GET['return_date'] ?? '') ?>"
-           class="form-control" style="width:auto;"
-           title="Filter by return date" />
-
-    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
-    <a href="?page=manage_returns" class="btn btn-ghost btn-sm">Reset</a>
-    <a href="?page=add_return" class="btn btn-primary btn-sm" style="margin-left:auto;">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-      Add Return
-    </a>
-  </form>
+      <div class="flex gap-2 w-full md:w-auto">
+        <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-colors">
+          Search
+        </button>
+        <a href="?page=manage_returns<?= !empty($condition) ? '&condition='.urlencode($condition) : '' ?>" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-xl transition-colors">
+          Reset
+        </a>
+        <a href="?page=add_return" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-colors flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          Add Return
+        </a>
+      </div>
+    </form>
+  </div>
 
   <!-- Table -->
   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
@@ -108,7 +116,7 @@
         <?php if (empty($returns)): ?>
           <tr><td colspan="10" class="text-center py-10 text-gray-400">No return data found.</td></tr>
         <?php else: foreach ($returns as $r):
-          $condClass = $r['car_condition'] === 'good' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700';
+          $condClass = $r['car_condition'] === 'good' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200';
           $condLabel = $r['car_condition'] === 'good' ? 'Good' : 'Damaged';
         ?>
         <tr class="hover:bg-blue-50/30 transition-colors group border-b border-gray-50">
@@ -130,7 +138,7 @@
             <?php endif; ?>
           </td>
           <td class="px-3 py-3 text-center">
-            <span class="px-2 py-0.5 <?= $condClass ?> text-[10px] font-bold uppercase rounded w-max"><?= $condLabel ?></span>
+            <span class="px-2 py-0.5 border <?= $condClass ?> text-[10px] font-bold uppercase rounded w-max"><?= $condLabel ?></span>
           </td>
           <td class="px-3 py-3 font-bold text-gray-900 whitespace-nowrap text-xs">
             <?php if ((int)$r['fine_amount'] > 0): ?>
@@ -218,11 +226,11 @@
     <h3 style="font-weight:800;font-size:1.25rem;color:#111827;margin:0 0 8px 0;">Are you sure?</h3>
     <p style="font-size:0.875rem;color:#6b7280;margin:0 0 24px 0;line-height:1.5;">Are you sure you want to delete this data? This action cannot be undone.</p>
     <div style="display:flex;gap:12px;justify-content:center;">
-      <button type="button" class="btn btn-ghost" style="flex:1;"
+      <button type="button" class="btn btn-ghost" style="flex:1; justify-content:center; text-align:center;"
               onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
       <form id="form-delete" method="POST" action="?page=delete_return" style="margin:0;flex:1;display:flex;">
         <input type="hidden" id="delete-id" name="id" value="" />
-        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;">
+        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer; justify-content:center; text-align:center;">
           Yes, Delete
         </button>
       </form>

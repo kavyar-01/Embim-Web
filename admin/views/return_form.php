@@ -81,8 +81,8 @@
         <!-- Damage Fine -->
         <div id="damage_fine_wrapper" style="margin-bottom:18px; display: <?= (($_POST['car_condition'] ?? '') === 'damaged') ? 'block' : 'none' ?>;">
           <label class="form-label" for="damage_fine">Damage Fine (Rp)</label>
-          <input type="text" name="damage_fine" id="damage_fine" class="form-control"
-                 placeholder="Enter fine amount for damage"
+          <input type="number" name="damage_fine" id="damage_fine" class="form-control"
+                 placeholder="Enter fine amount for damage" min="0" step="any"
                  value="<?= htmlspecialchars($_POST['damage_fine'] ?? '') ?>" />
           <p class="text-xs text-gray-400 mt-1">This amount will be added to the late return fine.</p>
         </div>

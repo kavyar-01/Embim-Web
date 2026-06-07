@@ -20,13 +20,23 @@ class AdminReviewController {
             }
         }
 
-        $total      = count($allReviews);
+        $fRating = $_GET['rating'] ?? '';
+
+        $filteredReviews = [];
+        foreach ($allReviews as $r) {
+            if ($fRating !== '' && (int)$r['rating'] !== (int)$fRating) {
+                continue;
+            }
+            $filteredReviews[] = $r;
+        }
+
+        $total      = count($filteredReviews);
         $perPage    = 6;
         $totalPages = max(1, (int) ceil($total / $perPage));
         $currentPage = max(1, min($totalPages, (int) ($_GET['p'] ?? 1)));
         $offset     = ($currentPage - 1) * $perPage;
         
-        $reviews = array_slice($allReviews, $offset, $perPage);
+        $reviews = array_slice($filteredReviews, $offset, $perPage);
 
         $page = 'manage_reviews';
         require_once __DIR__ . '/../views/manage_reviews.php';

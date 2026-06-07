@@ -27,18 +27,17 @@
       <div class="card-header">
         <span class="card-title">Booking Information</span>
         <?php
-          $badgeClass = match($booking['status']) {
-              'completed' => 'badge badge-paid',
-              'cancelled' => 'badge badge-unpaid',
-              default     => 'badge',
-          };
-          $badgeStyle = match($booking['status']) {
-              'confirmed' => ' style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;"',
-              'ongoing'   => ' style="background:#faf5ff;color:#7e22ce;border-color:#e9d5ff;"',
-              default     => '',
+          $bs = $booking['status'] ?? 'pending';
+          $bsCls = match($bs) {
+            'completed' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
+            'ongoing'   => 'bg-blue-100 text-blue-700 border-blue-200',
+            'cancelled' => 'bg-red-100 text-red-700 border-red-200',
+            'confirmed' => 'bg-indigo-100 text-indigo-700 border-indigo-200',
+            'pending'   => 'bg-yellow-100 text-yellow-700 border-yellow-200',
+            default     => 'bg-gray-100 text-gray-700 border-gray-200'
           };
         ?>
-        <span class="<?= $badgeClass ?>"<?= $badgeStyle ?>><?= ucfirst(htmlspecialchars($booking['status'])) ?></span>
+        <span class="px-2.5 py-1 border rounded-md text-xs font-bold uppercase tracking-wider <?= $bsCls ?>"><?= htmlspecialchars($bs) ?></span>
       </div>
       <dl class="detail-dl">
         <div class="detail-row"><dt>Booking ID</dt><dd><strong><?= (int)$booking['id'] ?></strong></dd></div>
@@ -51,7 +50,7 @@
           <dt>Total Price</dt>
           <dd><strong style="font-size:1rem;">Rp <?= number_format((float)$booking['total_price'], 0, ',', '.') ?></strong></dd>
         </div>
-        <div class="detail-row"><dt>Status</dt><dd><span class="<?= $badgeClass ?>"<?= $badgeStyle ?>><?= ucfirst(htmlspecialchars($booking['status'])) ?></span></dd></div>
+        <div class="detail-row"><dt>Status</dt><dd><span class="px-2.5 py-1 border rounded-md text-xs font-bold uppercase tracking-wider <?= $bsCls ?>"><?= htmlspecialchars($bs) ?></span></dd></div>
         <div class="detail-row">
           <dt>Notes</dt>
           <dd><?= !empty($booking['notes']) ? htmlspecialchars($booking['notes']) : '<span class="td-muted">—</span>' ?></dd>
@@ -78,6 +77,18 @@
         </div>
         <div class="detail-row"><dt>Email</dt><dd><?= htmlspecialchars($booking['customer_email']) ?></dd></div>
         <div class="detail-row"><dt>Phone</dt><dd><?= !empty($booking['customer_phone']) ? htmlspecialchars($booking['customer_phone']) : '<span class="td-muted">—</span>' ?></dd></div>
+        <div class="detail-row" style="align-items: flex-start;">
+          <dt style="padding-top: 4px;">ID Card (KTP)</dt>
+          <dd>
+            <?php if (!empty($booking['identity_photo'])): ?>
+              <a href="../assets/images/booking/<?= htmlspecialchars($booking['identity_photo']) ?>" target="_blank" class="block overflow-hidden rounded-lg border border-gray-200 mt-1" style="max-width: 200px;">
+                <img src="../assets/images/booking/<?= htmlspecialchars($booking['identity_photo']) ?>" alt="ID Card" class="w-full object-cover hover:opacity-90 transition-opacity" />
+              </a>
+            <?php else: ?>
+              <span class="td-muted mt-1 inline-block">Not uploaded</span>
+            <?php endif; ?>
+          </dd>
+        </div>
         <div class="detail-row"><dt>Vehicle</dt><dd><strong><?= htmlspecialchars($booking['car_name']) ?></strong></dd></div>
         <div class="detail-row"><dt>License Plate</dt><dd><?= htmlspecialchars($booking['license_plate']) ?></dd></div>
         <div class="detail-row"><dt>Price/Day</dt><dd>Rp <?= number_format((float)$booking['price_per_day'], 0, ',', '.') ?></dd></div>
@@ -121,11 +132,11 @@
     <h3 style="font-weight:800;font-size:1.25rem;color:#111827;margin:0 0 8px 0;">Are you sure?</h3>
     <p style="font-size:0.875rem;color:#6b7280;margin:0 0 24px 0;line-height:1.5;">Are you sure you want to delete this data? This action cannot be undone.</p>
     <div style="display:flex;gap:12px;justify-content:center;">
-      <button type="button" class="btn btn-ghost" style="flex:1;"
+      <button type="button" class="btn btn-ghost" style="flex:1; justify-content:center; text-align:center;"
               onclick="document.getElementById('modal-delete').style.display='none'">Cancel</button>
       <form method="POST" action="?page=delete_booking" style="margin:0;flex:1;display:flex;">
         <input type="hidden" name="id" value="<?= (int)$booking['id'] ?>" />
-        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;">
+        <button type="submit" class="btn" style="width:100%;background:#dc2626;color:#fff;border:1px solid #dc2626;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer; justify-content:center; text-align:center;">
           Yes, Delete
         </button>
       </form>

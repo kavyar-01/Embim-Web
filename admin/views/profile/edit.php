@@ -10,7 +10,7 @@
       <!-- Page Header -->
       <div class="mb-6">
           <h1 class="text-2xl font-extrabold text-gray-900">Edit Profile Admin</h1>
-          <p class="text-sm text-gray-500 mt-1">Perbarui informasi akun Anda</p>
+          <p class="text-sm text-gray-500 mt-1">Update your account information</p>
       </div>
 
       <?php if (!empty($success)): ?>
@@ -35,10 +35,10 @@
       </div>
       <?php endif; ?>
 
-      <form action="?page=edit_profile" method="POST" enctype="multipart/form-data" autocomplete="off" class="space-y-5">
+      <form action="?page=edit_profile" method="POST" enctype="multipart/form-data" autocomplete="off" class="space-y-5" onsubmit="event.preventDefault(); showConfirmModal(this);">
           <!-- ── Foto Profile ── -->
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
-              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Foto Profile</h2>
+              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Profile Picture</h2>
               <div class="flex items-center gap-5">
                   <div class="flex-shrink-0">
                       <img
@@ -46,12 +46,12 @@
                           src="<?= !empty($admin['photo_profile'])
                               ? '../assets/images/user/' . htmlspecialchars($admin['photo_profile'])
                               : '../assets/images/user_default.png' ?>"
-                          alt="Foto Profile"
+                          alt="Profile Picture"
                           class="w-20 h-20 rounded-full object-cover border-2 border-gray-200 shadow-sm"
                       >
                   </div>
                   <div class="flex-1">
-                      <label class="block text-xs font-semibold text-gray-600 mb-2">Ganti Foto Profile</label>
+                      <label class="block text-xs font-semibold text-gray-600 mb-2">Change Profile Picture</label>
                       <input
                           type="file"
                           name="photo_profile"
@@ -59,23 +59,23 @@
                           onchange="previewImage(this, 'preview-profile')"
                           class="block w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100 transition cursor-pointer"
                       >
-                      <p class="text-xs text-gray-400 mt-1.5">JPG, PNG, atau WebP. Maks. 2 MB.</p>
+                      <p class="text-xs text-gray-400 mt-1.5">JPG, PNG, or WebP. Max. 2 MB.</p>
                   </div>
               </div>
           </div>
 
           <!-- ── Info Akun ── -->
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
-              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Info Akun</h2>
+              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Account Info</h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                      <label class="block text-xs font-semibold text-gray-500 mb-1.5">Bergabung Sejak</label>
+                      <label class="block text-xs font-semibold text-gray-500 mb-1.5">Joined Since</label>
                       <div class="w-full px-3 py-2.5 rounded-xl bg-gray-50 border border-gray-100 text-sm text-gray-400">
                           <?= date('d M Y, H:i', strtotime($admin['created_at'])) ?>
                       </div>
                   </div>
                   <div>
-                      <label class="block text-xs font-semibold text-gray-500 mb-1.5">Terakhir Diperbarui</label>
+                      <label class="block text-xs font-semibold text-gray-500 mb-1.5">Last Updated</label>
                       <div class="w-full px-3 py-2.5 rounded-xl bg-gray-50 border border-gray-100 text-sm text-gray-400">
                           <?= date('d M Y, H:i', strtotime($admin['updated_at'])) ?>
                       </div>
@@ -85,11 +85,11 @@
 
           <!-- ── Data Pribadi ── -->
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
-              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Data Pribadi</h2>
+              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Personal Data</h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div class="sm:col-span-2">
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">Full Name <span class="text-red-400">*</span></label>
-                      <input type="text" name="full_name" value="<?= htmlspecialchars($admin['full_name']) ?>" required pattern="^[^0-9]*$" title="Name must not contain numbers" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="Masukkan nama lengkap">
+                      <input type="text" name="full_name" value="<?= htmlspecialchars($admin['full_name']) ?>" required pattern="^[^0-9]*$" title="Name must not contain numbers" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="Enter full name">
                   </div>
                   <div>
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email <span class="text-red-400">*</span></label>
@@ -109,7 +109,7 @@
 
           <!-- ── Ganti Password ── -->
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
-              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-1">Ganti Password</h2>
+              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-1">Change Password</h2>
               <p class="text-xs text-gray-400 mb-5">Leave blank if you do not want to change your password.</p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>

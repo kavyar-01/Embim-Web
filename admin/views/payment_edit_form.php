@@ -22,7 +22,7 @@
   <?php endif; ?>
 
   <div class="card p-6">
-    <form method="POST" action="">
+    <form method="POST" action="" onsubmit="event.preventDefault(); showConfirmModal(this);">
       <div class="form-group mb-4">
         <label class="form-label block text-sm font-semibold text-gray-700 mb-1">Customer</label>
         <div class="form-control w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-500"><?= htmlspecialchars($payment['customer_name']) ?> (<?= htmlspecialchars($payment['customer_email']) ?>)</div>
