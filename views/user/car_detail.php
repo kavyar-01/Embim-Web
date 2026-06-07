@@ -165,75 +165,80 @@
                 </div>
             </div>
 
-            <!-- Ketentuan Denda & Refund -->
-            <div class="bg-white rounded-2xl px-6 py-5 shadow-sm">
-                <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Fine & Refund Policy</h2>
-
-                <!-- Denda Keterlambatan -->
-                <div class="flex items-start gap-3 bg-red-45 border border-red-100 rounded-xl p-4 mb-3">
-                    <div class="w-8 h-8 rounded-lg bg-red-45 flex items-center justify-center flex-shrink-0">
-                        <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+            <!-- Fine & Refund Policy -->
+            <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-gray-100">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2 bg-red-100 rounded-lg text-red-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
-                    <div>
-                        <p class="text-sm font-bold text-red-700 mb-1">Late Fine</p>
-                        <p class="text-xs text-red-600 leading-relaxed">
-                            Returning the vehicle past the specified date will incur a fine of
-                            <strong class="text-red-700">Rp 700.000 / day</strong> of delay.
-                        </p>
-                    </div>
+                    <h2 class="text-lg font-black text-gray-900 uppercase tracking-wide">Fine & Refund Policy</h2>
                 </div>
 
-                        <!-- Kebijakan Refund -->
-                        <div class="flex items-start gap-4 bg-amber-50/80 border border-amber-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
-                            <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0 shadow-sm">
-                                <svg class="h-5 w-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-extrabold text-amber-800 mb-1.5">Cancellation Policy</p>
-                                <p class="text-xs text-amber-700/80 leading-relaxed font-medium">
-                                    Cancellation refunds <strong class="text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded">80%</strong> of the total price.
-                                    20% is deducted for admin fees.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dokumen Persyaratan -->
-                <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-gray-100 h-full">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-2 bg-blue-100 rounded-lg text-blue-600">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        </div>
-                        <h2 class="text-lg font-black text-gray-900 uppercase tracking-wide">Requirements</h2>
-                    </div>
-                    
-                    <div class="flex items-start gap-4 bg-blue-50/80 border border-blue-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
-                        <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0 shadow-sm">
-                            <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
+                <div class="space-y-4">
+                    <!-- Late Fine -->
+                    <div class="flex items-start gap-4 bg-red-50/80 border border-red-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0 shadow-sm">
+                            <svg class="h-5 w-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm font-extrabold text-blue-800 mb-2">Must be Shown Upon Pick Up</p>
-                            <p class="text-xs text-blue-700/80 leading-relaxed font-medium mb-3">
-                                Renters are required to show the following original documents when picking up the vehicle:
+                            <p class="text-sm font-extrabold text-red-800 mb-1.5">Late Fine</p>
+                            <p class="text-xs text-red-700/80 leading-relaxed font-medium">
+                                Returning the vehicle past the specified date will incur a fine of
+                                <strong class="text-red-600 bg-red-100 px-1.5 py-0.5 rounded">Rp 700.000 / day</strong> of delay.
                             </p>
-                            <ul class="space-y-2">
-                                <li class="flex items-center gap-2 text-sm text-blue-800 font-bold">
-                                    <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-                                    Original ID Card (KTP)
-                                </li>
-                                <li class="flex items-center gap-2 text-sm text-blue-800 font-bold">
-                                    <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-                                    Driver's License (Active)
-                                </li>
-                            </ul>
                         </div>
+                    </div>
+
+                    <!-- Cancellation Policy -->
+                    <div class="flex items-start gap-4 bg-amber-50/80 border border-amber-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0 shadow-sm">
+                            <svg class="h-5 w-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-extrabold text-amber-800 mb-1.5">Cancellation Policy</p>
+                            <p class="text-xs text-amber-700/80 leading-relaxed font-medium">
+                                Cancellation refunds <strong class="text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded">80%</strong> of the total price.
+                                20% is deducted for admin fees.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requirements -->
+            <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-gray-100">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2 bg-blue-100 rounded-lg text-blue-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h2 class="text-lg font-black text-gray-900 uppercase tracking-wide">Requirements</h2>
+                </div>
+
+                <div class="flex items-start gap-4 bg-blue-50/80 border border-blue-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
+                    <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0 shadow-sm">
+                        <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-extrabold text-blue-800 mb-2">Must be Shown Upon Pick Up</p>
+                        <p class="text-xs text-blue-700/80 leading-relaxed font-medium mb-3">
+                            Renters are required to show the following original documents when picking up the vehicle:
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-sm text-blue-800 font-bold">
+                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                Original ID Card (KTP)
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-blue-800 font-bold">
+                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                Driver's License (Active)
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

@@ -33,6 +33,9 @@ class EditProfileController {
                 $errors[] = 'Full name cannot be empty.';
             } elseif (strlen($fullName) < 4) {
                 $errors[] = 'Full name must be at least 4 characters long.';
+            }elseif (preg_match('/[0-9]/', $fullName)) {
+                $errors[] = 'Full name must not contain numbers.';
+
             }
             if (empty($email))    $errors[] = 'Email cannot be empty.';
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
