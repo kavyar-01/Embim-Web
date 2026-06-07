@@ -100,7 +100,6 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
 
                     <?php else: ?>
 
-                        <!-- STATE: BELUM LOGIN — tampilkan Login & Sign Up -->
                         <a href="index.php?page=login" class="text-sm font-medium text-gray-700 hover:text-blue-600 transition duration-200">Login</a>
                         <a href="index.php?page=register" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition duration-200 shadow-sm">Sign Up</a>
 
@@ -110,7 +109,6 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center gap-2">
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <!-- Avatar kecil di mobile -->
                         <img
                             src="<?php echo $_photoProfile; ?>"
                             alt="Profile"

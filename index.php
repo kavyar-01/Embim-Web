@@ -1,8 +1,6 @@
 <?php
-// index.php - Front Controller
 define('BASE_URL', true);
 
-// Mulai session untuk keperluan auth
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -28,7 +26,7 @@ switch ($page) {
         require_once 'controllers/LoginController.php';
         $controller = new LoginController();
         $controller->index();
-        break;
+        break; 
 
     case 'logout':
         require_once 'controllers/LoginController.php';
