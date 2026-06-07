@@ -19,8 +19,14 @@ class ReceiptController {
             die("Booking not found or you don't have access.");
         }
 
+<<<<<<< HEAD
         if (!in_array($booking['status'], ['confirmed', 'completed','ongoing'])) {
             die("Receipts are only available for confirmed bookings.");
+=======
+        // We only allow download if status is confirmed or completed
+        if (!in_array($booking['status'], ['confirmed', 'completed'])) {
+            die("Receipt is only available for paid bookings.");
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         }
 
         // Get User details
@@ -106,7 +112,7 @@ class ReceiptController {
         // Rincian Pembayaran
         imagestring($img, 5, 40, $y, "RINCIAN PEMBAYARAN", $black);
         $y += 30;
-        $this->drawRow($img, 4, "Harga/hari", "Rp " . number_format($booking['price_per_day'], 0, ',', '.'), $y, $gray, $black, $width);
+        $this->drawRow($img, 4, "Price/hari", "Rp " . number_format($booking['price_per_day'], 0, ',', '.'), $y, $gray, $black, $width);
         $this->drawRow($img, 4, "Durasi", $booking['total_days'] . " hari", $y, $gray, $black, $width);
         $this->drawRow($img, 4, "Subtotal", "Rp " . number_format($booking['total_price'], 0, ',', '.'), $y, $gray, $black, $width);
         $method = strtoupper(str_replace('_', ' ', $booking['payment_method']));

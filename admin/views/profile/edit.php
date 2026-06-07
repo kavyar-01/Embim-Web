@@ -36,9 +36,9 @@
       <?php endif; ?>
 
       <form action="?page=edit_profile" method="POST" enctype="multipart/form-data" autocomplete="off" class="space-y-5">
-          <!-- ── Foto Profil ── -->
+          <!-- ── Foto Profile ── -->
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
-              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Foto Profil</h2>
+              <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Foto Profile</h2>
               <div class="flex items-center gap-5">
                   <div class="flex-shrink-0">
                       <img
@@ -46,12 +46,12 @@
                           src="<?= !empty($admin['photo_profile'])
                               ? '../assets/images/user/' . htmlspecialchars($admin['photo_profile'])
                               : '../assets/images/user_default.png' ?>"
-                          alt="Foto Profil"
+                          alt="Foto Profile"
                           class="w-20 h-20 rounded-full object-cover border-2 border-gray-200 shadow-sm"
                       >
                   </div>
                   <div class="flex-1">
-                      <label class="block text-xs font-semibold text-gray-600 mb-2">Ganti Foto Profil</label>
+                      <label class="block text-xs font-semibold text-gray-600 mb-2">Ganti Foto Profile</label>
                       <input
                           type="file"
                           name="photo_profile"
@@ -88,15 +88,15 @@
               <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Data Pribadi</h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div class="sm:col-span-2">
-                      <label class="block text-xs font-semibold text-gray-700 mb-1.5">Nama Lengkap <span class="text-red-400">*</span></label>
-                      <input type="text" name="full_name" value="<?= htmlspecialchars($admin['full_name']) ?>" required pattern="^[^0-9]*$" title="Nama tidak boleh mengandung angka" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="Masukkan nama lengkap">
+                      <label class="block text-xs font-semibold text-gray-700 mb-1.5">Full Name <span class="text-red-400">*</span></label>
+                      <input type="text" name="full_name" value="<?= htmlspecialchars($admin['full_name']) ?>" required pattern="^[^0-9]*$" title="Name must not contain numbers" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="Masukkan nama lengkap">
                   </div>
                   <div>
                       <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email <span class="text-red-400">*</span></label>
                       <input type="email" name="email" value="<?= htmlspecialchars($admin['email']) ?>" required class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition" placeholder="email@contoh.com">
                   </div>
                   <div>
-                      <label class="block text-xs font-semibold text-gray-700 mb-1.5">Nomor Telepon</label>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1.5">Phone Number</label>
                       <div class="flex">
                           <span class="inline-flex items-center px-4 py-2.5 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-sm font-bold text-gray-600 select-none">
                               +62
@@ -113,9 +113,9 @@
               <p class="text-xs text-gray-400 mb-5">Leave empty if you do not want to change password.</p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                      <label class="block text-xs font-semibold text-gray-700 mb-1.5">Password Baru</label>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1.5">New Password</label>
                       <div class="relative">
-                          <input type="password" id="password" name="password" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition pr-11" placeholder="Min. 8 karakter" oninput="checkPassword(this.value)">
+                          <input type="password" id="password" name="password" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition pr-11" placeholder="Min. 8 characters" oninput="checkPassword(this.value)">
                           <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
                               <svg id="icon-eye" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                               <svg id="icon-eye-off" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
@@ -124,17 +124,17 @@
                       <div class="mt-2 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 hidden" id="password-req-box">
                         <p class="text-xs font-semibold text-gray-700 mb-2">Password must contain:</p>
                         <ul class="space-y-1">
-                          <li id="req-len" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> 8–100 karakter</li>
-                          <li id="req-low" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu huruf kecil</li>
-                          <li id="req-up"  class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu huruf besar</li>
-                          <li id="req-num" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu angka</li>
+                          <li id="req-len" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> 8–100 characters</li>
+                          <li id="req-low" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> At least one lowercase letter</li>
+                          <li id="req-up"  class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> At least one uppercase letter</li>
+                          <li id="req-num" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> At least one number</li>
                         </ul>
                       </div>
                   </div>
                   <div>
-                      <label class="block text-xs font-semibold text-gray-700 mb-1.5">Konfirmasi Password</label>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1.5">Confirm Password</label>
                       <div class="relative">
-                          <input type="password" id="password_confirm" name="password_confirm" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition pr-11" placeholder="Ulangi password baru">
+                          <input type="password" id="password_confirm" name="password_confirm" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition pr-11" placeholder="Repeat new password">
                           <button type="button" id="toggle-password-confirm" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
                               <svg id="icon-eye-conf" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                               <svg id="icon-eye-off-conf" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
@@ -144,10 +144,10 @@
               </div>
           </div>
 
-          <!-- ── Tombol Simpan ── -->
+          <!-- ── Save Button ── -->
           <div class="flex items-center justify-end gap-3 pb-4">
-              <a href="?page=dashboard" class="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition duration-200">Batal</a>
-              <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-200/50 transition duration-200">Simpan Perubahan</button>
+              <a href="?page=dashboard" class="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition duration-200">Cancel</a>
+              <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-200/50 transition duration-200">Save Changes</button>
           </div>
       </form>
     </div>

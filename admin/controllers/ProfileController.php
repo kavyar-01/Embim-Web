@@ -31,24 +31,24 @@ class ProfileController {
             $passConf = $_POST['password_confirm'] ?? '';
 
             if (empty($fullName)) $errors[] = 'Full name cannot be empty.';
-            elseif (preg_match('/[0-9]/', $fullName)) $errors[] = 'Nama lengkap tidak boleh mengandung angka.';
+            elseif (preg_match('/[0-9]/', $fullName)) $errors[] = 'Full name must not contain numbers.';
             
             if (empty($email))    $errors[] = 'Email cannot be empty.';
             elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
             
             if (empty($rawPhone)) $errors[] = 'Phone number cannot be empty.';
-            elseif (strlen($rawPhone) < 7) $errors[] = 'Nomor telepon minimal 7 karakter.';
+            elseif (strlen($rawPhone) < 7) $errors[] = 'Phone number is too short.';
 
             if (!empty($email)) {
                 $existing = $this->model->findAdminByEmail($email);
                 if ($existing && (int)$existing['id'] !== $adminId) {
-                    $errors[] = 'Email sudah digunakan oleh akun lain.';
+                    $errors[] = 'Email is already used by another account.';
                 }
             }
 
             if (!empty($password)) {
                 if (strlen($password) < 8) {
-                    $errors[] = 'Password minimal 8 karakter.';
+                    $errors[] = 'Password must be at least 8 characters.';
                 } elseif (!preg_match('/[a-z]/', $password)) {
                     $errors[] = 'Password must contain at least one lowercase letter.';
                 } elseif (!preg_match('/[A-Z]/', $password)) {
@@ -56,7 +56,7 @@ class ProfileController {
                 } elseif (!preg_match('/[0-9]/', $password)) {
                     $errors[] = 'Password must contain at least one number.';
                 } elseif ($password !== $passConf) {
-                    $errors[] = 'Konfirmasi password tidak cocok.';
+                    $errors[] = 'Password confirmation does not match.';
                 }
             }
 
@@ -75,7 +75,7 @@ class ProfileController {
             if (!empty($_FILES['photo_profile']['name'])) {
                 $result = $this->handleUpload('photo_profile', 'admin_' . $adminId, $allowedTypes, $maxSize);
                 if ($result['error']) {
-                    $errors[] = 'Foto profil: ' . $result['error'];
+                    $errors[] = 'Profile photo: ' . $result['error'];
                 } else {
                     $photoProfile = $result['filename'];
                 }
@@ -115,7 +115,7 @@ class ProfileController {
             return ['error' => 'Failed to upload file.', 'filename' => null];
         }
         if ($file['size'] > $maxSize) {
-            return ['error' => 'Ukuran file maksimal 2 MB.', 'filename' => null];
+            return ['error' => 'Maximum file size is 2 MB.', 'filename' => null];
         }
         $mime = mime_content_type($file['tmp_name']);
         if (!in_array($mime, $allowedTypes)) {

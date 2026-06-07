@@ -33,7 +33,7 @@
 
     <form action="index.php?page=edit-profile" method="POST" enctype="multipart/form-data" class="space-y-5">
 
-        <!-- ── Foto Profil ── -->
+        <!-- ── Foto Profile ── -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
             <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Profile Picture</h2>
             <div class="flex items-center gap-5">
@@ -93,7 +93,7 @@
             <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">Personal Data</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-                <!-- Nama Lengkap -->
+                <!-- Full Name -->
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-semibold text-gray-700 mb-1.5">Full Name <span class="text-red-400">*</span></label>
                     <input
@@ -184,7 +184,7 @@
         </div>
 
 
-        <!-- ── Tombol Simpan ── -->
+        <!-- ── Save Button ── -->
         <div class="flex items-center justify-end gap-3 pb-4">
             <a href="index.php?page=home"
                class="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition duration-200">

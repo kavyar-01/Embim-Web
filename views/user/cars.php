@@ -82,7 +82,7 @@ $baseUrl = 'index.php?page=cars'
                                 </div>
                             </div>
 
-                            <!-- Transmisi -->
+                            <!-- Transmission -->
                             <div class="px-5 py-4">
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Transmission</label>
                                 <div class="space-y-2">
@@ -102,7 +102,7 @@ $baseUrl = 'index.php?page=cars'
                                 </div>
                             </div>
 
-                            <!-- Bahan Bakar -->
+                            <!-- Fuel Type -->
                             <div class="px-5 py-4">
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Fuel Type</label>
                                 <div class="space-y-2">
@@ -153,7 +153,7 @@ $baseUrl = 'index.php?page=cars'
                                 </div>
                             </div>
 
-                            <!-- Rentang Harga -->
+                            <!-- Rentang Price -->
                             <div class="px-5 py-4">
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Price Range / Day</label>
                                 <div class="space-y-2.5">
@@ -255,7 +255,7 @@ $baseUrl = 'index.php?page=cars'
 
             <?php if (!empty($cars)): ?>
 
-            <!-- Grid Kartu Mobil -->
+            <!-- Grid Kartu Cars -->
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
                 <?php foreach ($cars as $car):
                     $imgSrc = !empty($car['photo'])
@@ -312,7 +312,7 @@ $baseUrl = 'index.php?page=cars'
                             </span>
                         </div>
 
-                        <!-- Harga + Tombol -->
+                        <!-- Price + Tombol -->
                         <div class="flex items-end justify-between">
                             <div>
                                 <span class="text-xl font-black text-blue-600">

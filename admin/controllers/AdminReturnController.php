@@ -170,15 +170,19 @@ class AdminReturnController {
         $errors = [];
 
         if ($bookingId <= 0) {
+<<<<<<< HEAD
             $errors[] = 'Booking ID must be selected.';
+=======
+            $errors[] = 'Booking ID is required.';
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         } else {
             $booking = $this->model->getBookingById($bookingId);
             if ($booking === null) {
-                $errors[] = 'Booking ID tidak ditemukan.';
+                $errors[] = 'Booking ID not found.';
             } elseif ($booking['status'] !== 'completed') {
-                $errors[] = 'Hanya booking dengan status "completed" yang dapat ditambahkan data return-nya.';
+                $errors[] = 'Only "completed" bookings can have return data added.';
             } elseif ($this->model->existsByBookingId($bookingId, $excludeId)) {
-                $errors[] = 'Booking #' . $bookingId . ' sudah memiliki data pengembalian.';
+                $errors[] = 'Booking #' . $bookingId . ' already has return data.';
             }
         }
 
@@ -189,7 +193,7 @@ class AdminReturnController {
         }
 
         if (!in_array($carCondition, ['good', 'damaged'], true)) {
-            $errors[] = 'Kondisi kendaraan hanya boleh "good" atau "damaged".';
+            $errors[] = 'Car condition must be "good" or "damaged".';
         }
 
         return $errors;

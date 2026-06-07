@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Daftar Admin — EMBIM Admin</title>
+    <title>Register Admin — EMBIM Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style/style.css" />
   </head>
@@ -21,9 +21,9 @@
     <!-- Card -->
     <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl px-8 py-10 relative z-10">
 
-      <h1 class="text-2xl font-bold text-gray-900 text-center mb-2">Buat Akun Baru!</h1>
+      <h1 class="text-2xl font-bold text-gray-900 text-center mb-2">Create New Account!</h1>
       <p class="text-gray-500 text-sm text-center mb-7">
-        Akun akan terdaftar sebagai <span class="font-semibold text-blue-600">Admin</span>
+        Account will be registered as <span class="font-semibold text-blue-600">Admin</span>
       </p>
 
       <?php if (!empty($errors)): ?>
@@ -40,25 +40,25 @@
       <form action="?page=register" method="POST" class="space-y-5">
 
         <div>
-          <label for="full_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+          <label for="full_name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
           <input type="text" id="full_name" name="full_name"
             value="<?= htmlspecialchars($old['full_name'] ?? '') ?>"
-            placeholder="Masukkan nama lengkap Anda"
+            placeholder="Enter your full name"
             class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            required autocomplete="name" pattern="^[^0-9]*$" title="Nama tidak boleh mengandung angka" />
+            required autocomplete="name" pattern="^[^0-9]*$" title="Name must not contain numbers" />
         </div>
 
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
           <input type="email" id="email" name="email"
             value="<?= htmlspecialchars($old['email'] ?? '') ?>"
-            placeholder="contoh@email.com"
+            placeholder="example@email.com"
             class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             required autocomplete="email" />
         </div>
 
         <div>
-          <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
+          <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
           <div class="flex">
             <span class="inline-flex items-center px-4 py-2.5 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-sm font-bold text-gray-600 select-none">
               +62
@@ -69,14 +69,14 @@
               class="w-full border border-gray-300 rounded-r-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               autocomplete="tel" minlength="7" maxlength="13" inputmode="numeric" pattern="[0-9]*" required />
           </div>
-          <p id="phone-error" class="hidden mt-1 text-xs text-red-500 font-semibold">⚠ Nomor telepon hanya boleh berisi angka.</p>
+          <p id="phone-error" class="hidden mt-1 text-xs text-red-500 font-semibold">⚠ Phone number must only contain numbers.</p>
         </div>
 
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
           <div class="relative">
             <input type="password" id="password" name="password"
-              placeholder="Buat password yang kuat"
+              placeholder="Create a strong password"
               class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors pr-11"
               required autocomplete="new-password"
               oninput="checkPassword(this.value)" />
@@ -96,10 +96,10 @@
           <div class="mt-2 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
             <p class="text-xs font-semibold text-gray-700 mb-2">Password must contain:</p>
             <ul class="space-y-1">
-              <li id="req-len" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> 8–100 karakter</li>
-              <li id="req-low" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu huruf kecil</li>
-              <li id="req-up"  class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu huruf besar</li>
-              <li id="req-num" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> Minimal satu angka</li>
+              <li id="req-len" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> 8–100 characters</li>
+              <li id="req-low" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> At least one lowercase letter</li>
+              <li id="req-up"  class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> At least one uppercase letter</li>
+              <li id="req-num" class="flex items-center gap-2 text-xs text-gray-400"><span class="req-dot h-1.5 w-1.5 rounded-full bg-gray-300 shrink-0 inline-block"></span> At least one number</li>
             </ul>
           </div>
         </div>
@@ -109,23 +109,23 @@
             class="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
             required <?= !empty($old['terms']) ? 'checked' : '' ?> />
           <label for="terms" class="text-xs text-gray-500 cursor-pointer leading-relaxed">
-            Dengan mendaftar, saya menyetujui
-            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Syarat &amp; Ketentuan</a>,
-            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Kebijakan Privasi</a>, dan
-            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Kebijakan Penggunaan</a> EMBIM.
+            By registering, I agree to
+            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Terms &amp; Conditions</a>,
+            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Privacy Policy</a>, dan
+            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Terms of Use</a> EMBIM.
           </label>
         </div>
 
         <button type="submit" id="submit-btn"
           class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 rounded-lg transition-colors text-sm shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-          Buat Akun
+          Create Account
         </button>
 
       </form>
 
       <p class="text-center text-sm text-gray-500 mt-6">
-        Sudah punya akun?
-        <a href="?page=login" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Login di sini</a>
+        Already have an account?
+        <a href="?page=login" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Login here</a>
       </p>
 
     </div>

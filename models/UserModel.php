@@ -20,7 +20,11 @@ class UserModel {
 
     public function register($fullName, $email, $phone, $password) {
         if ($this->findByEmail($email)) {
+<<<<<<< HEAD
             return ['success' => false, 'message' => 'Email is already registered. Please use another email or login.'];
+=======
+            return ['success' => false, 'message' => 'Email is already registered. Silakan gunakan email lain atau login.'];
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         }
 
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
@@ -34,7 +38,11 @@ class UserModel {
         $stmt->bindParam(':password',  $hashedPassword);
 
         if ($stmt->execute()) {
+<<<<<<< HEAD
             return ['success' => true, 'message' => 'Account created successfully! Please login.'];
+=======
+            return ['success' => true, 'message' => 'Account successfully created! Please login.'];
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         }
         return ['success' => false, 'message' => 'An error occurred. Please try again.'];
     }

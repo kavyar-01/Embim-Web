@@ -165,32 +165,25 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Ketentuan Denda & Refund -->
-                <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-gray-100 h-full">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-2 bg-red-100 rounded-lg text-red-600">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        </div>
-                        <h2 class="text-lg font-black text-gray-900 uppercase tracking-wide">Fine & Refund</h2>
-                    </div>
+            <!-- Ketentuan Denda & Refund -->
+            <div class="bg-white rounded-2xl px-6 py-5 shadow-sm">
+                <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Fine & Refund Policy</h2>
 
-                    <div class="space-y-4">
-                        <!-- Denda Keterlambatan -->
-                        <div class="flex items-start gap-4 bg-red-50/80 border border-red-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
-                            <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0 shadow-sm">
-                                <svg class="h-5 w-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-extrabold text-red-800 mb-1.5">Late Fine</p>
-                                <p class="text-xs text-red-700/80 leading-relaxed font-medium">
-                                    Returning the vehicle past the specified date will incur a fine of
-                                    <strong class="text-red-600 bg-red-100 px-1.5 py-0.5 rounded">Rp 700.000 / day</strong>.
-                                </p>
-                            </div>
-                        </div>
+                <!-- Denda Keterlambatan -->
+                <div class="flex items-start gap-3 bg-red-45 border border-red-100 rounded-xl p-4 mb-3">
+                    <div class="w-8 h-8 rounded-lg bg-red-45 flex items-center justify-center flex-shrink-0">
+                        <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-red-700 mb-1">Late Fine</p>
+                        <p class="text-xs text-red-600 leading-relaxed">
+                            Returning the vehicle past the specified date will incur a fine of
+                            <strong class="text-red-700">Rp 700.000 / day</strong> of delay.
+                        </p>
+                    </div>
+                </div>
 
                         <!-- Kebijakan Refund -->
                         <div class="flex items-start gap-4 bg-amber-50/80 border border-amber-100 rounded-2xl p-5 hover:shadow-md transition-shadow">

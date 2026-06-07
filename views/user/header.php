@@ -46,7 +46,7 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
                                 aria-haspopup="true"
                                 aria-expanded="false"
                             >
-                                <!-- Foto Profil -->
+                                <!-- Foto Profile -->
                                 <img
                                     src="<?php echo $_photoProfile; ?>"
                                     alt="Profile"

@@ -20,7 +20,11 @@
               if (empty($errors)) {
                   $admin = $this->model->findAdminByEmail($email);
                   if (!$admin || !password_verify($pass, $admin['password'])) {
+<<<<<<< HEAD
                       $errors[] = 'Incorrect email or password.';
+=======
+                      $errors[] = 'Invalid email or password, or account is not admin.';
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
                   } else {
                       session_regenerate_id(true);
                       $_SESSION['admin_id']    = $admin['id'];
@@ -57,6 +61,7 @@
               $terms    = !empty($_POST['terms']);
 
               if (empty($fullName))  $errors[] = 'Full name is required.';
+<<<<<<< HEAD
               elseif (preg_match('/[0-9]/', $fullName)) $errors[] = 'Nama lengkap tidak boleh mengandung angka.';
               if (empty($email))     $errors[] = 'Email address is required.';
               elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
@@ -64,6 +69,15 @@
               elseif (strlen($rawPhone) < 7) $errors[] = 'Nomor telepon minimal 7 karakter.';
               if (empty($pass))      $errors[] = 'Password is required.';
               elseif (strlen($pass) < 8)             $errors[] = 'Password minimal 8 karakter.';
+=======
+              elseif (preg_match('/[0-9]/', $fullName)) $errors[] = 'Full name must not contain numbers.';
+              if (empty($email))     $errors[] = 'Email address is required.';
+              elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format.';
+              if (empty($rawPhone))  $errors[] = 'Phone number is required.';
+              elseif (strlen($rawPhone) < 7) $errors[] = 'Phone number must be at least 7 characters.';
+              if (empty($pass))      $errors[] = 'Password is required.';
+              elseif (strlen($pass) < 8)             $errors[] = 'Password must be at least 8 characters.';
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
               elseif (!preg_match('/[a-z]/', $pass)) $errors[] = 'Password must contain at least one lowercase letter.';
               elseif (!preg_match('/[A-Z]/', $pass)) $errors[] = 'Password must contain at least one uppercase letter.';
               elseif (!preg_match('/[0-9]/', $pass)) $errors[] = 'Password must contain at least one number.';
@@ -116,7 +130,7 @@
           }
 
           if (!preg_match('/^[0-9]+$/', $phone)) {
-              echo json_encode(['success' => false, 'message' => 'Nomor telepon hanya boleh berisi angka.']);
+              echo json_encode(['success' => false, 'message' => 'Phone number must contain only numbers.']);
               exit;
           }
 
@@ -130,10 +144,10 @@
               echo json_encode([
                   'success' => true,
                   'user_id' => $admin['id'],
-                  'message' => 'Identitas admin terverifikasi.',
+                  'message' => 'Admin identity verified.',
               ]);
           } else {
-              echo json_encode(['success' => false, 'message' => 'Nama lengkap atau nomor telepon admin tidak ditemukan.']);
+              echo json_encode(['success' => false, 'message' => 'Admin full name or phone number not found.']);
           }
           exit;
       }
@@ -151,12 +165,16 @@
           $confirm  = $_POST['confirm']         ?? '';
 
           if (!isset($_SESSION['reset_admin_id']) || (int)$_SESSION['reset_admin_id'] !== $userId) {
+<<<<<<< HEAD
               echo json_encode(['success' => false, 'message' => 'Invalid session. Please repeat verification.']);
+=======
+              echo json_encode(['success' => false, 'message' => 'Invalid session. Please verify again.']);
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
               exit;
           }
 
           if (strlen($password) < 8) {
-              echo json_encode(['success' => false, 'message' => 'Password minimal 8 karakter.']);
+              echo json_encode(['success' => false, 'message' => 'Password must be at least 8 characters.']);
               exit;
           }
           if (!preg_match('/[a-z]/', $password)) {
@@ -172,7 +190,7 @@
               exit;
           }
           if ($password !== $confirm) {
-              echo json_encode(['success' => false, 'message' => 'Konfirmasi password tidak cocok.']);
+              echo json_encode(['success' => false, 'message' => 'Password confirmation does not match.']);
               exit;
           }
 
@@ -180,7 +198,11 @@
 
           if ($result) {
               unset($_SESSION['reset_admin_id']);
+<<<<<<< HEAD
               echo json_encode(['success' => true, 'message' => 'Admin password changed successfully. Please login.']);
+=======
+              echo json_encode(['success' => true, 'message' => 'Admin password successfully changed. Please login.']);
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
           } else {
               echo json_encode(['success' => false, 'message' => 'Failed to save password. Please try again.']);
           }

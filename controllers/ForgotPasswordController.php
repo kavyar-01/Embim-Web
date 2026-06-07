@@ -21,7 +21,11 @@ class ForgotPasswordController {
         }
 
         if (!preg_match('/^[0-9]+$/', $phone)) {
+<<<<<<< HEAD
             echo json_encode(['success' => false, 'message' => 'Phone number must contain only numbers.']);
+=======
+            echo json_encode(['success' => false, 'message' => 'Phone number must only contain numbers.']);
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             exit;
         }
 
@@ -54,12 +58,20 @@ class ForgotPasswordController {
         $confirm  = $_POST['confirm']         ?? '';
 
         if (!isset($_SESSION['reset_user_id']) || (int)$_SESSION['reset_user_id'] !== $userId) {
+<<<<<<< HEAD
             echo json_encode(['success' => false, 'message' => 'Invalid session. Please repeat verification.']);
+=======
+            echo json_encode(['success' => false, 'message' => 'Invalid session. Please verify again.']);
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             exit;
         }
 
         if (strlen($password) < 8) {
+<<<<<<< HEAD
             echo json_encode(['success' => false, 'message' => 'Password must be at least 8 characters long.']);
+=======
+            echo json_encode(['success' => false, 'message' => 'Password must be at least 8 characters.']);
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             exit;
         }
         if (!preg_match('/[a-z]/', $password)) {
@@ -75,7 +87,11 @@ class ForgotPasswordController {
             exit;
         }
         if ($password !== $confirm) {
+<<<<<<< HEAD
             echo json_encode(['success' => false, 'message' => 'Confirmation password does not match.']);
+=======
+            echo json_encode(['success' => false, 'message' => 'Password confirmation does not match.']);
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
             exit;
         }
 
@@ -84,7 +100,11 @@ class ForgotPasswordController {
 
         if ($result) {
             unset($_SESSION['reset_user_id']);
+<<<<<<< HEAD
             echo json_encode(['success' => true, 'message' => 'Password changed successfully. Please login.']);
+=======
+            echo json_encode(['success' => true, 'message' => 'Password successfully changed. Please login.']);
+>>>>>>> e80092552572cabebe2d5558bf07313d9e270e8a
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to save password. Please try again.']);
         }
