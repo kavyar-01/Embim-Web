@@ -41,11 +41,13 @@
       <div class="form-group mb-6">
         <label class="form-label block text-sm font-semibold text-gray-700 mb-1" for="payment_status">Payment Status</label>
         <select name="payment_status" id="payment_status" class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required>
-          <option value="unpaid" <?= $payment['payment_status'] === 'unpaid' ? 'selected' : '' ?>>Unpaid</option>
+          <?php if ($payment['payment_status'] === 'unpaid'): ?>
+            <option value="unpaid" hidden selected>Unpaid</option>
+          <?php endif; ?>
           <option value="paid" <?= $payment['payment_status'] === 'paid' ? 'selected' : '' ?>>Paid</option>
           <option value="refunded" <?= $payment['payment_status'] === 'refunded' ? 'selected' : '' ?>>Refunded</option>
         </select>
-        <p class="text-xs text-gray-500 mt-2">Setting the status to "Paid" will automatically record the current time as the payment time. Setting it to "Unpaid" will clear the recorded time.</p>
+        <p class="text-xs text-gray-500 mt-2">Setting the status to "Paid" will automatically record the current time as the payment time.</p>
       </div>
 
       <div class="mt-8 flex gap-3">

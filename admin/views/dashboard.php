@@ -81,10 +81,17 @@
           <?php endif; ?>
           <?php foreach ($carChunks as $chunk): ?>
           <div class="w-full shrink-0 space-y-4 px-1">
-            <?php foreach ($chunk as $c): ?>
+            <?php foreach ($chunk as $c): 
+              $statusBadge = match($c['status']) {
+                  'available'   => 'bg-green-100 text-green-800',
+                  'booked'      => 'bg-blue-100 text-blue-800',
+                  'maintenance' => 'bg-red-100 text-red-800',
+                  default       => 'bg-gray-100 text-gray-800',
+              };
+            ?>
             <div class="flex items-center justify-between border-b border-gray-100 pb-4 last:border-0 last:pb-0">
               <div><p class="font-medium text-sm text-gray-900"><?= htmlspecialchars($c['brand'].' '.$c['model']) ?></p><p class="text-xs text-gray-500"><?= $c['year'] ?> &bull; <?= ucfirst($c['transmission']) ?></p></div>
-              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <?= $c['status']==='available' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' ?>"><?= ucfirst($c['status']) ?></span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <?= $statusBadge ?>"><?= ucfirst($c['status']) ?></span>
             </div>
             <?php endforeach; ?>
           </div>

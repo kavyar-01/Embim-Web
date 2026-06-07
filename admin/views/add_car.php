@@ -232,6 +232,7 @@
         document.getElementById('hl_drivetrain').value = car.drivetrain || car.hl_drivetrain || 'FWD';
         document.getElementById('hl_body_style').value = car.body_style || car.hl_body_style || 'Sedan';
         document.getElementById('hl_engine').value = car.engine || car.hl_engine || '';
+
         document.getElementById('description').value = car.description || '';
         
         // Make them readonly

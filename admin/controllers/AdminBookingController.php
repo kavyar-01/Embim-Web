@@ -106,7 +106,7 @@ class AdminBookingController
         $status = trim($_POST['status'] ?? '');
         $notes  = trim($_POST['notes']  ?? '');
 
-        $allowed = ['confirmed', 'ongoing', 'completed', 'cancelled'];
+        $allowed = ['pending', 'confirmed', 'ongoing', 'completed', 'cancelled'];
         if (!in_array($status, $allowed, true)) {
             $errors[] = 'Invalid status.';
         }
@@ -182,6 +182,29 @@ class AdminBookingController
             'new_count' => $count,
             'max_id' => $maxId,
             'bookings' => $newBookings
+        ]);
+        exit;
+    }
+
+    /**
+     * AJAX Endpoint to check for cancelled bookings.
+     */
+    public function checkCancelledBookings(): void
+    {
+        header('Content-Type: application/json');
+        $lastCheckedTime = $_GET['last_time'] ?? date('Y-m-d H:i:s');
+        
+        $cancelledBookings = $this->model->getCancelledBookingsSince($lastCheckedTime);
+        $count = count($cancelledBookings);
+        $newLastTime = $lastCheckedTime;
+        if ($count > 0) {
+            $newLastTime = max(array_column($cancelledBookings, 'updated_at'));
+        }
+        
+        echo json_encode([
+            'cancel_count' => $count,
+            'last_time' => $newLastTime,
+            'bookings' => $cancelledBookings
         ]);
         exit;
     }
