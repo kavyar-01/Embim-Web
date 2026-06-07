@@ -165,6 +165,53 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
         </div>
     </nav>
 
+    <?php 
+    // Cek apakah ada refund baru yang belum dinotifikasi
+    if (isset($_SESSION['user_id'])) {
+        require_once 'models/BookingModel.php';
+        $bm = new BookingModel();
+        $recentRefunds = $bm->getRecentRefunds($_SESSION['user_id']);
+        if (!isset($_SESSION['notified_refunds'])) {
+            $_SESSION['notified_refunds'] = [];
+        }
+        foreach ($recentRefunds as $rId) {
+            if (!in_array($rId, $_SESSION['notified_refunds'])) {
+                $_SESSION['refund_warning'] = true;
+                $_SESSION['notified_refunds'][] = $rId;
+            }
+        }
+    }
+    ?>
+
+    <?php if (!empty($_SESSION['refund_warning'])): ?>
+    <div id="refund-warning-toast" class="fixed top-24 right-4 z-[9999] flex items-start gap-3 bg-blue-600 text-white text-sm p-4 rounded-2xl shadow-2xl max-w-sm transition-opacity duration-500">
+        <div class="p-2 bg-blue-500 rounded-full flex-shrink-0">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-extrabold text-base mb-0.5">Refund Processed</h4>
+            <p class="text-blue-100 text-xs font-medium leading-relaxed">Your payment refund has been processed by the admin. Please check your bank account or contact us.</p>
+        </div>
+        <button onclick="document.getElementById('refund-warning-toast').style.display='none'" class="text-blue-200 hover:text-white transition">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+    <script>
+        setTimeout(() => {
+            const toast = document.getElementById('refund-warning-toast');
+            if (toast) {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.style.display = 'none', 500);
+            }
+        }, 5000);
+    </script>
+    <?php unset($_SESSION['refund_warning']); ?>
+    <?php endif; ?>
+
     <?php if (!empty($_SESSION['unpaid_fine_warning'])): ?>
     <div id="fine-warning-toast" class="fixed top-24 right-4 z-[9999] flex items-start gap-3 bg-red-600 text-white text-sm p-4 rounded-2xl shadow-2xl max-w-sm transition-opacity duration-500">
         <div class="p-2 bg-red-500 rounded-full flex-shrink-0">

@@ -105,17 +105,26 @@ class CarModel {
     }
 
 
-    public function getReviews($limit = 6) {
+    public function getReviews($limit = 6, $rating = 'all') {
         $sql = "SELECT r.id, r.rating, r.comment, r.created_at,
                        u.full_name,
                        CONCAT(c.brand, ' ', c.model) AS car_name
                 FROM reviews r
                 JOIN users u ON r.user_id = u.id
-                JOIN cars  c ON r.car_id  = c.id
-                ORDER BY r.created_at DESC
+                JOIN cars  c ON r.car_id  = c.id";
+                
+        if ($rating !== 'all') {
+            $sql .= " WHERE r.rating = :rating";
+        }
+        
+        $sql .= " ORDER BY r.created_at DESC
                 LIMIT :limit";
+                
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        if ($rating !== 'all') {
+            $stmt->bindValue(':rating', $rating, PDO::PARAM_INT);
+        }
         $stmt->execute();
         return $stmt->fetchAll();
     }

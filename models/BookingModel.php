@@ -251,5 +251,18 @@ class BookingModel {
 
         return (int)$stmt->fetchColumn() > 0;
     }
+
+    /**
+     * Ambil ID booking yang baru saja di-refund (dalam 24 jam terakhir)
+     */
+    public function getRecentRefunds($userId) {
+        $sql = "SELECT id FROM bookings 
+                WHERE user_id = :user_id 
+                  AND payment_status = 'refunded' 
+                  AND updated_at > DATE_SUB(NOW(), INTERVAL 1 DAY)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':user_id' => $userId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
 }
 ?>

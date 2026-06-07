@@ -609,15 +609,29 @@ if (!defined('BASE_URL')) {
                 </p>
             </div>
             <div>
-                <form method="GET" action="index.php" id="review-limit-form">
-                    <label for="review_limit" class="text-sm font-bold text-gray-700 mr-2">Show:</label>
-                    <select name="review_limit" id="review_limit" onchange="window.location.href='index.php?review_limit='+this.value+'#testimonials'" class="bg-white border border-gray-200 text-gray-700 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm cursor-pointer transition hover:border-blue-300">
-                        <option value="6" <?php echo $reviewLimit == 6 ? 'selected' : ''; ?>>6 Reviews</option>
-                        <option value="10" <?php echo $reviewLimit == 10 ? 'selected' : ''; ?>>10 Reviews</option>
-                        <option value="30" <?php echo $reviewLimit == 30 ? 'selected' : ''; ?>>30 Reviews</option>
-                        <option value="50" <?php echo $reviewLimit == 50 ? 'selected' : ''; ?>>50 Reviews</option>
-                        <option value="100" <?php echo $reviewLimit == 100 ? 'selected' : ''; ?>>100 Reviews</option>
-                    </select>
+                <form method="GET" action="index.php" id="review-limit-form" class="flex items-center gap-4">
+                    <div class="flex items-center">
+                        <label for="review_rating" class="text-sm font-bold text-gray-700 mr-2">Rating:</label>
+                        <select name="review_rating" id="review_rating" onchange="fetchReviews()" class="bg-white border border-gray-200 text-gray-700 rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm cursor-pointer transition hover:border-blue-300">
+                            <option value="all" <?php echo $reviewRating === 'all' ? 'selected' : ''; ?>>All Stars</option>
+                            <option value="5" <?php echo $reviewRating === '5' ? 'selected' : ''; ?>>5 Stars</option>
+                            <option value="4" <?php echo $reviewRating === '4' ? 'selected' : ''; ?>>4 Stars</option>
+                            <option value="3" <?php echo $reviewRating === '3' ? 'selected' : ''; ?>>3 Stars</option>
+                            <option value="2" <?php echo $reviewRating === '2' ? 'selected' : ''; ?>>2 Stars</option>
+                            <option value="1" <?php echo $reviewRating === '1' ? 'selected' : ''; ?>>1 Star</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <label for="review_limit" class="text-sm font-bold text-gray-700 mr-2">Show:</label>
+                        <select name="review_limit" id="review_limit" onchange="fetchReviews()" class="bg-white border border-gray-200 text-gray-700 rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm cursor-pointer transition hover:border-blue-300">
+                            <option value="2" <?php echo $reviewLimit == 2 ? 'selected' : ''; ?>>2 Reviews</option>
+                            <option value="6" <?php echo $reviewLimit == 6 ? 'selected' : ''; ?>>6 Reviews</option>
+                            <option value="10" <?php echo $reviewLimit == 10 ? 'selected' : ''; ?>>10 Reviews</option>
+                            <option value="30" <?php echo $reviewLimit == 30 ? 'selected' : ''; ?>>30 Reviews</option>
+                            <option value="50" <?php echo $reviewLimit == 50 ? 'selected' : ''; ?>>50 Reviews</option>
+                            <option value="100" <?php echo $reviewLimit == 100 ? 'selected' : ''; ?>>100 Reviews</option>
+                        </select>
+                    </div>
                     <?php if (!empty($_GET['search'])): ?>
                         <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
                     <?php endif; ?>
@@ -625,8 +639,8 @@ if (!defined('BASE_URL')) {
             </div>
         </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="reviews-container">
         <?php if (!empty($reviews)): ?>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <?php
             $tDelays = ['', 'reveal-delay-2', 'reveal-delay-4'];
             foreach ($reviews as $idx => $r):
@@ -652,12 +666,41 @@ if (!defined('BASE_URL')) {
                 </div>
             </div>
             <?php endforeach; ?>
-        </div>
         <?php else: ?>
-        <div class="text-center py-16 text-gray-400 font-medium">
-            No reviews from customers yet.
-        </div>
+            <div class="text-center py-16 text-gray-400 font-medium col-span-full">
+                No reviews from customers yet.
+            </div>
         <?php endif; ?>
+        </div>
+
+        <script>
+        function fetchReviews() {
+            const container = document.getElementById('reviews-container');
+            const limit = document.getElementById('review_limit').value;
+            const rating = document.getElementById('review_rating').value;
+            if (!container) return;
+            
+            container.style.opacity = '0.5';
+            container.style.pointerEvents = 'none';
+            
+            fetch(`index.php?page=api-reviews&limit=${limit}&rating=${rating}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        container.innerHTML = data.html;
+                        // Re-initialize reveals if scrollreveal is used
+                        if (typeof ScrollReveal !== 'undefined') {
+                            ScrollReveal().sync();
+                        }
+                    }
+                })
+                .catch(error => console.error('Error fetching reviews:', error))
+                .finally(() => {
+                    container.style.opacity = '1';
+                    container.style.pointerEvents = 'auto';
+                });
+        }
+        </script>
 
     </div>
 </section>

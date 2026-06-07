@@ -35,14 +35,12 @@ class BookingController {
             exit;
         }
 
-        // Cek apakah user masih punya booking aktif (belum completed/cancelled)
         if ($bookingModel->hasActiveBooking($_SESSION['user_id'])) {
             $_SESSION['booking_error'] = 'You still have active bookings. Please complete them first before making a new booking.';
             header('Location: index.php?page=bookings');
             exit;
         }
 
-        // Cek apakah user memiliki denda yang belum dibayar
         if ($bookingModel->hasUnpaidFines($_SESSION['user_id'])) {
             $_SESSION['booking_error'] = 'You have unpaid fines. Please settle your fines first before making a new booking.';
             header('Location: index.php?page=bookings');

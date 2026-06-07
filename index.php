@@ -113,6 +113,12 @@ switch ($page) {
         $controller->reset();
         break;
 
+    case 'api-reviews':
+        require_once 'controllers/HomeController.php';
+        $controller = new HomeController();
+        $controller->apiReviews();
+        break;
+
     default:
         require_once 'controllers/HomeController.php';
         $controller = new HomeController();
