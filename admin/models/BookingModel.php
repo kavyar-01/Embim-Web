@@ -47,16 +47,25 @@ class BookingModel
      */
     public function updateBooking(int $id, string $status, string $notes): bool
     {
-        $allowed = ['confirmed', 'ongoing', 'completed', 'cancelled'];
+        $allowed = ['pending', 'confirmed', 'ongoing', 'completed', 'cancelled'];
         if (!in_array($status, $allowed, true)) {
             return false;
         }
 
-        if ($status === 'cancelled') {
+        if ($status === 'pending') {
             $stmt = $this->pdo->prepare("
                 UPDATE `bookings`
                 SET `status`         = :status,
-                    `payment_status` = 'refunded',
+                    `payment_status` = 'unpaid',
+                    `notes`          = :notes,
+                    `updated_at`     = NOW()
+                WHERE `id` = :id
+            ");
+        } elseif (in_array($status, ['confirmed', 'ongoing', 'completed'], true)) {
+            $stmt = $this->pdo->prepare("
+                UPDATE `bookings`
+                SET `status`         = :status,
+                    `payment_status` = 'paid',
                     `notes`          = :notes,
                     `updated_at`     = NOW()
                 WHERE `id` = :id
@@ -135,6 +144,24 @@ class BookingModel
             ORDER BY b.id ASC
         ");
         $stmt->execute([':lastId' => $lastId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Ambil data booking yang dibatalkan sejak waktu tertentu.
+     */
+    public function getCancelledBookingsSince(string $lastCheckedTime): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT b.id, b.status, u.full_name, c.brand, c.model, b.updated_at
+            FROM bookings b
+            JOIN users u ON u.id = b.user_id
+            JOIN cars c ON c.id = b.car_id
+            WHERE b.status = 'cancelled'
+              AND b.updated_at > :lastTime
+            ORDER BY b.updated_at ASC
+        ");
+        $stmt->execute([':lastTime' => $lastCheckedTime]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

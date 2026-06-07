@@ -142,7 +142,7 @@
     <!-- Description -->
     <div class="pt-6 border-t border-gray-200">
       <h3 class="text-lg font-bold text-gray-900 mb-4">Vehicle Highlights</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div>
           <label for="hl_drivetrain" class="block text-sm font-medium text-gray-700 mb-1">Drivetrain</label>
           <select id="hl_drivetrain" name="hl_drivetrain" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -164,13 +164,7 @@
           <input type="text" id="hl_engine" name="hl_engine" value="<?= htmlspecialchars($old['hl_engine'] ?? '') ?>" placeholder="e.g. 2.0L Turbo 4-Cylinder"
             class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
         </div>
-        <div>
-          <label for="hl_transmission" class="block text-sm font-medium text-gray-700 mb-1">Transmission Detail</label>
-          <select id="hl_transmission" name="hl_transmission" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <option value="Automatic" <?= ($old['hl_transmission'] ?? '') === 'Automatic' ? 'selected' : '' ?>>Automatic</option>
-            <option value="Manual" <?= ($old['hl_transmission'] ?? '') === 'Manual' ? 'selected' : '' ?>>Manual</option>
-          </select>
-        </div>
+
       </div>
     </div>
 
@@ -205,7 +199,7 @@
   
   const readonlyFields = [
     'brand', 'model', 'price_per_day', 'transmission', 'fuel_type', 'seats',
-    'hl_drivetrain', 'hl_body_style', 'hl_engine', 'hl_transmission'
+    'hl_drivetrain', 'hl_body_style', 'hl_engine'
   ];
 
   if (templateSelect) {
@@ -242,7 +236,7 @@
         document.getElementById('hl_drivetrain').value = car.drivetrain || car.hl_drivetrain || 'FWD';
         document.getElementById('hl_body_style').value = car.body_style || car.hl_body_style || 'Sedan';
         document.getElementById('hl_engine').value = car.engine || car.hl_engine || '';
-        document.getElementById('hl_transmission').value = car.hl_transmission || car.transmission || 'Automatic';
+
         document.getElementById('description').value = car.description || '';
         
         // Make them readonly

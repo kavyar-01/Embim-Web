@@ -58,9 +58,9 @@
         'edit_return'           => (new AdminReturnController())->editReturn(),
         'delete_return'         => (new AdminReturnController())->deleteReturn(),
         'manage_reviews'        => (new AdminReviewController())->manageReviews(),
-        'edit_review'           => (new AdminReviewController())->editReview(),
         'delete_review'         => (new AdminReviewController())->deleteReview(),
         'edit_profile'          => (new ProfileController())->editProfile(),
         'api_check_bookings'    => (new AdminBookingController())->checkNewBookings(),
+        'api_check_cancelled_bookings' => (new AdminBookingController())->checkCancelledBookings(),
         default                 => (new DashboardController())->dashboard(),
     };

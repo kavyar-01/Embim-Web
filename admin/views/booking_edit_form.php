@@ -54,7 +54,7 @@
             <label class="form-label" for="status">Status <span style="color:#ef4444;">*</span></label>
             <select name="status" id="status" class="form-control" required>
               <?php
-                $statuses = ['confirmed', 'ongoing', 'completed', 'cancelled'];
+                $statuses = ['pending', 'confirmed', 'ongoing', 'completed', 'cancelled'];
                 $current  = $_POST['status'] ?? $booking['status'];
                 foreach ($statuses as $s):
               ?>
