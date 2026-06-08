@@ -347,7 +347,7 @@
                                         type="date"
                                         id="pickup_date"
                                         name="start_date"
-                                        min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"
+                                        min="<?php echo date('Y-m-d'); ?>"
                                         class="w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 text-sm font-bold text-gray-800 bg-gray-50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all cursor-pointer"
                                         required
                                     >

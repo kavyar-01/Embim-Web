@@ -14,3 +14,23 @@ function previewImage(input, imgId, wrapId) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const pwInput = document.querySelector('input[name="password"]');
+    if (pwInput) {
+        const rules = {
+            'rule-length': (v) => v.length >= 8 && v.length <= 100,
+            'rule-lower' : (v) => /[a-z]/.test(v),
+            'rule-upper' : (v) => /[A-Z]/.test(v),
+            'rule-digit' : (v) => /[0-9]/.test(v),
+        };
+
+        pwInput.addEventListener('input', function () {
+            const val = this.value;
+            Object.entries(rules).forEach(([id, fn]) => {
+                const el = document.getElementById(id);
+                if (el) el.classList.toggle('valid', fn(val));
+            });
+        });
+    }
+});
