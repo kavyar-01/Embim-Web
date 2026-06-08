@@ -1,15 +1,15 @@
 
 function confirmCancel(bookingId) {
-    const overlay  = document.getElementById('cancel-overlay');
-    const yesBtn   = document.getElementById('cancel-yes');
-    const noBtn    = document.getElementById('cancel-no');
+    const overlay = document.getElementById('cancel-overlay');
+    const input = document.getElementById('cancel-booking-id');
+    const noBtn = document.getElementById('cancel-no');
     const backdrop = document.getElementById('cancel-backdrop');
 
-    yesBtn.href = 'index.php?page=cancel-booking&id=' + bookingId;
+    input.value = bookingId;
     overlay.classList.remove('hidden');
 
     function close() { overlay.classList.add('hidden'); }
-    noBtn.onclick    = close;
+    noBtn.onclick = close;
     backdrop.onclick = close;
 
     document.addEventListener('keydown', function esc(e) {
@@ -23,22 +23,22 @@ function confirmCancel(bookingId) {
 let _currentRating = 0;
 
 const ratingLabels = {
-    1: 'Sangat Buruk',
-    2: 'Buruk',
-    3: 'Cukup',
-    4: 'Bagus',
-    5: 'Sangat Bagus',
+    1: 'Terrible',
+    2: 'Poor',
+    3: 'Fair',
+    4: 'Good',
+    5: 'Excellent',
 };
 
 function openReviewModal(bookingId, carId, carName) {
-    
+
     document.getElementById('review-booking-id').value = bookingId;
-    document.getElementById('review-car-id').value     = carId;
+    document.getElementById('review-car-id').value = carId;
     document.getElementById('review-car-name').textContent = carName;
 
     _currentRating = 0;
     document.getElementById('review-rating-val').value = 0;
-    document.getElementById('rating-label').textContent = 'Pilih bintang';
+    document.getElementById('rating-label').textContent = 'Select a rating';
     document.getElementById('rating-label').className = 'text-sm font-semibold text-gray-400 ml-2';
     document.getElementById('review-comment').value = '';
     document.getElementById('char-count').textContent = '0';
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    ['toast-success', 'toast-error'].forEach(function (id) {
+    ['toast-success', 'toast-error', 'toast-booking-success', 'toast-booking-error'].forEach(function (id) {
         const el = document.getElementById(id);
         if (el) {
             setTimeout(function () {

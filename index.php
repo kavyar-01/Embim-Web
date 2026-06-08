@@ -1,8 +1,6 @@
 <?php
-// index.php - Front Controller
 define('BASE_URL', true);
 
-// Mulai session untuk keperluan auth
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -28,7 +26,7 @@ switch ($page) {
         require_once 'controllers/LoginController.php';
         $controller = new LoginController();
         $controller->index();
-        break;
+        break; 
 
     case 'logout':
         require_once 'controllers/LoginController.php';
@@ -52,6 +50,12 @@ switch ($page) {
         require_once 'controllers/BookingsController.php';
         $controller = new BookingsController();
         $controller->index();
+        break;
+
+    case 'receipt':
+        require_once 'controllers/ReceiptController.php';
+        $controller = new ReceiptController();
+        $controller->download();
         break;
 
     case 'booking':
@@ -105,6 +109,12 @@ switch ($page) {
         require_once 'controllers/ForgotPasswordController.php';
         $controller = new ForgotPasswordController();
         $controller->reset();
+        break;
+
+    case 'api-reviews':
+        require_once 'controllers/HomeController.php';
+        $controller = new HomeController();
+        $controller->apiReviews();
         break;
 
     default:

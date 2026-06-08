@@ -46,7 +46,7 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
                                 aria-haspopup="true"
                                 aria-expanded="false"
                             >
-                                <!-- Foto Profil -->
+                                <!-- Foto Profile -->
                                 <img
                                     src="<?php echo $_photoProfile; ?>"
                                     alt="Profile"
@@ -70,7 +70,7 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
                             >
                                 <!-- Info User -->
                                 <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
-                                    <p class="text-xs text-gray-400 font-medium">Login sebagai</p>
+                                    <p class="text-xs text-gray-400 font-medium">Logged in as</p>
                                     <p class="text-sm font-bold text-gray-800 truncate"><?php echo htmlspecialchars($_SESSION['user_name']); ?></p>
                                 </div>
 
@@ -100,7 +100,6 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
 
                     <?php else: ?>
 
-                        <!-- STATE: BELUM LOGIN — tampilkan Login & Sign Up -->
                         <a href="index.php?page=login" class="text-sm font-medium text-gray-700 hover:text-blue-600 transition duration-200">Login</a>
                         <a href="index.php?page=register" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition duration-200 shadow-sm">Sign Up</a>
 
@@ -110,7 +109,6 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center gap-2">
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <!-- Avatar kecil di mobile -->
                         <img
                             src="<?php echo $_photoProfile; ?>"
                             alt="Profile"
@@ -140,7 +138,7 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
                 <div class="flex items-center gap-3 px-3 py-2.5 bg-gray-50 rounded-lg mb-1">
                     <img src="<?php echo $_photoProfile; ?>" alt="Profile" class="h-9 w-9 rounded-full object-cover">
                     <div>
-                        <p class="text-xs text-gray-400">Login sebagai</p>
+                        <p class="text-xs text-gray-400">Logged in as</p>
                         <p class="text-sm font-bold text-gray-800 truncate max-w-[160px]"><?php echo htmlspecialchars($_SESSION['user_name']); ?></p>
                     </div>
                 </div>
@@ -164,5 +162,76 @@ $_photoProfile = (!empty($_SESSION['user_photo']))
             <?php endif; ?>
         </div>
     </nav>
+
+    <?php 
+    // Cek apakah ada refund baru yang belum dinotifikasi
+    if (isset($_SESSION['user_id'])) {
+        require_once 'models/BookingModel.php';
+        $bm = new BookingModel();
+        $recentRefunds = $bm->getRecentRefunds($_SESSION['user_id']);
+        if (!empty($recentRefunds)) {
+            $_SESSION['refund_warning'] = true;
+            $bm->markRefundsNotified($_SESSION['user_id'], $recentRefunds);
+        }
+    }
+    ?>
+
+    <?php if (!empty($_SESSION['refund_warning'])): ?>
+    <div id="refund-warning-toast" class="fixed top-24 right-4 z-[9999] flex items-start gap-3 bg-blue-600 text-white text-sm p-4 rounded-2xl shadow-2xl max-w-sm transition-opacity duration-500">
+        <div class="p-2 bg-blue-500 rounded-full flex-shrink-0">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-extrabold text-base mb-0.5">Refund Processed</h4>
+            <p class="text-blue-100 text-xs font-medium leading-relaxed">Your payment refund has been processed by the admin. Please check your bank account or contact us.</p>
+        </div>
+        <button onclick="document.getElementById('refund-warning-toast').style.display='none'" class="text-blue-200 hover:text-white transition">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+    <script>
+        setTimeout(() => {
+            const toast = document.getElementById('refund-warning-toast');
+            if (toast) {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.style.display = 'none', 500);
+            }
+        }, 5000);
+    </script>
+    <?php unset($_SESSION['refund_warning']); ?>
+    <?php endif; ?>
+
+    <?php if (!empty($_SESSION['unpaid_fine_warning'])): ?>
+    <div id="fine-warning-toast" class="fixed top-24 right-4 z-[9999] flex items-start gap-3 bg-red-600 text-white text-sm p-4 rounded-2xl shadow-2xl max-w-sm transition-opacity duration-500">
+        <div class="p-2 bg-red-500 rounded-full flex-shrink-0">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-extrabold text-base mb-0.5">Warning Fine</h4>
+            <p class="text-red-100 text-xs font-medium leading-relaxed">You have unpaid fines. Please check your My Bookings page immediately.</p>
+        </div>
+        <button onclick="document.getElementById('fine-warning-toast').style.display='none'" class="text-red-200 hover:text-white transition">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+    <script>
+        setTimeout(() => {
+            const toast = document.getElementById('fine-warning-toast');
+            if (toast) {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.style.display = 'none', 500);
+            }
+        }, 5000);
+    </script>
+    <?php unset($_SESSION['unpaid_fine_warning']); ?>
+    <?php endif; ?>
 
     <script src="assets/js/user/header.js"></script>

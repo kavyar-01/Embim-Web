@@ -26,6 +26,19 @@
 
   <form action="?page=add_car" method="POST" enctype="multipart/form-data" class="space-y-8">
 
+    <!-- Copy from Existing Car -->
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+      <label for="existing_car_template" class="block text-sm font-bold text-blue-900 mb-2">Use Existing Car Template (Optional)</label>
+      <select id="existing_car_template" name="existing_car_template" class="w-full border border-blue-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <option value="">-- Select Vehicle --</option>
+        <?php if (!empty($uniqueCars)): ?>
+          <?php foreach ($uniqueCars as $idx => $uc): ?>
+            <option value="<?= $idx ?>" <?= (isset($old['existing_car_template']) && (string)$old['existing_car_template'] === (string)$idx) ? 'selected' : '' ?>><?= htmlspecialchars($uc['brand'] . ' ' . $uc['model'] . ' (' . $uc['year'] . ')') ?></option>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </select>
+    </div>
+
     <!-- Photo Upload -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Car Photo</label>
@@ -87,7 +100,7 @@
       </div>
       <div>
         <label for="license_plate" class="block text-sm font-medium text-gray-700 mb-1">License Plate</label>
-        <input type="text" id="license_plate" name="license_plate" value="<?= htmlspecialchars($old['license_plate'] ?? '') ?>" placeholder="e.g. D 1234 ABM"
+        <input type="text" id="license_plate" name="license_plate" value="<?= htmlspecialchars($old['license_plate'] ?? '') ?>" placeholder="e.g. D 1234 ABM" maxlength="12" pattern="[A-Za-z]{1,2}\s*[0-9]{1,4}\s*[A-Za-z]{0,3}" title="Format plat: D 1234 ABM" oninput="this.value = this.value.toUpperCase()"
           class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
       </div>
       <div>
@@ -127,6 +140,34 @@
     </div>
 
     <!-- Description -->
+    <div class="pt-6 border-t border-gray-200">
+      <h3 class="text-lg font-bold text-gray-900 mb-4">Vehicle Highlights</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div>
+          <label for="hl_drivetrain" class="block text-sm font-medium text-gray-700 mb-1">Drivetrain</label>
+          <select id="hl_drivetrain" name="hl_drivetrain" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="FWD" <?= ($old['hl_drivetrain'] ?? '') === 'FWD' ? 'selected' : '' ?>>FWD (Front Wheel Drive)</option>
+            <option value="RWD" <?= ($old['hl_drivetrain'] ?? '') === 'RWD' ? 'selected' : '' ?>>RWD (Rear Wheel Drive)</option>
+            <option value="AWD" <?= ($old['hl_drivetrain'] ?? '') === 'AWD' ? 'selected' : '' ?>>AWD/4WD (All Wheel Drive)</option>
+          </select>
+        </div>
+        <div>
+          <label for="hl_body_style" class="block text-sm font-medium text-gray-700 mb-1">Body Style</label>
+          <select id="hl_body_style" name="hl_body_style" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="Sedan" <?= ($old['hl_body_style'] ?? '') === 'Sedan' ? 'selected' : '' ?>>Sedan</option>
+            <option value="SUV" <?= ($old['hl_body_style'] ?? '') === 'SUV' ? 'selected' : '' ?>>SUV</option>
+            <option value="Sports" <?= ($old['hl_body_style'] ?? '') === 'Sports' ? 'selected' : '' ?>>Sports</option>
+          </select>
+        </div>
+        <div>
+          <label for="hl_engine" class="block text-sm font-medium text-gray-700 mb-1">Engine Detail</label>
+          <input type="text" id="hl_engine" name="hl_engine" value="<?= htmlspecialchars($old['hl_engine'] ?? '') ?>" placeholder="e.g. 2.0L Turbo 4-Cylinder"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
     <div>
       <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
       <textarea id="description" name="description" rows="5"
@@ -135,15 +176,86 @@
     </div>
 
     <!-- Submit -->
-    <div>
-      <button type="submit" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-6 py-3 rounded-md transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-        </svg>
-        List Your Car
+    <div class="flex items-center gap-4">
+      <button type="submit" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-6 py-3 rounded-md transition-colors shadow-sm">
+        Add Car
       </button>
+      <a href="?page=manage_cars" class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-6 py-3 rounded-md transition-colors">
+        Cancel
+      </a>
     </div>
 
   </form>
 </div>
+
+<script>
+  const uniqueCars = <?= json_encode($uniqueCars ?? []) ?>;
+  
+  const templateSelect = document.getElementById('existing_car_template');
+  
+  const readonlyFields = [
+    'brand', 'model', 'price_per_day', 'transmission', 'fuel_type', 'seats',
+    'hl_drivetrain', 'hl_body_style', 'hl_engine'
+  ];
+
+  if (templateSelect) {
+    templateSelect.addEventListener('change', function() {
+      const idx = this.value;
+      
+      if (idx === "") {
+        // Manual input mode
+        // Don't clear fields, but make them editable again
+        readonlyFields.forEach(fieldId => {
+          const el = document.getElementById(fieldId);
+          if (el) {
+            if (el.tagName === 'SELECT') {
+              el.style.pointerEvents = 'auto';
+              el.style.opacity = '1';
+              el.classList.remove('bg-gray-100');
+            } else {
+              el.removeAttribute('readonly');
+              el.classList.remove('bg-gray-100');
+            }
+          }
+        });
+      } else {
+        // Pre-fill mode
+        const car = uniqueCars[idx];
+        
+        // Fill values
+        document.getElementById('brand').value = car.brand;
+        document.getElementById('model').value = car.model;
+        document.getElementById('price_per_day').value = car.price_per_day;
+        document.getElementById('transmission').value = car.transmission;
+        document.getElementById('fuel_type').value = car.fuel_type;
+        document.getElementById('seats').value = car.seats;
+        document.getElementById('hl_drivetrain').value = car.drivetrain || car.hl_drivetrain || 'FWD';
+        document.getElementById('hl_body_style').value = car.body_style || car.hl_body_style || 'Sedan';
+        document.getElementById('hl_engine').value = car.engine || car.hl_engine || '';
+
+        document.getElementById('description').value = car.description || '';
+        
+        // Make them readonly
+        readonlyFields.forEach(fieldId => {
+          const el = document.getElementById(fieldId);
+          if (el) {
+            if (el.tagName === 'SELECT') {
+              el.style.pointerEvents = 'none';
+              el.style.opacity = '0.7';
+              el.classList.add('bg-gray-100');
+            } else {
+              el.setAttribute('readonly', true);
+              el.classList.add('bg-gray-100');
+            }
+          }
+        });
+      }
+    });
+
+    if (templateSelect.value !== "") {
+      templateSelect.dispatchEvent(new Event('change'));
+    }
+  }
+</script>
+
 <?php require_once __DIR__ . '/partials/layout_bottom.php'; ?>

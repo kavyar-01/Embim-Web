@@ -11,10 +11,16 @@ class UserModel {
         $this->conn = $db->getConnection();
     }
 
+    public function getTotalCustomers() {
+        $sql = "SELECT COUNT(*) FROM {$this->table} WHERE role = 'user'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
 
     public function register($fullName, $email, $phone, $password) {
         if ($this->findByEmail($email)) {
-            return ['success' => false, 'message' => 'Email sudah terdaftar. Silakan gunakan email lain atau login.'];
+            return ['success' => false, 'message' => 'Email is already registered. Please use another email or login.'];
         }
 
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
@@ -28,14 +34,14 @@ class UserModel {
         $stmt->bindParam(':password',  $hashedPassword);
 
         if ($stmt->execute()) {
-            return ['success' => true, 'message' => 'Akun berhasil dibuat! Silakan login.'];
+            return ['success' => true, 'message' => 'Account created successfully! Please login.'];
         }
-        return ['success' => false, 'message' => 'Terjadi kesalahan. Silakan coba lagi.'];
+        return ['success' => false, 'message' => 'An error occurred. Please try again.'];
     }
 
 
     public function login($email, $password) {
-        $user = $this->findByEmail($email);
+        $user = $this->findUserByEmail($email);
         if (!$user) {
             return false;
         }
@@ -43,6 +49,14 @@ class UserModel {
             return $user;
         }
         return false;
+    }
+
+    public function findUserByEmail($email) {
+        $sql  = "SELECT * FROM {$this->table} WHERE email = :email AND role = 'user' LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 
     public function findByEmail($email) {

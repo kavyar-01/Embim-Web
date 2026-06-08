@@ -2,9 +2,9 @@
 
 (function () {
 
-    const btn      = document.getElementById('profile-menu-btn');
+    const btn = document.getElementById('profile-menu-btn');
     const dropdown = document.getElementById('profile-dropdown');
-    const chevron  = document.getElementById('profile-chevron');
+    const chevron = document.getElementById('profile-chevron');
 
     if (btn && dropdown) {
         let isOpen = false;
@@ -46,7 +46,7 @@
         });
     }
 
-    const mobileBtn  = document.getElementById('mobile-menu-button');
+    const mobileBtn = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
     if (mobileBtn && mobileMenu) {
@@ -75,17 +75,17 @@ function confirmLogout(e) {
                 </svg>
             </div>
             <!-- Teks -->
-            <h3 class="text-lg font-bold text-gray-900 mb-1">Konfirmasi Logout</h3>
-            <p class="text-sm text-gray-500 mb-7">Apakah Anda yakin ingin keluar dari akun EMBIM?</p>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">Confirm Logout</h3>
+            <p class="text-sm text-gray-500 mb-7">Are you sure you want to log out of your EMBIM account?</p>
             <!-- Tombol -->
             <div class="flex gap-3">
                 <button id="logout-cancel"
                     class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition duration-200">
-                    Batal
+                    Cancel
                 </button>
                 <a href="index.php?page=logout"
                     class="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition duration-200">
-                    Ya, Logout
+                    Yes, Logout
                 </a>
             </div>
         </div>

@@ -16,7 +16,7 @@ $paymentMethods = [
         ],
     ],
     'bank' => [
-        'label'   => 'Transfer Bank',
+        'label'   => 'Bank Transfer',
         'options' => [
             ['value' => 'transfer_bank_bca',     'label' => 'BCA',     'logo' => 'assets/images/bca-icon.png'],
             ['value' => 'transfer_bank_mandiri',  'label' => 'Mandiri', 'logo' => 'assets/images/mandiri-icon.png'],
@@ -33,17 +33,17 @@ $paymentMethods = [
 
     <!-- Breadcrumb -->
     <nav class="flex items-center gap-2 text-sm text-gray-400 pt-6 mb-8">
-        <a href="index.php?page=car-detail&id=<?php echo $car['id']; ?>" class="hover:text-blue-600 transition">Detail Kendaraan</a>
+        <a href="index.php?page=car-detail&id=<?php echo $car['id']; ?>" class="hover:text-blue-600 transition">Vehicle Details</a>
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
-        <span class="text-gray-700 font-semibold">Form Booking</span>
+        <span class="text-gray-700 font-semibold">Booking Form</span>
     </nav>
 
     <!-- Page Title -->
     <div class="mb-8">
-        <h1 class="text-2xl font-extrabold text-gray-900">Konfirmasi Booking</h1>
-        <p class="text-sm text-gray-400 mt-1">Lengkapi data berikut untuk menyelesaikan pemesanan kendaraan</p>
+        <h1 class="text-2xl font-extrabold text-gray-900">Booking Confirmation</h1>
+        <p class="text-sm text-gray-400 mt-1">Complete the following data to finish your vehicle reservation</p>
     </div>
 
     <!-- Error Alert -->
@@ -53,7 +53,7 @@ $paymentMethods = [
             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            Peringatan:
+            Warning:
         </p>
         <ul class="space-y-1">
             <?php foreach ($errors as $err): ?>
@@ -84,7 +84,7 @@ $paymentMethods = [
                 <!-- ── 1. Ringkasan Kendaraan ── -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Kendaraan yang Dipilih</h2>
+                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Selected Vehicle</h2>
                     </div>
                     <div class="flex items-center gap-4 p-5">
                         <img src="<?php echo $imgSrc; ?>" alt="<?php echo htmlspecialchars($car['brand']); ?>"
@@ -99,20 +99,20 @@ $paymentMethods = [
                             </p>
                             <p class="text-sm font-black text-blue-600">
                                 Rp <?php echo number_format($car['price_per_day'], 0, ',', '.'); ?>
-                                <span class="text-xs font-normal text-gray-400">/ hari</span>
+                                <span class="text-xs font-normal text-gray-400">/ day</span>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- ── 2. Detail Tanggal ── -->
+                <!-- ── 2. Detail Date ── -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Detail Tanggal Sewa</h2>
+                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Rental Date Details</h2>
                     </div>
                     <div class="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Tanggal Pickup</label>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Pickup Date</label>
                             <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
                                 <svg class="h-4 w-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -123,7 +123,7 @@ $paymentMethods = [
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Tanggal Kembali</label>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Return Date</label>
                             <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
                                 <svg class="h-4 w-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -134,24 +134,24 @@ $paymentMethods = [
                             </div>
                         </div>
                         <div class="sm:col-span-2 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 flex items-center justify-between">
-                            <span class="text-sm font-semibold text-gray-600">Durasi Sewa</span>
+                            <span class="text-sm font-semibold text-gray-600">Rental Duration</span>
                             <span class="text-sm font-extrabold text-blue-600" id="summary-duration">
-                                <?php echo $totalDays; ?> hari
+                                <?php echo $totalDays; ?> days
                             </span>
                         </div>
                     </div>
                 </div>
 
-                <!-- ── 3. Catatan ── -->
+                <!-- ── 3. Notes ── -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Catatan Tambahan</h2>
+                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Additional Notes</h2>
                     </div>
                     <div class="p-5">
                         <textarea
                             name="notes"
                             rows="3"
-                            placeholder="Contoh: Butuh infant seat, antar ke bandara, dll. (opsional)"
+                            placeholder="Example: Need infant seat, airport transfer, etc. (optional)"
                             class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 placeholder-gray-400 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400 transition resize-none"
                         ><?php echo htmlspecialchars($_POST['notes'] ?? ''); ?></textarea>
                     </div>
@@ -160,12 +160,12 @@ $paymentMethods = [
                 <!-- ── 4. Foto Selfie KTP ── -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Verifikasi Identitas</h2>
+                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Identity Verification</h2>
                     </div>
                     <div class="p-5">
                         <p class="text-sm text-gray-500 mb-4 leading-relaxed">
-                            Upload foto <strong class="text-gray-700">selfie sambil memegang KTP / SIM</strong> Anda.
-                            Pastikan wajah dan teks pada dokumen terlihat jelas.
+                            Upload a <strong class="text-gray-700">selfie photo holding your ID Card / Driver's License</strong>.
+                            Ensure your face and the text on the document are clearly visible.
                         </p>
 
                         <label
@@ -178,8 +178,8 @@ $paymentMethods = [
                                 <svg class="h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
-                                <p class="text-sm font-semibold text-gray-400">Klik untuk upload foto</p>
-                                <p class="text-xs text-gray-300">JPG, PNG, WebP · Maks 5 MB</p>
+                                <p class="text-sm font-semibold text-gray-400">Click to upload photo</p>
+                                <p class="text-xs text-gray-300">JPG, PNG, WebP · Max 5 MB</p>
                             </div>
                             <!-- Preview gambar -->
                             <img
@@ -201,10 +201,10 @@ $paymentMethods = [
                             <svg class="h-3.5 w-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                             </svg>
-                            Data identitas Anda hanya digunakan untuk keperluan verifikasi.
+                            Your identity data is only used for verification purposes.
                         </p>
                         <p id="selfie-error" class="hidden text-xs text-red-500 mt-2 font-semibold">
-                            ⚠ Foto selfie memegang KTP wajib diunggah.
+                            ⚠ Selfie photo holding ID card is required to be uploaded.
                         </p>
                     </div>
                 </div>
@@ -212,7 +212,7 @@ $paymentMethods = [
                 <!-- ── 5. Metode Pembayaran ── -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
                     <div class="px-6 py-4 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Metode Pembayaran</h2>
+                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Payment Method</h2>
                     </div>
                     <div class="p-5 space-y-5">
                         <?php
@@ -245,7 +245,7 @@ $paymentMethods = [
                         <?php endforeach; ?>
                     </div>
                     <p id="payment-error" class="hidden text-xs text-red-500 mt-3 px-5 pb-4 font-semibold">
-                        ⚠ Metode pembayaran wajib dipilih.
+                        ⚠ Payment method must be selected.
                     </p>
                 </div>
 
@@ -257,30 +257,30 @@ $paymentMethods = [
 
                     <!-- Summary Card -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Ringkasan Pesanan</h2>
+                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Order Summary</h2>
 
                         <div class="space-y-3 mb-4">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Harga per hari</span>
+                                <span class="text-gray-500">Price per day</span>
                                 <span class="font-semibold text-gray-800">
                                     Rp <?php echo number_format($car['price_per_day'], 0, ',', '.'); ?>
                                 </span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Durasi</span>
+                                <span class="text-gray-500">Duration</span>
                                 <span class="font-semibold text-gray-800" id="summary-duration-side">
-                                    <?php echo $totalDays; ?> hari
+                                    <?php echo $totalDays; ?> days
                                 </span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Biaya layanan</span>
-                                <span class="font-semibold text-emerald-600">Gratis</span>
+                                <span class="text-gray-500">Service fee</span>
+                                <span class="font-semibold text-emerald-600">Free</span>
                             </div>
                         </div>
 
                         <div class="border-t border-gray-100 pt-3 mb-5">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-bold text-gray-900">Total Pembayaran</span>
+                                <span class="text-sm font-bold text-gray-900">Total Payment</span>
                                 <span class="text-xl font-black text-blue-600" id="summary-total">
                                     Rp <?php echo number_format($totalPrice, 0, ',', '.'); ?>
                                 </span>
@@ -292,16 +292,16 @@ $paymentMethods = [
                             type="submit"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 rounded-xl shadow-md shadow-blue-200/50 transition-all duration-200 mb-3"
                         >
-                            Konfirmasi Booking
+                            Confirm Booking
                         </button>
 
-                        <!-- Tombol Batal -->
+                        <!-- Cancel Button -->
                         <button
                             type="button"
                             onclick="confirmCancelBooking()"
                             class="w-full border-2 border-gray-200 hover:border-red-300 text-gray-500 hover:text-red-500 font-semibold text-sm py-3 rounded-xl transition-all duration-200"
                         >
-                            Batalkan
+                            Cancel
                         </button>
                     </div>
 
@@ -311,12 +311,11 @@ $paymentMethods = [
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
-                            Info Pembayaran
+                            Payment Info
                         </p>
                         <ul class="space-y-1 text-xs text-amber-600">
-                            <li>• Booking berstatus <strong>Confirmed</strong> setelah bukti pembayaran diunggah</li>
-                            <li>• Instruksi pembayaran dikirim ke email Anda</li>
-                            <li>• Pembayaran maks. <strong>1x24 jam</strong> setelah booking</li>
+                            <li>• Booking status becomes <strong>Confirmed</strong> after payment proof is uploaded</li>
+                            <li>• Payment instructions are sent to your email</li>
                         </ul>
                     </div>
 
@@ -329,7 +328,7 @@ $paymentMethods = [
 </div>
 </main>
 
-<!-- Modal Konfirmasi Batalkan -->
+<!-- Cancel Confirmation Modal -->
 <div id="cancel-overlay" class="hidden fixed inset-0 z-[999] flex items-center justify-center">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" id="cancel-backdrop"></div>
     <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-7 text-center">
@@ -338,15 +337,15 @@ $paymentMethods = [
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
         </div>
-        <h3 class="text-lg font-bold text-gray-900 mb-1">Batalkan Booking?</h3>
-        <p class="text-sm text-gray-500 mb-7">Data yang sudah diisi akan hilang. Yakin ingin kembali?</p>
+        <h3 class="text-lg font-bold text-gray-900 mb-1">Cancel Booking?</h3>
+        <p class="text-sm text-gray-500 mb-7">The data you have entered will be lost. Are you sure you want to go back?</p>
         <div class="flex gap-3">
             <button id="cancel-no" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition">
-                Tidak
+                No
             </button>
             <a href="index.php?page=car-detail&id=<?php echo $car['id']; ?>"
                class="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition text-center">
-                Ya, Batalkan
+                Yes, Cancel
             </a>
         </div>
     </div>

@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
 
-                <!-- Kolom 1: Brand, Deskripsi & Social Icons -->
+                <!-- Kolom 1: Brand, Description & Social Icons -->
                 <div class="md:col-span-1 space-y-5">
                     <a href="index.php" class="text-2xl font-extrabold tracking-tighter text-black">EMBIM</a>
                     <p class="text-gray-500 text-sm leading-relaxed">
@@ -66,10 +66,18 @@
                 <div>
                     <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest mb-5">Contact</h3>
                     <ul class="space-y-3 text-sm text-gray-500">
-                        
-                        <li>Jl. Sukaasih V No.115 RT. 04/08, Sindang Jaya, Kec. Mandalajati, Kota Bandung, Jawa Barat 40195</li>
-                        <li>+62821-4484-5847</li>
-                        <li><a href="mailto:embim@gmail.com" class="hover:text-blue-600 transition">embim@gmail.com</a></li>
+                    <li class="flex items-start gap-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <a href="http://google.com/maps/place/Aksan+Rent+Car/@-6.9025784,107.685563,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68dd76355f8cd7:0x9968831e0bf680af!8m2!3d-6.9025784!4d107.685563!16s%2Fg%2F11s57n1fxn!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDUyMC4wIKXMDSoASAFQAw%3D%3D" class="text-sm text-gray-500 hover:text-blue-600 transition-colors" target="_blank">Jl. Sukaasih V No.115 RT. 04/08, Sindang Jaya, Kec. Mandalajati, Kota Bandung, Jawa Barat 40195</a>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                        <a href="tel:+6282143675599" class="text-sm text-gray-500 hover:text-blue-600 transition-colors">+62-821-4367-5599</a>
+                    </li>
+                    <li class="flex items-center gap-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <a href="mailto:hello@embim.com" class="text-sm text-gray-500 hover:text-blue-600 transition-colors">hello@embim.com</a>
+                    </li>
                     </ul>
                 </div>
 
@@ -109,8 +117,8 @@
         >
             <!-- Header -->
             <div class="px-5 py-4 border-b border-gray-100">
-                <p class="text-sm font-bold text-gray-900">Hubungi Kami</p>
-                <p class="text-xs text-gray-400 mt-0.5">Pilih salah satu saluran di bawah ini</p>
+                <p class="text-sm font-bold text-gray-900">Contact Us</p>
+                <p class="text-xs text-gray-400 mt-0.5">Choose one of the channels below</p>
             </div>
 
             <!-- WhatsApp -->
@@ -126,8 +134,8 @@
                     </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-800">Hubungi via WhatsApp</p>
-                    <p class="text-xs text-green-500 font-medium">Kontak Whatsapp</p>
+                    <p class="text-sm font-semibold text-gray-800">Contact via WhatsApp</p>
+                    <p class="text-xs text-green-500 font-medium">Whatsapp Contact</p>
                 </div>
                 <svg class="h-4 w-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -149,7 +157,7 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-gray-800">Aksan Rent Car</p>
-                    <p class="text-xs text-gray-400">Lokasi Rental</p>
+                    <p class="text-xs text-gray-400">Rental Location</p>
                 </div>
                 <svg class="h-4 w-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -167,7 +175,7 @@
                     </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-800">Kirim Email</p>
+                    <p class="text-sm font-semibold text-gray-800">Send Email</p>
                     <p class="text-xs text-gray-400">embim@gmail.com</p>
                 </div>
                 <svg class="h-4 w-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,7 +187,7 @@
         <!-- Trigger Button -->
         <button
             id="contact-fab"
-            aria-label="Kontak Kami"
+            aria-label="Contact Us"
             class="h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl
                    flex items-center justify-center transition-all duration-300
                    focus:outline-none focus:ring-4 focus:ring-blue-300"

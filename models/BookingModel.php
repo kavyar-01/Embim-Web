@@ -30,10 +30,13 @@ class BookingModel {
                     b.payment_method,
                     b.payment_status,
                     CASE WHEN r.id IS NOT NULL THEN 1 ELSE 0 END AS has_review,
-                    r.rating      AS review_rating
+                    r.rating      AS review_rating,
+                    ret.fine_status,
+                    ret.fine_amount
                 FROM bookings b
                 JOIN cars     c ON b.car_id     = c.id
                 LEFT JOIN reviews  r ON r.booking_id = b.id
+                LEFT JOIN returns  ret ON ret.booking_id = b.id
                 WHERE b.user_id = :user_id";
 
         if ($status !== 'all') {
@@ -85,29 +88,45 @@ class BookingModel {
         $method = $data['payment_method'] ?? '';
         $bookingStatus = 'confirmed';
 
-        $sql = "INSERT INTO bookings
-                    (user_id, car_id, start_date, end_date, total_days, total_price, status, notes, payment_method, payment_status)
-                VALUES
-                    (:user_id, :car_id, :start_date, :end_date, :total_days, :total_price, :status, :notes, :payment_method, 'unpaid')";
-        $stmt = $this->conn->prepare($sql);
-        $success = $stmt->execute([
-            ':user_id'        => $data['user_id'],
-            ':car_id'         => $data['car_id'],
-            ':start_date'     => $data['start_date'],
-            ':end_date'       => $data['end_date'],
-            ':total_days'     => $data['total_days'],
-            ':total_price'    => $data['total_price'],
-            ':status'         => $bookingStatus,
-            ':notes'          => $data['notes'] ?? null,
-            ':payment_method' => $method,
-        ]);
+        $this->conn->beginTransaction();
+        try {
+            if (!$this->isCarAvailable($data['car_id'], $data['start_date'], $data['end_date'], true)) {
+                $this->conn->rollBack();
+                return false;
+            }
 
-        if ($success) {
+            $sql = "INSERT INTO bookings
+                        (user_id, car_id, start_date, end_date, total_days, total_price, status, notes, payment_method, payment_status)
+                    VALUES
+                        (:user_id, :car_id, :start_date, :end_date, :total_days, :total_price, :status, :notes, :payment_method, 'unpaid')";
+            $stmt = $this->conn->prepare($sql);
+            $success = $stmt->execute([
+                ':user_id'        => $data['user_id'],
+                ':car_id'         => $data['car_id'],
+                ':start_date'     => $data['start_date'],
+                ':end_date'       => $data['end_date'],
+                ':total_days'     => $data['total_days'],
+                ':total_price'    => $data['total_price'],
+                ':status'         => $bookingStatus,
+                ':notes'          => $data['notes'] ?? null,
+                ':payment_method' => $method,
+            ]);
+
+            if (!$success) {
+                $this->conn->rollBack();
+                return false;
+            }
+
             $bookingId = $this->conn->lastInsertId();
             $this->updateCarStatus($data['car_id'], $bookingStatus);
+            $this->conn->commit();
             return $bookingId;
+        } catch (PDOException $e) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();
+            }
+            return false;
         }
-        return false;
     }
 
  
@@ -118,17 +137,34 @@ class BookingModel {
     }
 
 
-    public function isCarAvailable($carId, $startDate, $endDate) {
-        $sql = "SELECT COUNT(*) FROM bookings
-                WHERE car_id     = :car_id
-                  AND status NOT IN ('cancelled')
-                  AND NOT (end_date < :start OR start_date > :end)";
-        $stmt = $this->conn->prepare($sql);
+    public function isCarAvailable($carId, $startDate = null, $endDate = null, $forUpdate = false) {
+        $lock = $forUpdate ? " FOR UPDATE" : "";
+        $stmt = $this->conn->prepare("SELECT status FROM cars WHERE id = :id" . $lock);
+        $stmt->execute([':id' => $carId]);
+        $status = $stmt->fetchColumn();
+
+        if ($status === false || $status === 'maintenance') {
+            return false;
+        }
+
+        if (!$startDate || !$endDate) {
+            return $status === 'available';
+        }
+
+        $stmt = $this->conn->prepare("
+            SELECT COUNT(*)
+            FROM bookings
+            WHERE car_id = :car_id
+              AND status IN ('pending', 'confirmed', 'ongoing')
+              AND start_date < :end_date
+              AND end_date > :start_date
+        ");
         $stmt->execute([
-            ':car_id' => $carId,
-            ':start'  => $startDate,
-            ':end'    => $endDate,
+            ':car_id'     => $carId,
+            ':start_date' => $startDate,
+            ':end_date'   => $endDate,
         ]);
+
         return (int)$stmt->fetchColumn() === 0;
     }
 
@@ -159,14 +195,18 @@ class BookingModel {
     public function createReview($data) {
         $sql = "INSERT INTO reviews (user_id, car_id, booking_id, rating, comment)
                 VALUES (:user_id, :car_id, :booking_id, :rating, :comment)";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([
-            ':user_id'    => $data['user_id'],
-            ':car_id'     => $data['car_id'],
-            ':booking_id' => $data['booking_id'],
-            ':rating'     => $data['rating'],
-            ':comment'    => $data['comment'],
-        ]);
+        try {
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([
+                ':user_id'    => $data['user_id'],
+                ':car_id'     => $data['car_id'],
+                ':booking_id' => $data['booking_id'],
+                ':rating'     => $data['rating'],
+                ':comment'    => $data['comment'],
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
 
@@ -178,12 +218,17 @@ class BookingModel {
     }
 
     public function updateCarStatus($carId, $bookingStatus) {
-        if (in_array($bookingStatus, ['confirmed', 'ongoing'])) {
-            $carStatus = 'booked';
-        } elseif (in_array($bookingStatus, ['completed', 'cancelled'])) {
-            $carStatus = 'available';
+        if (in_array($bookingStatus, ['completed', 'cancelled'])) {
+            $stmt = $this->conn->prepare("
+                SELECT COUNT(*)
+                FROM bookings
+                WHERE car_id = :car_id
+                  AND status IN ('confirmed', 'ongoing')
+            ");
+            $stmt->execute([':car_id' => $carId]);
+            $carStatus = ((int)$stmt->fetchColumn() > 0) ? 'booked' : 'available';
         } else {
-            return false;
+            $carStatus = 'booked';
         }
 
         $sql = "UPDATE cars SET status = :status WHERE id = :car_id";
@@ -198,6 +243,8 @@ class BookingModel {
     public function updateBookingStatus($bookingId, $newStatus) {
         $booking = $this->getBookingById($bookingId);
         if (!$booking) return false;
+
+        $oldStatus = $booking['status'];
 
         $sql = "UPDATE bookings SET status = :status WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
@@ -239,14 +286,45 @@ class BookingModel {
      * Cek apakah user memiliki denda yang belum dibayar.
      */
     public function hasUnpaidFines($userId) {
-        $sql = "SELECT COUNT(*) FROM fines f
-                JOIN bookings b ON b.id = f.booking_id
+        $sql = "SELECT COUNT(*) FROM returns r
+                JOIN bookings b ON b.id = r.booking_id
                 WHERE b.user_id = :user_id
-                  AND f.status = 'unpaid'";
+                  AND r.fine_status = 'unpaid'";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([':user_id' => $userId]);
 
         return (int)$stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Ambil ID booking refund yang belum pernah dinotifikasi ke user.
+     */
+    public function getRecentRefunds($userId) {
+        $sql = "SELECT id FROM bookings 
+                WHERE user_id = :user_id 
+                  AND payment_status = 'refunded' 
+                  AND refund_notified_at IS NULL
+                ORDER BY updated_at DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':user_id' => $userId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function markRefundsNotified($userId, array $bookingIds) {
+        $bookingIds = array_values(array_filter(array_map('intval', $bookingIds)));
+        if (empty($bookingIds)) {
+            return true;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($bookingIds), '?'));
+        $sql = "UPDATE bookings
+                SET refund_notified_at = NOW()
+                WHERE user_id = ?
+                  AND payment_status = 'refunded'
+                  AND refund_notified_at IS NULL
+                  AND id IN ($placeholders)";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute(array_merge([(int)$userId], $bookingIds));
     }
 }
 ?>

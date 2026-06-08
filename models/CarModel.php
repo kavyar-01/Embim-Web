@@ -11,9 +11,28 @@ class CarModel {
         $this->conn = $db->getConnection();
     }
 
+    public function getTotalAvailableCars() {
+        $sql = "SELECT COUNT(*) FROM {$this->table} WHERE status = 'available'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function getAverageRating() {
+        $sql = "SELECT AVG(rating) FROM reviews";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $avg = $stmt->fetchColumn();
+        return $avg ? round((float)$avg, 1) : 0;
+    }
 
     public function getFeaturedCars($limit = null) {
-        $sql  = "SELECT * FROM {$this->table} WHERE status = 'available' ORDER BY id DESC";
+        $sql = "SELECT c.*, 
+                       (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
+                FROM {$this->table} c
+                WHERE c.status = 'available'
+                  AND c.id IN (SELECT MIN(id) FROM {$this->table} WHERE status = 'available' GROUP BY brand, model)
+                ORDER BY c.id DESC";
         if ($limit !== null) {
             $sql .= " LIMIT :limit";
         }
@@ -28,16 +47,19 @@ class CarModel {
 
     public function searchCars($query) {
         $keyword = '%' . $query . '%';
-        $sql = "SELECT * FROM {$this->table}
-                WHERE status = 'available'
+        $sql = "SELECT c.*, 
+                       (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
+                FROM {$this->table} c
+                WHERE c.status = 'available'
                   AND (
-                      brand        LIKE :kw
-                   OR model        LIKE :kw2
-                   OR transmission LIKE :kw3
-                   OR fuel_type    LIKE :kw4
-                   OR description  LIKE :kw5
+                      c.brand        LIKE :kw
+                   OR c.model        LIKE :kw2
+                   OR c.transmission LIKE :kw3
+                   OR c.fuel_type    LIKE :kw4
+                   OR c.description  LIKE :kw5
                   )
-                ORDER BY id DESC";
+                  AND c.id IN (SELECT MIN(id) FROM {$this->table} WHERE status = 'available' GROUP BY brand, model)
+                ORDER BY c.id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':kw',  $keyword);
         $stmt->bindParam(':kw2', $keyword);
@@ -50,7 +72,11 @@ class CarModel {
 
 
     public function getCarById($id) {
-        $sql  = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1";
+        $sql  = "SELECT c.*, v.drivetrain, v.body_style, v.engine, v.transmission AS hl_transmission,
+                        (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
+                 FROM {$this->table} c
+                 LEFT JOIN vehicle_highlights v ON c.id = v.car_id
+                 WHERE c.id = :id LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -59,7 +85,11 @@ class CarModel {
 
 
     public function getAllCars() {
-        $sql  = "SELECT * FROM {$this->table} ORDER BY id DESC";
+        $sql  = "SELECT c.*, 
+                        (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
+                 FROM {$this->table} c 
+                 WHERE c.id IN (SELECT MIN(id) FROM {$this->table} GROUP BY brand, model)
+                 ORDER BY c.id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -75,25 +105,44 @@ class CarModel {
     }
 
 
-    public function getReviews($limit = 6) {
+    public function getReviews($limit = 6, $rating = 'all') {
         $sql = "SELECT r.id, r.rating, r.comment, r.created_at,
                        u.full_name,
                        CONCAT(c.brand, ' ', c.model) AS car_name
                 FROM reviews r
                 JOIN users u ON r.user_id = u.id
-                JOIN cars  c ON r.car_id  = c.id
-                ORDER BY r.created_at DESC
+                JOIN cars  c ON r.car_id  = c.id";
+                
+        if ($rating !== 'all') {
+            $sql .= " WHERE r.rating = :rating";
+        }
+        
+        $sql .= " ORDER BY r.created_at DESC
                 LIMIT :limit";
+                
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        if ($rating !== 'all') {
+            $stmt->bindValue(':rating', $rating, PDO::PARAM_INT);
+        }
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
+    public function getTotalReviews() {
+        $sql = "SELECT COUNT(*) FROM reviews";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
 
     public function getRelatedCars($excludeId, $limit = 3) {
-        $sql  = "SELECT * FROM {$this->table}
-                 WHERE status = 'available' AND id != :id
+        $sql  = "SELECT c.*, 
+                        (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
+                 FROM {$this->table} c
+                 WHERE c.status = 'available' AND c.id != :id
+                   AND c.id IN (SELECT MIN(id) FROM {$this->table} WHERE status = 'available' GROUP BY brand, model)
                  ORDER BY RAND() LIMIT :limit";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':id',    $excludeId, PDO::PARAM_INT);
@@ -104,11 +153,11 @@ class CarModel {
 
 
     public function getCarsWithFilter($search = '', $transmission = '', $fuel_type = '', $limit = 6, $offset = 0, $price_min = '', $price_max = '', $seats = '') {
-        $conditions = ["status = 'available'"];
+        $conditions = ["c.status = 'available'"];
         $params     = [];
 
         if (!empty($search)) {
-            $conditions[] = "(brand LIKE :search OR model LIKE :search2 OR description LIKE :search3)";
+            $conditions[] = "(c.brand LIKE :search OR c.model LIKE :search2 OR c.description LIKE :search3)";
             $kw = '%' . $search . '%';
             $params[':search']  = $kw;
             $params[':search2'] = $kw;
@@ -116,39 +165,44 @@ class CarModel {
         }
 
         if (!empty($transmission)) {
-            $conditions[] = "transmission = :transmission";
+            $conditions[] = "c.transmission = :transmission";
             $params[':transmission'] = $transmission;
         }
 
         if (!empty($fuel_type)) {
-            $conditions[] = "fuel_type = :fuel_type";
+            $conditions[] = "c.fuel_type = :fuel_type";
             $params[':fuel_type'] = $fuel_type;
         }
 
         if ($price_min !== '' && is_numeric($price_min)) {
-            $conditions[] = "price_per_day >= :price_min";
+            $conditions[] = "c.price_per_day >= :price_min";
             $params[':price_min'] = (int) $price_min;
         }
 
         if ($price_max !== '' && is_numeric($price_max)) {
-            $conditions[] = "price_per_day <= :price_max";
+            $conditions[] = "c.price_per_day <= :price_max";
             $params[':price_max'] = (int) $price_max;
         }
 
         if (!empty($seats) && is_numeric($seats)) {
-            $conditions[] = "seats = :seats";
+            $conditions[] = "c.seats = :seats";
             $params[':seats'] = (int) $seats;
         }
 
         $where = implode(' AND ', $conditions);
 
-        $countSql  = "SELECT COUNT(*) FROM {$this->table} WHERE {$where}";
+        $countSql  = "SELECT COUNT(DISTINCT c.brand, c.model) FROM {$this->table} c WHERE {$where}";
         $countStmt = $this->conn->prepare($countSql);
         foreach ($params as $k => $v) $countStmt->bindValue($k, $v);
         $countStmt->execute();
         $total = (int) $countStmt->fetchColumn();
 
-        $sql  = "SELECT * FROM {$this->table} WHERE {$where} ORDER BY id DESC LIMIT :limit OFFSET :offset";
+        $sql  = "SELECT c.*,
+                        (SELECT COUNT(*) FROM {$this->table} c2 WHERE c2.brand = c.brand AND c2.model = c.model AND c2.status = 'available') as stock
+                 FROM {$this->table} c 
+                 WHERE {$where} 
+                   AND c.id IN (SELECT MIN(id) FROM {$this->table} WHERE status = 'available' GROUP BY brand, model)
+                 ORDER BY c.id DESC LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
         $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);

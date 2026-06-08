@@ -24,30 +24,33 @@ class LoginController {
             $password =      $_POST['password'] ?? '';
 
             if (empty($email) || empty($password)) {
-                $error = 'Email dan password wajib diisi.';
+                $error = 'Email and password are required.';
 
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = 'Format email tidak valid.';
+                $error = 'Invalid email format.';
 
             } else {
                 $userModel = new UserModel();
                 $user      = $userModel->login($email, $password);
 
-                if ($user) {
+                if ($user && $user['role'] === 'user') {
+                    session_regenerate_id(true);
                     $_SESSION['user_id']    = $user['id'];
                     $_SESSION['user_name']  = $user['full_name'];
                     $_SESSION['user_role']  = $user['role'];
                     $_SESSION['user_photo'] = $user['photo_profile'] ?? null;
 
-                    if ($user['role'] === 'admin') {
-                        header('Location: index.php?page=admin-dashboard');
-                    } else {
-                        header('Location: index.php');
+                    require_once 'models/BookingModel.php';
+                    $bookingModel = new BookingModel();
+                    if ($bookingModel->hasUnpaidFines($user['id'])) {
+                        $_SESSION['unpaid_fine_warning'] = true;
                     }
+
+                    header('Location: index.php');
                     exit;
 
                 } else {
-                    $error = 'Email atau password yang Anda masukkan salah.';
+                    $error = 'Incorrect email or password.';
                 }
             }
         }
@@ -59,41 +62,48 @@ class LoginController {
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['success' => false, 'message' => 'Method tidak valid.']);
+            echo json_encode(['success' => false, 'message' => 'Invalid method.']);
             exit;
         }
 
         $phone = trim($_POST['phone'] ?? '');
 
         if (empty($phone)) {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon wajib diisi.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number is required.']);
             exit;
         }
         if (!preg_match('/^[0-9]+$/', $phone)) {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon hanya boleh berisi angka.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number must contain only numbers.']);
             exit;
         }
         if (strlen($phone) < 7 || strlen($phone) > 13) {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon tidak valid (7–13 digit).']);
+            echo json_encode(['success' => false, 'message' => 'Invalid phone number (7-13 digits).']);
             exit;
         }
 
         $userModel = new UserModel();
         $user      = $userModel->findByPhone($phone);
 
-        if ($user) {
+        if ($user && $user['role'] === 'user') {
+            session_regenerate_id(true);
             $_SESSION['user_id']    = $user['id'];
             $_SESSION['user_name']  = $user['full_name'];
             $_SESSION['user_role']  = $user['role'];
             $_SESSION['user_photo'] = $user['photo_profile'] ?? null;
 
+            require_once 'models/BookingModel.php';
+            $bookingModel = new BookingModel();
+            if ($bookingModel->hasUnpaidFines($user['id'])) {
+                $_SESSION['unpaid_fine_warning'] = true;
+            }
+
             echo json_encode([
                 'success'  => true,
-                'message'  => 'Login berhasil!',
+                'message'  => 'Login successful!',
                 'redirect' => 'index.php',
             ]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Nomor telepon tidak terdaftar di akun manapun.']);
+            echo json_encode(['success' => false, 'message' => 'Phone number is not registered.']);
         }
         exit;
     }

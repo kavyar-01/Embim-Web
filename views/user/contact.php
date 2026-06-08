@@ -6,7 +6,7 @@
     <!-- Page Header -->
     <div class="pt-6 mb-8">
         <h1 class="text-2xl font-extrabold text-gray-900">Contact Us</h1>
-        <p class="text-sm text-gray-400 mt-1">Temukan kami atau hubungi langsung melalui platform favorit Anda</p>
+        <p class="text-sm text-gray-400 mt-1">Find us or contact us directly via your favorite platform</p>
     </div>
 
     <!-- ── Google Maps ── -->
@@ -16,8 +16,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
-            <h2 class="text-sm font-bold text-gray-900">Lokasi Kami</h2>
-            <span class="text-xs text-gray-400 ml-auto">Aksan Rent Car — Bandung, Jawa Barat</span>
+            <h2 class="text-sm font-bold text-gray-900">Our Location</h2>
+            <span class="text-xs text-gray-400 ml-auto">Aksan Rent Car — Bandung, West Java</span>
         </div>
         <div class="w-full" style="height: 380px;">
             <iframe
@@ -47,7 +47,7 @@
             <div class="min-w-0">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">WhatsApp</p>
                 <p class="text-sm font-bold text-gray-900 group-hover:text-green-600 transition-colors">+62 821-4484-5847</p>
-                <p class="text-xs text-gray-400 mt-0.5">Chat langsung dengan kami</p>
+                <p class="text-xs text-gray-400 mt-0.5">Chat directly with us</p>
             </div>
             <svg class="h-4 w-4 text-gray-300 group-hover:text-green-400 ml-auto flex-shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -63,7 +63,7 @@
             <div class="min-w-0">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">Instagram</p>
                 <p class="text-sm font-bold text-gray-900 group-hover:text-pink-600 transition-colors">@embim.rentcar</p>
-                <p class="text-xs text-gray-400 mt-0.5">Ikuti kami di Instagram</p>
+                <p class="text-xs text-gray-400 mt-0.5">Follow us on Instagram</p>
             </div>
             <svg class="h-4 w-4 text-gray-300 group-hover:text-pink-400 ml-auto flex-shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -79,7 +79,7 @@
             <div class="min-w-0">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">Facebook</p>
                 <p class="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors">EMBIM Rent Car</p>
-                <p class="text-xs text-gray-400 mt-0.5">Like & follow halaman kami</p>
+                <p class="text-xs text-gray-400 mt-0.5">Like & follow our page</p>
             </div>
             <svg class="h-4 w-4 text-gray-300 group-hover:text-blue-400 ml-auto flex-shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -97,7 +97,7 @@
             <div class="min-w-0">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-0.5">Email</p>
                 <p class="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors">admin@embim.com</p>
-                <p class="text-xs text-gray-400 mt-0.5">Kirim pertanyaan ke email kami</p>
+                <p class="text-xs text-gray-400 mt-0.5">Send your inquiries to our email</p>
             </div>
             <svg class="h-4 w-4 text-gray-300 group-hover:text-blue-400 ml-auto flex-shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -108,13 +108,13 @@
 
     <!-- ── Info Operasional ── -->
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Jam Operasional</h2>
+        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Operational Hours</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <?php
             $hours = [
-                ['hari' => 'Senin – Jumat',  'jam' => '08.00 – 20.00', 'status' => 'Buka', 'color' => 'text-emerald-600 bg-emerald-50'],
-                ['hari' => 'Sabtu',           'jam' => '08.00 – 18.00', 'status' => 'Buka', 'color' => 'text-emerald-600 bg-emerald-50'],
-                ['hari' => 'Minggu',          'jam' => '09.00 – 15.00', 'status' => 'Buka', 'color' => 'text-emerald-600 bg-emerald-50'],
+                ['hari' => 'Monday – Friday',  'jam' => '08.00 – 20.00', 'status' => 'Open', 'color' => 'text-emerald-600 bg-emerald-50'],
+                ['hari' => 'Saturday',           'jam' => '08.00 – 18.00', 'status' => 'Open', 'color' => 'text-emerald-600 bg-emerald-50'],
+                ['hari' => 'Sunday',          'jam' => '09.00 – 15.00', 'status' => 'Open', 'color' => 'text-emerald-600 bg-emerald-50'],
             ];
             foreach ($hours as $h): ?>
             <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">

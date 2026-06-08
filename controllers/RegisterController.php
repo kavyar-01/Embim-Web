@@ -20,41 +20,47 @@ class RegisterController {
             $phone    = !empty($phoneRaw) ? '+62' . $phoneRaw : '';
 
             if (empty($fullName) || empty($email) || empty($password)) {
-                $error = 'Nama, email, dan password wajib diisi.';
+                $error = 'Your name, email address, and password are required';
+
+            } elseif (strlen($fullName) < 4) {
+                $error = 'Full name must be at least 4 characters.';
+
+            } elseif (preg_match('/[0-9]/', $fullName)) {
+                $error = 'Full name must not contain numbers.';
 
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = 'Format email tidak valid.';
+                $error = 'Invalid email format.';
 
             } elseif (!empty($phoneRaw) && !preg_match('/^[0-9]+$/', $phoneRaw)) {
-                $error = 'Nomor telepon hanya boleh berisi angka.';
+                $error = 'Phone numbers must consist only of numbers.';
 
             } elseif (!empty($phoneRaw) && (strlen($phoneRaw) < 7 || strlen($phoneRaw) > 13)) {
-                $error = 'Nomor telepon tidak valid (7–13 digit).';
+                $error = 'Invalid phone number (7–13 digits).';
 
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = 'Format email tidak valid.';
+                $error = 'The email format is invalid.';
 
             } elseif (strlen($password) < 8) {
-                $error = 'Password minimal 8 karakter.';
+                $error = 'The password must be at least 8 characters long.';
 
             } elseif (!preg_match('/[a-z]/', $password)) {
-                $error = 'Password harus mengandung minimal satu huruf kecil.';
+                $error = 'The password must contain at least one lowercase letter.';
 
             } elseif (!preg_match('/[A-Z]/', $password)) {
-                $error = 'Password harus mengandung minimal satu huruf besar.';
+                $error = 'The password must contain at least one uppercase letter.';
 
             } elseif (!preg_match('/[0-9]/', $password)) {
-                $error = 'Password harus mengandung minimal satu angka.';
+                $error = 'The password must contain at least one number.';
 
             } elseif (!$agree) {
-                $error = 'Anda harus menyetujui Syarat & Ketentuan untuk melanjutkan.';
+                $error = 'You must agree to the Terms & Conditions to continue.';
 
             } else {
                 $userModel = new UserModel();
                 $result    = $userModel->register($fullName, $email, $phone, $password);
 
                 if ($result['success']) {
-                    $_SESSION['flash_success'] = 'Akun berhasil dibuat! Silakan login.';
+                    $_SESSION['flash_success'] = 'Your account has been successfully created! Please log in.';
                     header('Location: index.php?page=login');
                     exit;
                 } else {

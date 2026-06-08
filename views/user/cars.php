@@ -31,8 +31,8 @@ $baseUrl = 'index.php?page=cars'
 
     <!-- Page Title -->
     <div class="mb-6">
-        <h1 class="text-3xl font-extrabold text-gray-900">Katalog Mobil</h1>
-        <p class="text-sm text-blue-500 font-medium mt-1">Temukan kendaraan kami yang siap menemani perjalanan Anda</p>
+        <h1 class="text-3xl font-extrabold text-gray-900">Car Catalog</h1>
+        <p class="text-sm text-blue-500 font-medium mt-1">Find our vehicles ready to accompany your journey</p>
     </div>
 
     <div class="flex flex-col lg:flex-row gap-6 items-start">
@@ -65,7 +65,7 @@ $baseUrl = 'index.php?page=cars'
 
                             <!-- Pencarian -->
                             <div class="px-5 py-4">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Pencarian</label>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Search</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,17 +76,17 @@ $baseUrl = 'index.php?page=cars'
                                         type="text"
                                         name="search"
                                         value="<?php echo htmlspecialchars($search); ?>"
-                                        placeholder="merk, model, tipe..."
+                                        placeholder="brand, model, type..."
                                         class="w-full pl-9 pr-3 py-2.5 text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                                     >
                                 </div>
                             </div>
 
-                            <!-- Transmisi -->
+                            <!-- Transmission -->
                             <div class="px-5 py-4">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Transmisi</label>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Transmission</label>
                                 <div class="space-y-2">
-                                    <?php foreach (['' => 'Semua', 'automatic' => 'Automatic', 'manual' => 'Manual'] as $val => $label): ?>
+                                    <?php foreach (['' => 'All', 'automatic' => 'Automatic', 'manual' => 'Manual'] as $val => $label): ?>
                                     <label class="flex items-center gap-2.5 cursor-pointer group">
                                         <input
                                             type="radio"
@@ -102,11 +102,11 @@ $baseUrl = 'index.php?page=cars'
                                 </div>
                             </div>
 
-                            <!-- Bahan Bakar -->
+                            <!-- Fuel Type -->
                             <div class="px-5 py-4">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Bahan Bakar</label>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Fuel Type</label>
                                 <div class="space-y-2">
-                                    <?php foreach (['' => 'Semua', 'gasoline' => 'Gasoline', 'diesel' => 'Diesel', 'electric' => 'Electric', 'hybrid' => 'Hybrid'] as $val => $label): ?>
+                                    <?php foreach (['' => 'All', 'gasoline' => 'Gasoline', 'diesel' => 'Diesel', 'electric' => 'Electric', 'hybrid' => 'Hybrid'] as $val => $label): ?>
                                     <label class="flex items-center gap-2.5 cursor-pointer group">
                                         <input
                                             type="radio"
@@ -124,7 +124,7 @@ $baseUrl = 'index.php?page=cars'
 
                             <!-- Kapasitas Seats -->
                             <div class="px-5 py-4">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Kapasitas</label>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Capacity</label>
                                 <div class="space-y-2">
                                     <label class="flex items-center gap-2.5 cursor-pointer group">
                                         <input
@@ -135,7 +135,7 @@ $baseUrl = 'index.php?page=cars'
                                             onchange="this.form.submit()"
                                             class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                                         >
-                                        <span class="text-sm text-gray-600 group-hover:text-gray-900 transition font-medium">Semua</span>
+                                        <span class="text-sm text-gray-600 group-hover:text-gray-900 transition font-medium">All</span>
                                     </label>
                                     <?php foreach ($availableSeats as $s): ?>
                                     <label class="flex items-center gap-2.5 cursor-pointer group">
@@ -153,9 +153,9 @@ $baseUrl = 'index.php?page=cars'
                                 </div>
                             </div>
 
-                            <!-- Rentang Harga -->
+                            <!-- Rentang Price -->
                             <div class="px-5 py-4">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Rentang Harga / Hari</label>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Price Range / Day</label>
                                 <div class="space-y-2.5">
                                     <div class="relative">
                                         <span class="absolute inset-y-0 left-3 flex items-center text-xs text-gray-400 font-medium pointer-events-none">Rp</span>
@@ -163,7 +163,7 @@ $baseUrl = 'index.php?page=cars'
                                             type="number"
                                             name="price_min"
                                             value="<?php echo htmlspecialchars($price_min); ?>"
-                                            placeholder="Harga min"
+                                            placeholder="Min price"
                                             min="0"
                                             step="100000"
                                             class="w-full pl-8 pr-3 py-2.5 text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
@@ -175,7 +175,7 @@ $baseUrl = 'index.php?page=cars'
                                             type="number"
                                             name="price_max"
                                             value="<?php echo htmlspecialchars($price_max); ?>"
-                                            placeholder="Harga maks"
+                                            placeholder="Max price"
                                             min="0"
                                             step="100000"
                                             class="w-full pl-8 pr-3 py-2.5 text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
@@ -185,7 +185,7 @@ $baseUrl = 'index.php?page=cars'
                                         type="submit"
                                         class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 rounded-xl transition duration-200"
                                     >
-                                        Cari
+                                        Search
                                     </button>
                                 </div>
                             </div>
@@ -205,13 +205,13 @@ $baseUrl = 'index.php?page=cars'
             <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
                 <p class="text-sm text-gray-500 font-medium">
                     <?php if ($totalCars > 0): ?>
-                        Menampilkan <span class="font-bold text-gray-800"><?php echo $totalCars; ?></span>
-                        dari <span class="font-bold text-gray-800"><?php echo $totalAll; ?></span> mobil
+                        Showing <span class="font-bold text-gray-800"><?php echo $totalCars; ?></span>
+                        of <span class="font-bold text-gray-800"><?php echo $totalAll; ?></span> cars
                         <?php if ($totalPages > 1): ?>
-                        <span class="text-gray-400">— Hal. <?php echo $page; ?>/<?php echo $totalPages; ?></span>
+                        <span class="text-gray-400">— Page <?php echo $page; ?>/<?php echo $totalPages; ?></span>
                         <?php endif; ?>
                     <?php else: ?>
-                        Tidak ada kendaraan yang ditemukan.
+                        No vehicles found.
                     <?php endif; ?>
                 </p>
 
@@ -255,7 +255,7 @@ $baseUrl = 'index.php?page=cars'
 
             <?php if (!empty($cars)): ?>
 
-            <!-- Grid Kartu Mobil -->
+            <!-- Grid Kartu Cars -->
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
                 <?php foreach ($cars as $car):
                     $imgSrc = !empty($car['photo'])
@@ -273,7 +273,7 @@ $baseUrl = 'index.php?page=cars'
                             loading="lazy"
                         >
                         <div class="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                            Rp <?php echo number_format($car['price_per_day'], 0, ',', '.'); ?>/hari
+                            Rp <?php echo number_format($car['price_per_day'], 0, ',', '.'); ?>/day
                         </div>
                     </div>
 
@@ -304,21 +304,27 @@ $baseUrl = 'index.php?page=cars'
                                 </svg>
                                 <?php echo ucfirst($car['transmission']); ?>
                             </span>
+                            <span class="flex items-center gap-1.5 font-medium text-xs">
+                                <svg class="h-3.5 w-3.5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                                Stock: <?php echo $car['stock'] ?? 0; ?> Unit
+                            </span>
                         </div>
 
-                        <!-- Harga + Tombol -->
+                        <!-- Price + Tombol -->
                         <div class="flex items-end justify-between">
                             <div>
                                 <span class="text-xl font-black text-blue-600">
                                     Rp <?php echo number_format($car['price_per_day'], 0, ',', '.'); ?>
                                 </span>
-                                <span class="block text-xs font-semibold text-gray-400 uppercase mt-0.5">per hari</span>
+                                <span class="block text-xs font-semibold text-gray-400 uppercase mt-0.5">per day</span>
                             </div>
                             <a
                                 href="index.php?page=car-detail&id=<?php echo $car['id']; ?>"
                                 class="text-xs font-bold px-4 py-2 rounded-lg border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200"
                             >
-                                Lihat Detail
+                                View Details
                             </a>
                         </div>
                     </div>
@@ -379,10 +385,9 @@ $baseUrl = 'index.php?page=cars'
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
-                <h3 class="text-lg font-bold text-gray-700 mb-2">Kendaraan tidak ditemukan</h3>
-                <p class="text-sm text-gray-400 mb-6">Coba ubah kata kunci atau filter pencarian Anda.</p>
+                <h3 class="text-lg font-bold text-gray-700 mb-2">Vehicle not found</h3>
                 <a href="index.php?page=cars" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition duration-200">
-                    Lihat Semua Kendaraan
+                    View All Vehicles
                 </a>
             </div>
             <?php endif; ?>

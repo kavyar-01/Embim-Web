@@ -28,6 +28,8 @@ class AdminReturnController {
         $offset     = ($currentPage - 1) * $this->perPage;
         $returns    = array_slice($all, $offset, $this->perPage);
 
+        $stats      = $this->model->getReturnStats();
+
         $page = 'manage_returns';
         require_once __DIR__ . '/../views/manage_returns.php';
     }
@@ -67,6 +69,7 @@ class AdminReturnController {
         $returnDate   =         trim($_POST['return_date']   ?? '');
         $carCondition =         trim($_POST['car_condition'] ?? '');
         $notes        =         trim($_POST['notes']         ?? '');
+        $damageFine   = (float) str_replace(['.', ','], '', $_POST['damage_fine'] ?? '0');
 
         // Validasi
         $errors = $this->validate($bookingId, $returnDate, $carCondition, 0);
@@ -78,11 +81,11 @@ class AdminReturnController {
             return;
         }
 
-        $newId = $this->model->createReturn($bookingId, $returnDate, $carCondition, $notes);
+        $newId = $this->model->createReturn($bookingId, $returnDate, $carCondition, $notes, $damageFine);
         if ($newId !== false) {
             header('Location: ?page=return_detail&id=' . $newId . '&created=1');
         } else {
-            $errors[]  = 'Gagal menyimpan data. Silakan coba lagi.';
+            $errors[]  = 'Failed to save data. Please try again.';
             $bookings  = $this->model->getBookingsWithoutReturn();
             $page      = 'manage_returns';
             require_once __DIR__ . '/../views/return_form.php';
@@ -116,6 +119,8 @@ class AdminReturnController {
         $returnDate   = trim($_POST['return_date']   ?? '');
         $carCondition = trim($_POST['car_condition'] ?? '');
         $notes        = trim($_POST['notes']         ?? '');
+        $damageFine   = (float) str_replace(['.', ','], '', $_POST['damage_fine'] ?? '0');
+        $fineStatus   = trim($_POST['fine_status']   ?? '');
 
         $errors = $this->validate($return['booking_id'], $returnDate, $carCondition, $id);
 
@@ -125,11 +130,11 @@ class AdminReturnController {
             return;
         }
 
-        $ok = $this->model->updateReturn($id, $returnDate, $carCondition, $notes);
+        $ok = $this->model->updateReturn($id, $returnDate, $carCondition, $notes, $damageFine, $fineStatus);
         if ($ok) {
             header('Location: ?page=return_detail&id=' . $id . '&updated=1');
         } else {
-            $errors[] = 'Gagal memperbarui data. Silakan coba lagi.';
+            $errors[] = 'Failed to update data. Please try again.';
             $page     = 'manage_returns';
             require_once __DIR__ . '/../views/return_edit_form.php';
         }
@@ -165,24 +170,26 @@ class AdminReturnController {
         $errors = [];
 
         if ($bookingId <= 0) {
-            $errors[] = 'Booking ID wajib dipilih.';
+            $errors[] = 'Booking ID must be selected.';
         } else {
             $booking = $this->model->getBookingById($bookingId);
             if ($booking === null) {
-                $errors[] = 'Booking ID tidak ditemukan.';
+                $errors[] = 'Booking ID not found.';
+            } elseif ($booking['status'] !== 'completed') {
+                $errors[] = 'Only "completed" bookings can have return data added.';
             } elseif ($this->model->existsByBookingId($bookingId, $excludeId)) {
-                $errors[] = 'Booking #' . $bookingId . ' sudah memiliki data pengembalian.';
+                $errors[] = 'Booking #' . $bookingId . ' already has return data.';
             }
         }
 
         if ($returnDate === '') {
-            $errors[] = 'Tanggal pengembalian wajib diisi.';
+            $errors[] = 'Return date is required.';
         } elseif (!strtotime($returnDate)) {
-            $errors[] = 'Format tanggal pengembalian tidak valid.';
+            $errors[] = 'Invalid return date format.';
         }
 
         if (!in_array($carCondition, ['good', 'damaged'], true)) {
-            $errors[] = 'Kondisi kendaraan hanya boleh "good" atau "damaged".';
+            $errors[] = 'Car condition must be "good" or "damaged".';
         }
 
         return $errors;
