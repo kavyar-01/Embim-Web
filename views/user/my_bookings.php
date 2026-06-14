@@ -67,26 +67,42 @@
     </div>
     <?php endif; ?>
 
-    <!-- ── Filter Tabs ── -->
-    <div class="flex gap-2 overflow-x-auto pb-1 mb-6 scrollbar-hide">
-        <?php foreach ($tabs as $key => $label):
-            $isActive = $filterStatus === $key;
-            $count    = $counts[$key];
-        ?>
-        <a
-            href="index.php?page=bookings&status=<?php echo $key; ?>"
-            class="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200
-                   <?php echo $isActive
-                       ? 'bg-blue-600 text-white shadow-md shadow-blue-200/50'
-                       : 'bg-white text-gray-500 border border-gray-200 hover:border-blue-300 hover:text-blue-600'; ?>"
-        >
-            <?php echo $label; ?>
-            <span class="text-xs px-1.5 py-0.5 rounded-full font-bold
-                         <?php echo $isActive ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'; ?>">
-                <?php echo $count; ?>
-            </span>
-        </a>
-        <?php endforeach; ?>
+    <!-- ── Search & Filter Tabs ── -->
+    <div class="flex flex-col gap-5 mb-6">
+        <div class="w-full md:max-w-md">
+            <form method="GET" action="index.php" class="flex w-full">
+                <input type="hidden" name="page" value="bookings">
+                <input type="hidden" name="status" value="<?php echo htmlspecialchars($filterStatus); ?>">
+                <input type="text" name="search" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>" placeholder="Search ID or Car Name..." class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-r-xl text-sm font-semibold transition shadow-sm">Search</button>
+            </form>
+            <p class="text-xs text-gray-400 mt-2 ml-1 leading-relaxed">
+                <span class="font-bold text-gray-500">Search Tips:</span><br>
+                • <strong>ID:</strong> Type the Booking ID (e.g., <code>#0020</code> or <code>20</code>)<br>
+                • <strong>Brand/Model:</strong> Type the car's brand or model (e.g., <code>Honda</code> or <code>HR-V</code>)
+            </p>
+        </div>
+
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide items-start justify-start">
+            <?php foreach ($tabs as $key => $label):
+                $isActive = $filterStatus === $key;
+                $count    = $counts[$key];
+            ?>
+            <a
+                href="index.php?page=bookings&status=<?php echo $key; ?><?php echo !empty($_GET['search']) ? '&search='.urlencode($_GET['search']) : ''; ?>"
+                class="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200
+                       <?php echo $isActive
+                           ? 'bg-blue-600 text-white shadow-md shadow-blue-200/50'
+                           : 'bg-white text-gray-500 border border-gray-200 hover:border-blue-300 hover:text-blue-600'; ?>"
+            >
+                <?php echo $label; ?>
+                <span class="text-xs px-1.5 py-0.5 rounded-full font-bold
+                             <?php echo $isActive ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                    <?php echo $count; ?>
+                </span>
+            </a>
+            <?php endforeach; ?>
+        </div>
     </div>
 
     <!-- ── Booking List ── -->
@@ -256,6 +272,46 @@
         </div>
         <?php endforeach; ?>
     </div>
+
+    <!-- ── Pagination ── -->
+    <?php if (isset($totalPages) && $totalPages > 1): ?>
+    <div class="flex justify-center mt-8">
+        <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
+            <?php
+            $pageLink = "index.php?page=bookings&status=" . urlencode($filterStatus);
+            if (!empty($_GET['search'])) {
+                $pageLink .= "&search=" . urlencode($_GET['search']);
+            }
+            $currentPage = isset($_GET['booking_page']) ? max(1, (int)$_GET['booking_page']) : 1;
+            ?>
+            <?php if ($currentPage > 1): ?>
+                <a href="<?php echo $pageLink . '&booking_page=' . ($currentPage - 1); ?>" class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    Previous
+                </a>
+            <?php else: ?>
+                <span class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                    Previous
+                </span>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="<?php echo $pageLink . '&booking_page=' . $i; ?>" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium <?php echo $i === $currentPage ? 'text-blue-600 bg-blue-50 font-bold' : 'text-gray-700 hover:bg-gray-50'; ?>">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($currentPage < $totalPages): ?>
+                <a href="<?php echo $pageLink . '&booking_page=' . ($currentPage + 1); ?>" class="relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    Next
+                </a>
+            <?php else: ?>
+                <span class="relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                    Next
+                </span>
+            <?php endif; ?>
+        </nav>
+    </div>
+    <?php endif; ?>
 
     <?php else: ?>
 

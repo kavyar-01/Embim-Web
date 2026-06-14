@@ -624,6 +624,7 @@ if (!defined('BASE_URL')) {
                     <div class="flex items-center">
                         <label for="review_limit" class="text-sm font-bold text-gray-700 mr-2">Show:</label>
                         <select name="review_limit" id="review_limit" onchange="fetchReviews()" class="bg-white border border-gray-200 text-gray-700 rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm cursor-pointer transition hover:border-blue-300">
+                            <option value="all" <?php echo $reviewLimit === 'all' ? 'selected' : ''; ?>>All</option>
                             <option value="2" <?php echo $reviewLimit == 2 ? 'selected' : ''; ?>>2 Reviews</option>
                             <option value="6" <?php echo $reviewLimit == 6 ? 'selected' : ''; ?>>6 Reviews</option>
                             <option value="10" <?php echo $reviewLimit == 10 ? 'selected' : ''; ?>>10 Reviews</option>
@@ -666,6 +667,41 @@ if (!defined('BASE_URL')) {
                 </div>
             </div>
             <?php endforeach; ?>
+            <?php 
+            if ($reviewLimit === 'all' && $totalReviewPages > 1) {
+                ?>
+                <div class="col-span-full flex justify-center mt-8">
+                    <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
+                        <?php if ($reviewPage > 1): ?>
+                            <button onclick="fetchReviews(<?php echo $reviewPage - 1; ?>)" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                Previous
+                            </button>
+                        <?php else: ?>
+                            <span class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                                Previous
+                            </span>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalReviewPages; $i++): ?>
+                            <button onclick="fetchReviews(<?php echo $i; ?>)" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium <?php echo $i === $reviewPage ? 'text-blue-600 bg-blue-50 font-bold' : 'text-gray-700 hover:bg-gray-50'; ?>">
+                                <?php echo $i; ?>
+                            </button>
+                        <?php endfor; ?>
+
+                        <?php if ($reviewPage < $totalReviewPages): ?>
+                            <button onclick="fetchReviews(<?php echo $reviewPage + 1; ?>)" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                Next
+                            </button>
+                        <?php else: ?>
+                            <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                                Next
+                            </span>
+                        <?php endif; ?>
+                    </nav>
+                </div>
+                <?php
+            }
+            ?>
         <?php else: ?>
             <div class="text-center py-16 text-gray-400 font-medium col-span-full">
                 No reviews from customers yet.
@@ -674,7 +710,7 @@ if (!defined('BASE_URL')) {
         </div>
 
         <script>
-        function fetchReviews() {
+        function fetchReviews(page = 1) {
             const container = document.getElementById('reviews-container');
             const limit = document.getElementById('review_limit').value;
             const rating = document.getElementById('review_rating').value;
@@ -683,11 +719,11 @@ if (!defined('BASE_URL')) {
             container.style.opacity = '0.5';
             container.style.pointerEvents = 'none';
             
-            fetch(`index.php?page=api-reviews&limit=${limit}&rating=${rating}`)
+            fetch(`index.php?page=api-reviews&limit=${limit}&rating=${rating}&review_page=${page}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        container.innerHTML = data.html;
+                        container.innerHTML = data.html + (data.paginationHtml || '');
                         // Re-initialize reveals if scrollreveal is used
                         if (typeof ScrollReveal !== 'undefined') {
                             ScrollReveal().sync();

@@ -105,7 +105,7 @@ class CarModel {
     }
 
 
-    public function getReviews($limit = 6, $rating = 'all') {
+    public function getReviews($limit = 6, $rating = 'all', $offset = 0) {
         $sql = "SELECT r.id, r.rating, r.comment, r.created_at,
                        u.full_name,
                        CONCAT(c.brand, ' ', c.model) AS car_name
@@ -118,10 +118,11 @@ class CarModel {
         }
         
         $sql .= " ORDER BY r.created_at DESC
-                LIMIT :limit";
+                LIMIT :limit OFFSET :offset";
                 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         if ($rating !== 'all') {
             $stmt->bindValue(':rating', $rating, PDO::PARAM_INT);
         }
@@ -129,9 +130,15 @@ class CarModel {
         return $stmt->fetchAll();
     }
 
-    public function getTotalReviews() {
+    public function getTotalReviews($rating = 'all') {
         $sql = "SELECT COUNT(*) FROM reviews";
+        if ($rating !== 'all') {
+            $sql .= " WHERE rating = :rating";
+        }
         $stmt = $this->conn->prepare($sql);
+        if ($rating !== 'all') {
+            $stmt->bindValue(':rating', $rating, PDO::PARAM_INT);
+        }
         $stmt->execute();
         return (int) $stmt->fetchColumn();
     }

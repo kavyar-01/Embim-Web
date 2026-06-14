@@ -17,11 +17,18 @@ class HomeController {
             $featuredCars = $carModel->getFeaturedCars(6);
         }
 
-        $reviewLimit = isset($_GET['review_limit']) ? (int)$_GET['review_limit'] : 2;
-        $allowedLimits = [2, 6, 10, 30, 50, 100];
-        if (!in_array($reviewLimit, $allowedLimits)) {
+        $reviewLimitInput = isset($_GET['review_limit']) ? $_GET['review_limit'] : 2;
+        $reviewLimit = $reviewLimitInput === 'all' ? 'all' : (int)$reviewLimitInput;
+        $allowedLimits = ['all', 2, 6, 10, 30, 50, 100];
+        if (!in_array($reviewLimit, $allowedLimits, true)) {
             $reviewLimit = 2;
         }
+
+        $reviewPage = isset($_GET['review_page']) ? (int)$_GET['review_page'] : 1;
+        if ($reviewPage < 1) $reviewPage = 1;
+
+        $actualLimit = $reviewLimit === 'all' ? 6 : (int)$reviewLimit;
+        $offset = ($reviewPage - 1) * $actualLimit;
         
         $reviewRating = isset($_GET['review_rating']) ? $_GET['review_rating'] : 'all';
         $allowedRatings = ['all', '1', '2', '3', '4', '5'];
@@ -29,8 +36,9 @@ class HomeController {
             $reviewRating = 'all';
         }
 
-        $reviews = $carModel->getReviews($reviewLimit, $reviewRating);
-        $totalReviews = $carModel->getTotalReviews();
+        $reviews = $carModel->getReviews($actualLimit, $reviewRating, $offset);
+        $totalReviewsForPagination = $carModel->getTotalReviews($reviewRating);
+        $totalReviewPages = ceil($totalReviewsForPagination / $actualLimit);
 
         $totalAvailableCars = $carModel->getTotalAvailableCars();
         $totalCustomers = $userModel->getTotalCustomers();
@@ -44,19 +52,28 @@ class HomeController {
         require_once 'models/CarModel.php';
         $carModel = new CarModel();
 
-        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 2;
-        $allowedLimits = [2, 6, 10, 30, 50, 100];
-        if (!in_array($limit, $allowedLimits)) {
+        $limitInput = isset($_GET['limit']) ? $_GET['limit'] : 2;
+        $limit = $limitInput === 'all' ? 'all' : (int)$limitInput;
+        $allowedLimits = ['all', 2, 6, 10, 30, 50, 100];
+        if (!in_array($limit, $allowedLimits, true)) {
             $limit = 2;
         }
         
+        $page = isset($_GET['review_page']) ? (int)$_GET['review_page'] : 1;
+        if ($page < 1) $page = 1;
+
+        $actualLimit = $limit === 'all' ? 6 : (int)$limit;
+        $offset = ($page - 1) * $actualLimit;
+
         $rating = isset($_GET['rating']) ? $_GET['rating'] : 'all';
         $allowedRatings = ['all', '1', '2', '3', '4', '5'];
         if (!in_array($rating, $allowedRatings)) {
             $rating = 'all';
         }
 
-        $reviews = $carModel->getReviews($limit, $rating);
+        $reviews = $carModel->getReviews($actualLimit, $rating, $offset);
+        $totalReviewsForPagination = $carModel->getTotalReviews($rating);
+        $totalReviewPages = ceil($totalReviewsForPagination / $actualLimit);
         
         // Return HTML string so we don't have to duplicate the card rendering logic in JS
         ob_start();
@@ -92,7 +109,44 @@ class HomeController {
         }
         $html = ob_get_clean();
 
-        echo json_encode(['success' => true, 'html' => $html]);
+        $paginationHtml = '';
+        if ($limit === 'all' && $totalReviewPages > 1) {
+            ob_start();
+            ?>
+            <div class="col-span-full flex justify-center mt-8">
+                <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
+                    <?php if ($page > 1): ?>
+                        <button onclick="fetchReviews(<?php echo $page - 1; ?>)" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            Previous
+                        </button>
+                    <?php else: ?>
+                        <span class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                            Previous
+                        </span>
+                    <?php endif; ?>
+
+                    <?php for ($i = 1; $i <= $totalReviewPages; $i++): ?>
+                        <button onclick="fetchReviews(<?php echo $i; ?>)" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium <?php echo $i === $page ? 'text-blue-600 bg-blue-50 font-bold' : 'text-gray-700 hover:bg-gray-50'; ?>">
+                            <?php echo $i; ?>
+                        </button>
+                    <?php endfor; ?>
+
+                    <?php if ($page < $totalReviewPages): ?>
+                        <button onclick="fetchReviews(<?php echo $page + 1; ?>)" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            Next
+                        </button>
+                    <?php else: ?>
+                        <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                            Next
+                        </span>
+                    <?php endif; ?>
+                </nav>
+            </div>
+            <?php
+            $paginationHtml = ob_get_clean();
+        }
+
+        echo json_encode(['success' => true, 'html' => $html, 'paginationHtml' => $paginationHtml]);
         exit;
     }
 }

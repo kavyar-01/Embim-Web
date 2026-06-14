@@ -12,6 +12,11 @@ class BookingsController {
 
         $userId       = $_SESSION['user_id'];
         $filterStatus = isset($_GET['status']) ? $_GET['status'] : 'all';
+        $search       = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $page         = isset($_GET['booking_page']) ? max(1, (int)$_GET['booking_page']) : 1;
+        $limit        = 5;
+        $offset       = ($page - 1) * $limit;
+
         $bookingModel = new BookingModel();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
@@ -22,7 +27,9 @@ class BookingsController {
             }
         }
 
-        $bookings = $bookingModel->getByUserId($userId, $filterStatus);
+        $bookings = $bookingModel->getByUserId($userId, $filterStatus, $search, $limit, $offset);
+        $totalBookings = $bookingModel->getTotalBookingsByUserId($userId, $filterStatus, $search);
+        $totalPages = ceil($totalBookings / $limit);
         $counts   = $bookingModel->getCountsByUserId($userId);
 
         require_once 'views/user/my_bookings.php';

@@ -10,8 +10,7 @@ class BookingModel {
         $this->conn = $db->getConnection();
     }
 
-
-    public function getByUserId($userId, $status = 'all') {
+    public function getByUserId($userId, $status = 'all', $search = '', $limit = null, $offset = 0) {
         $sql = "SELECT
                     b.id,
                     b.car_id,
@@ -43,17 +42,64 @@ class BookingModel {
             $sql .= " AND b.status = :status";
         }
 
+        if (!empty($search)) {
+            $sql .= " AND (b.id LIKE :search1 OR LPAD(b.id, 4, '0') LIKE :search4 OR c.brand LIKE :search2 OR c.model LIKE :search3)";
+        }
+
         $sql .= " ORDER BY b.created_at DESC";
+
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit OFFSET :offset";
+        }
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         if ($status !== 'all') {
             $stmt->bindValue(':status', $status);
         }
+        if (!empty($search)) {
+            $searchTerm = '%' . $search . '%';
+            $searchIdTerm = '%' . str_replace('#', '', $search) . '%';
+            $stmt->bindValue(':search1', $searchTerm);
+            $stmt->bindValue(':search4', $searchIdTerm);
+            $stmt->bindValue(':search2', $searchTerm);
+            $stmt->bindValue(':search3', $searchTerm);
+        }
+        if ($limit !== null) {
+            $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        }
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
+    public function getTotalBookingsByUserId($userId, $status = 'all', $search = '') {
+        $sql = "SELECT COUNT(*) FROM bookings b JOIN cars c ON b.car_id = c.id WHERE b.user_id = :user_id";
+        
+        if ($status !== 'all') {
+            $sql .= " AND b.status = :status";
+        }
+
+        if (!empty($search)) {
+            $sql .= " AND (b.id LIKE :search1 OR LPAD(b.id, 4, '0') LIKE :search4 OR c.brand LIKE :search2 OR c.model LIKE :search3)";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        if ($status !== 'all') {
+            $stmt->bindValue(':status', $status);
+        }
+        if (!empty($search)) {
+            $searchTerm = '%' . $search . '%';
+            $searchIdTerm = '%' . str_replace('#', '', $search) . '%';
+            $stmt->bindValue(':search1', $searchTerm);
+            $stmt->bindValue(':search4', $searchIdTerm);
+            $stmt->bindValue(':search2', $searchTerm);
+            $stmt->bindValue(':search3', $searchTerm);
+        }
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
 
     public function getCountsByUserId($userId) {
         $sql = "SELECT status, COUNT(*) AS total
